@@ -1,0 +1,62 @@
+package com.kolyadko.likeit.pool;
+
+
+import com.kolyadko.likeit.exception.DatabaseConnectorException;
+import com.mysql.jdbc.Driver;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+/**
+ * Created by DaryaKolyadko on 13.07.2016.
+ */
+class DatabaseConnector {
+    private static String configFileName = "database.properties";
+    private static Properties config;
+    private static AtomicBoolean initialized = new AtomicBoolean(false);
+
+    public static Connection getConnection() throws DatabaseConnectorException {
+        if (!initialized.get()) {
+            init();
+        }
+
+        try {
+            return DriverManager.getConnection(config.getProperty("url"), config);
+        } catch (SQLException e) {
+            throw new DatabaseConnectorException("Database connection error: " + e.getMessage());
+        }
+    }
+
+    private static void init() throws DatabaseConnectorException {
+        initialized.set(true);
+        URL configFile = DatabaseConnector.class.getClassLoader().getResource(configFileName);
+
+        if (configFile == null) {
+            throw new DatabaseConnectorException("Config file (" + configFileName + ") not found");
+        }
+
+        try (FileInputStream inputStream = new FileInputStream(configFile.getFile())) {
+            DriverManager.registerDriver(new Driver());
+            config = new Properties();
+            config.load(inputStream);
+        } catch (IOException e) {
+            throw new DatabaseConnectorException("Problem with config file: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new DatabaseConnectorException("Database connection error: " + e.getMessage());
+        }
+    }
+
+    public static String getConfigFileName() {
+        return configFileName;
+    }
+
+    public static void setConfigFileName(String configFile) {
+        DatabaseConnector.configFileName = configFile;
+    }
+}
