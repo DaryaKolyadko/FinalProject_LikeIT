@@ -7,7 +7,7 @@ public enum RoleType {
     USER,
     ADMIN;
 
-    public RoleType getRoleType(String value) {
+    public static RoleType getRoleType(String value) {
         return valueOf(value.toUpperCase());
     }
 }

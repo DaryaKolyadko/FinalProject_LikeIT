@@ -6,6 +6,7 @@ import com.kolyadko.likeit.type.StateType;
 
 import java.sql.Date;
 
+
 /**
  * Created by DaryaKolyadko on 15.07.2016.
  */
@@ -19,12 +20,12 @@ public class User extends Entity<String> {
     private Date signUpDate;
     private String email;
     private boolean emailConfirmed;
-    private RoleType role;
-    private StateType state;
+    private RoleType role = RoleType.USER;
+    private StateType state = StateType.ACTIVE;
     private float rating;
-    private int answer_num;
-    private int question_num;
-    private int comment_num;
+    private int answerNum;
+    private int questionNum;
+    private int commentNum;
     private boolean archive;
 
     public User(String login) {
@@ -127,28 +128,28 @@ public class User extends Entity<String> {
         this.rating = rating;
     }
 
-    public int getAnswer_num() {
-        return answer_num;
+    public int getAnswerNum() {
+        return answerNum;
     }
 
-    public void setAnswer_num(int answer_num) {
-        this.answer_num = answer_num;
+    public void setAnswerNum(int answerNum) {
+        this.answerNum = answerNum;
     }
 
-    public int getQuestion_num() {
-        return question_num;
+    public int getQuestionNum() {
+        return questionNum;
     }
 
-    public void setQuestion_num(int question_num) {
-        this.question_num = question_num;
+    public void setQuestionNum(int questionNum) {
+        this.questionNum = questionNum;
     }
 
-    public int getComment_num() {
-        return comment_num;
+    public int getCommentNum() {
+        return commentNum;
     }
 
-    public void setComment_num(int comment_num) {
-        this.comment_num = comment_num;
+    public void setCommentNum(int commentNum) {
+        this.commentNum = commentNum;
     }
 
     public boolean isArchive() {

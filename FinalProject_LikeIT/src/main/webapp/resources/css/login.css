@@ -1,0 +1,50 @@
+#login {
+    padding-top: 5%;
+}
+
+.form-wrap {
+    max-width: 330px;
+    margin: 0 auto;
+}
+
+#login .form-group {
+    margin-bottom: 25px;
+}
+
+#login .checkbox {
+    margin-bottom: 20px;
+    position: relative;
+    user-select: none;
+}
+
+#login .checkbox.show:before {
+    content: '\e013';
+    color: #35d615;
+    font-size: 17px;
+    margin: 1px 0 0 3px;
+    position: absolute;
+    pointer-events: none;
+    font-family: 'Glyphicons Halflings';
+}
+
+#login .checkbox .character-checkbox {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+#login .checkbox .label {
+    color: #6d6d6d;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+#login .forget {
+    font-size: 13px;
+    text-align: center;
+    display: block;
+}

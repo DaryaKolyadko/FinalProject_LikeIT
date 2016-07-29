@@ -1,0 +1,21 @@
+div .userSearch {
+    border: 1px solid #d35400;
+}
+.panel-body {
+    overflow: auto;
+}
+
+#filter-group {
+    margin: 10px;
+}
+
+.panel {
+    border: 0;
+    box-shadow: unset;
+}
+
+@media screen and (max-width: 767px) {
+    .panel-body {
+        padding-left: 0;
+    }
+}

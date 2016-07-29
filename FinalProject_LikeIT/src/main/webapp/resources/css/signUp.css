@@ -1,0 +1,13 @@
+.form-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#gender-button-group .btn-group .form-control-feedback {
+    top: 0;
+    right: -30px;
+}
+
+#signUp {
+    padding-top: 5%;
+}

@@ -7,7 +7,7 @@ public enum StateType {
     ACTIVE,
     BANNED;
 
-    public StateType getStateType(String value) {
+    public static StateType getStateType(String value) {
         return valueOf(value.toUpperCase());
     }
 }

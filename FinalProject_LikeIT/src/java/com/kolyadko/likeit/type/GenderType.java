@@ -8,7 +8,7 @@ public enum GenderType {
     FEMALE,
     OTHER;
 
-    public GenderType getGenderType(String value) {
+    public static GenderType getGenderType(String value) {
         return valueOf(value.toUpperCase());
     }
 }
