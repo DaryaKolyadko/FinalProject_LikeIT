@@ -15,6 +15,7 @@ public class RequestContent {
     private HashMap<String, Object> requestAttributes;
     private HashMap<String, String[]> requestParameters;
     private HashMap<String, Object> sessionAttributes;
+    private String requestURI;
     private HttpSession session;
     private ServletContext servletContext;
 
@@ -54,6 +55,7 @@ public class RequestContent {
         }
 
         servletContext = request.getServletContext();
+        requestURI = request.getRequestURI();
     }
 
     public String[] getRequestParameters(String parameterName) {
@@ -72,8 +74,12 @@ public class RequestContent {
         valueReplacer(requestAttributes, attributeName, attributeValue);
     }
 
-    public void setSessionAttribute(String attributeName, String attributeValue) {
+    public void setSessionAttribute(String attributeName, Object attributeValue) {
         valueReplacer(sessionAttributes, attributeName, attributeValue);
+    }
+
+    public String getRequestURI() {
+        return requestURI;
     }
 
     private <T> void valueReplacer(HashMap<String, T> map, String name, T value) {
@@ -99,6 +105,13 @@ public class RequestContent {
                 Map.Entry<String, Object> pair = (Map.Entry) iterator.next();
                 session.setAttribute(pair.getKey(), pair.getValue());
             }
+        }
+    }
+
+    public void copyParamsToRequestAttributes() {
+        for (Object o : requestParameters.entrySet()) {
+            Map.Entry<String, Object> pair = (Map.Entry) o;
+            requestAttributes.put(pair.getKey(), ((String[])pair.getValue())[0]);
         }
     }
 }
