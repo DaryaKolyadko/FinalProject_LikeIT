@@ -39,13 +39,12 @@ public class LikeItServlet extends HttpServlet {
         String page = command.execute(requestContent);
 
         if (page != null) {
-            requestContent.insertValues(request);
-
             if (!getRequest) {
                 command = ShowCommandFactory.getCommand(page);
                 page = command.execute(requestContent);
             }
 
+            requestContent.insertValues(request);
             getServletContext().getRequestDispatcher(page).forward(request, response);
         } else {
             page = MappingManager.getInstance().getProperty(MappingManager.HOME_PAGE);

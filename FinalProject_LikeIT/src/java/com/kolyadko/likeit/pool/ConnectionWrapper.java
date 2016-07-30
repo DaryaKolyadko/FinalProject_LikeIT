@@ -43,7 +43,7 @@ public class ConnectionWrapper {
         connection.rollback();
     }
 
-    public void close() throws SQLException {
+    public void close() {
         try {
             ConnectionPool.getInstance().closeConnection(this);
         } catch (ConnectionPoolException e) {

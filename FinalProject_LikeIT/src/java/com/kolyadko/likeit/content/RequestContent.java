@@ -70,6 +70,10 @@ public class RequestContent {
         return servletContext;
     }
 
+    public Object getSessionAttribute(String attributeName) {
+        return sessionAttributes.get(attributeName);
+    }
+
     public void setRequestAttribute(String attributeName, Object attributeValue) {
         valueReplacer(requestAttributes, attributeName, attributeValue);
     }
@@ -111,7 +115,7 @@ public class RequestContent {
     public void copyParamsToRequestAttributes() {
         for (Object o : requestParameters.entrySet()) {
             Map.Entry<String, Object> pair = (Map.Entry) o;
-            requestAttributes.put(pair.getKey(), ((String[])pair.getValue())[0]);
+            requestAttributes.put(pair.getKey(), ((String[]) pair.getValue())[0]);
         }
     }
 }

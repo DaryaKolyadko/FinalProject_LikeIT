@@ -27,7 +27,7 @@ public abstract class AbstractDao<K, T extends Entity> {
 
     public abstract ArrayList<T> findAll() throws DaoException;
 
-    public abstract void create(T user) throws DaoException;
+    public abstract void create(T entity) throws DaoException;
 
     protected abstract T readEntity(ResultSet resultSet) throws SQLException;
 
