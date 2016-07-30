@@ -15,6 +15,7 @@ public class Question extends Entity<Integer> {
     private byte version;
     private Timestamp lastModify;
     private int commentNum;
+    private int answerNum;
     private int markNum;
     private float rating;
     private boolean archive;
@@ -109,5 +110,13 @@ public class Question extends Entity<Integer> {
 
     public void setArchive(boolean archive) {
         this.archive = archive;
+    }
+
+    public int getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(int answerNum) {
+        this.answerNum = answerNum;
     }
 }

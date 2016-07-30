@@ -32,6 +32,10 @@ public class User extends Entity<String> {
         super(login);
     }
 
+    public boolean isAdmin() {
+        return role == RoleType.ADMIN;
+    }
+
     public int getAvatarId() {
         return avatarId;
     }

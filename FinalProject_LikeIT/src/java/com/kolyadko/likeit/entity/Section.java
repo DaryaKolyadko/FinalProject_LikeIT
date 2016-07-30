@@ -7,6 +7,7 @@ public class Section extends Entity<Integer> {
     private int majorSectionId;
     private String name;
     private int questionNum;
+    private int answerNum;
     private boolean archive;
 
     public Section() {
@@ -43,5 +44,13 @@ public class Section extends Entity<Integer> {
 
     public void setQuestionNum(int questionNum) {
         this.questionNum = questionNum;
+    }
+
+    public int getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(int answerNum) {
+        this.answerNum = answerNum;
     }
 }

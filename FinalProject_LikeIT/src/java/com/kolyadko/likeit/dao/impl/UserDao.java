@@ -23,11 +23,14 @@ public class UserDao extends AbstractDao<String, User> {
     private static final String INSERT_COLUMNS = "login, first_name, last_name, gender, password, birth_date, " +
             "sign_up_date, email";
 
+    private static final String ORDER_BY_LOGIN = " ORDER BY login";
+    private static final String EXISTING = "  WHERE archive='false'";
+
     private static final String SELECT_ALL = "SELECT " + ALL_COLUMNS + " FROM user";
-    private static final String FIND_BY_ID = SELECT_ALL + "  WHERE login=?;";
-    private static final String FIND_ALL_EXISTING = SELECT_ALL + "  WHERE archive='false';";
+    private static final String FIND_BY_ID = SELECT_ALL + "  WHERE login=?";
     private static final String CREATE = "INSERT INTO user (" + INSERT_COLUMNS + ") VALUES(" +
             StringUtils.repeat("?", ", ", INSERT_COLUMNS.split(",").length) + ");";
+
 
     public UserDao(ConnectionWrapper connection) {
         super(connection);
@@ -63,7 +66,7 @@ public class UserDao extends AbstractDao<String, User> {
     @Override
     public ArrayList<User> findAll() throws DaoException {
         try {
-            return findWithStatement(SELECT_ALL);
+            return findWithStatement(SELECT_ALL + ORDER_BY_LOGIN);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -86,7 +89,7 @@ public class UserDao extends AbstractDao<String, User> {
             preparedStatement.setString(8, user.getEmail());
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         } finally {
             closeStatement(preparedStatement);
         }
@@ -94,7 +97,7 @@ public class UserDao extends AbstractDao<String, User> {
 
     public ArrayList<User> findAllExisting() throws DaoException {
         try {
-            return findWithStatement(FIND_ALL_EXISTING);
+            return findWithStatement(SELECT_ALL + EXISTING + ORDER_BY_LOGIN);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
