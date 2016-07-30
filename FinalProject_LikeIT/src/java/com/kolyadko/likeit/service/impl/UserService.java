@@ -27,6 +27,8 @@ public class UserService extends AbstractService<String, User> {
             return userDao.findById(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            connection.close();
         }
     }
 
@@ -39,6 +41,8 @@ public class UserService extends AbstractService<String, User> {
             return userDao.findAll();
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            connection.close();
         }
     }
 
@@ -53,6 +57,8 @@ public class UserService extends AbstractService<String, User> {
             userDao.create(user);
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            connection.close();
         }
     }
 
@@ -69,7 +75,7 @@ public class UserService extends AbstractService<String, User> {
         } catch (DaoException e) {
             throw new ServiceException(e);
         } finally {
-            closeConnectionWrapper(connection);
+            connection.close();
         }
 
         return null;
