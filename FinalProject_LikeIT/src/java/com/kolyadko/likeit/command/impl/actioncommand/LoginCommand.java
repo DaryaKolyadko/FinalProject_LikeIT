@@ -14,6 +14,8 @@ import com.kolyadko.likeit.util.ValidateUtil;
 public class LoginCommand implements Command {
     private static final String PARAM_LOGIN = "userLogin";
     private static final String PARAM_PASSWORD = "userPassword";
+    private static final String SESSION_ATTR_USER = "user";
+    private static final String ATTR_ERROR = "authError";
 
     public String execute(RequestContent content) {
         if (isInputDataValid(content)) {
@@ -25,10 +27,10 @@ public class LoginCommand implements Command {
                 User user = userService.findUserWithCredentials(login, password);
 
                 if (user != null) {
-                    content.setSessionAttribute("user", user);
+                    content.setSessionAttribute(SESSION_ATTR_USER, user);
                     return MappingManager.HOME_PAGE;
                 } else {
-                    content.setRequestAttribute("authError", "Incorrect login or password.");
+                    content.setRequestAttribute(ATTR_ERROR, "Incorrect login or password.");
                     //TODO MessageManager.getProperty("message.loginError"));
                 }
             } catch (ServiceException e) {
@@ -36,7 +38,7 @@ public class LoginCommand implements Command {
                 return MappingManager.ERROR_PAGE;
             }
         } else {
-            content.setRequestAttribute("authError", "Invalid login or password.");
+            content.setRequestAttribute(ATTR_ERROR, "Invalid login or password.");
             //TODO MessageManager.getProperty("message.loginError"));
         }
 

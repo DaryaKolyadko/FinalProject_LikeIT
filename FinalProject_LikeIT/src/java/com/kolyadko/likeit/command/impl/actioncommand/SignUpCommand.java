@@ -27,6 +27,8 @@ public class SignUpCommand implements Command {
     private static final String PARAM_CONFIRM_PASSWORD = "userConfirmPassword";
     private static final String PARAM_BIRTHDAY = "birthday";
     private static final String PARAM_GENDER = "gender";
+    private static final String SESSION_ATTR_USER = "user";
+    private static final String ATTR_ERROR = "signUpError";
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
     @Override
@@ -42,14 +44,14 @@ public class SignUpCommand implements Command {
                 user.setBirthDate(new Date(DATE_FORMAT.parse(content.getRequestParameter(PARAM_BIRTHDAY)).getTime()));
                 user.setGender(GenderType.getGenderType(content.getRequestParameter(PARAM_GENDER)));
                 userService.create(user);
-                content.setSessionAttribute("user", user);
+                content.setSessionAttribute(SESSION_ATTR_USER, user);
                 return MappingManager.HOME_PAGE;
             } catch (ServiceException | ParseException e) {
-                content.setRequestAttribute("signUpError", "User with such login already exists.");
+                content.setRequestAttribute(ATTR_ERROR, "User with such login already exists.");
                 LOG.error(e.getMessage());
             }
         } else {
-            content.setRequestAttribute("signUpError", "Check your sign up form.");
+            content.setRequestAttribute(ATTR_ERROR, "Check your sign up form.");
             content.copyParamsToRequestAttributes();
         }
 
