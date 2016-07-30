@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
     <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/signUp.css"/>
     <script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
-    <%--<script src="${pageContext.servletContext.contextPath}/resources/js/signUp.js"></script>--%>
+    <script src="${pageContext.servletContext.contextPath}/resources/js/signUp.js"></script>
     <link rel="icon" href="${pageContext.servletContext.contextPath}/resources/img/logo_icon.ico"/>
     <title>Sign up</title>
 </head>

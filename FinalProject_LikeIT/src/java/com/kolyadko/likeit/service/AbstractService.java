@@ -19,9 +19,7 @@ public abstract class AbstractService<K, T extends Entity> {
 
     public abstract ArrayList<T> findAll() throws ServiceException;
 
-    public abstract void create(T user) throws ServiceException;
-
-    public static final Logger LOG = LogManager.getLogger(AbstractService.class);
+    public abstract void create(T entity) throws ServiceException;
 
     protected ConnectionWrapper getConnectionWrapper() throws ServiceException {
         ConnectionWrapper connection;
@@ -34,16 +32,4 @@ public abstract class AbstractService<K, T extends Entity> {
 
         return connection;
     }
-
-    protected void closeConnectionWrapper(ConnectionWrapper connectionWrapper) {
-        try {
-            ConnectionPool.getInstance().closeConnection(connectionWrapper);
-        } catch (ConnectionPoolException e) {
-            LOG.error(e);
-        }
-    }
-
-//    private boolean checkNull(Object object) {
-//        return object == null;
-//    }
 }
