@@ -27,7 +27,7 @@ public class UserDao extends AbstractDao<String, User> {
     private static final String EXISTING_USERS = "  WHERE archive='false' AND role='user'";
 
     private static final String SELECT_ALL = "SELECT " + ALL_COLUMNS + " FROM user";
-    private static final String FIND_BY_ID = SELECT_ALL + "  WHERE login=?";
+    private static final String FIND_BY_ID = SELECT_ALL + "  WHERE login=BINARY?";
     private static final String CREATE = "INSERT INTO user (" + INSERT_COLUMNS + ") VALUES(" +
             StringUtils.repeat("?", ", ", INSERT_COLUMNS.split(",").length) + ");";
 

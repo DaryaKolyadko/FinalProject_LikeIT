@@ -72,7 +72,7 @@ public class UserService extends AbstractService<String, User> {
         try {
             User user = userDao.findById(login);
 
-            if (user.getPassword().equals(HashUtil.getHash(password))) {
+            if (user != null && user.getPassword().equals(HashUtil.getHash(password))) {
                 return user;
             }
         } catch (DaoException e) {
