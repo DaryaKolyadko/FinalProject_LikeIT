@@ -63,7 +63,7 @@ public class RequestContent {
     }
 
     public String getRequestParameter(String parameterName) {
-        return getRequestParameters(parameterName)[0];
+        return getRequestParameters(parameterName) != null? getRequestParameters(parameterName)[0] : null;
     }
 
     public ServletContext getServletContext() {
@@ -75,23 +75,15 @@ public class RequestContent {
     }
 
     public void setRequestAttribute(String attributeName, Object attributeValue) {
-        valueReplacer(requestAttributes, attributeName, attributeValue);
+        requestAttributes.put(attributeName, attributeValue);
     }
 
     public void setSessionAttribute(String attributeName, Object attributeValue) {
-        valueReplacer(sessionAttributes, attributeName, attributeValue);
+        sessionAttributes.put(attributeName, attributeValue);
     }
 
     public String getRequestURI() {
         return requestURI;
-    }
-
-    private <T> void valueReplacer(HashMap<String, T> map, String name, T value) {
-        if (map.containsKey(name)) {
-            map.replace(name, value);
-        } else {
-            map.put(name, value);
-        }
     }
 
     public void insertValues(HttpServletRequest request) {

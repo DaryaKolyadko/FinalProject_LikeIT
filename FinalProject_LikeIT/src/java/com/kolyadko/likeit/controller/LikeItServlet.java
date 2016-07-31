@@ -4,6 +4,7 @@ import com.kolyadko.likeit.command.Command;
 import com.kolyadko.likeit.command.factory.ActionCommandFactory;
 import com.kolyadko.likeit.command.factory.ShowCommandFactory;
 import com.kolyadko.likeit.content.RequestContent;
+import com.kolyadko.likeit.util.HashUtil;
 import com.kolyadko.likeit.util.MappingManager;
 
 import javax.servlet.ServletException;
