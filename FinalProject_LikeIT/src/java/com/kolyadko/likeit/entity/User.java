@@ -36,6 +36,10 @@ public class User extends Entity<String> {
         return role == RoleType.ADMIN;
     }
 
+    public boolean isActive() {
+        return state == StateType.ACTIVE;
+    }
+
     public int getAvatarId() {
         return avatarId;
     }

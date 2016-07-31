@@ -17,8 +17,6 @@ import java.util.ArrayList;
 public abstract class AbstractService<K, T extends Entity> {
     public abstract T findById(K id) throws ServiceException;
 
-    public abstract ArrayList<T> findAll() throws ServiceException;
-
     public abstract void create(T entity) throws ServiceException;
 
     protected ConnectionWrapper getConnectionWrapper() throws ServiceException {

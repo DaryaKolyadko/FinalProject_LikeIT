@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -60,104 +61,178 @@
                             <th>Rating</th>
                             <th>Since</th>
                             <th>State</th>
-                            <th>Actions</th>
+                            <c:if test="${user.isAdmin()}">
+                                <th>Profile status</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </c:if>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr data-status="active">
-                            <th scope="row">1</th>
-                            <td><a href="user.html">Clarissa Fray</a></td>
-                            <td>8.88</td>
-                            <td>05/15/2016</td>
-                            <td class="state-active">Active</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" title="edit"
-                                            data-target="#edit">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-death" data-toggle="modal"
-                                            title="ban">
-                                        <span class="glyphicon glyphicon-ban-circle"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" title="delete"
-                                            data-target="#delete">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr data-status="active">
-                            <th scope="row">2</th>
-                            <td><a href="user.html">Johnathan Wayland</a></td>
-                            <td>9.01</td>
-                            <td>10/22/2015</td>
-                            <td class="state-active">Active</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" title="edit"
-                                            data-target="#edit">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-death" data-toggle="modal"
-                                            title="ban">
-                                        <span class="glyphicon glyphicon-ban-circle"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" title="delete"
-                                            data-target="#delete">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr data-status="active">
-                            <th scope="row">3</th>
-                            <td><a href="user.html">Isabelle Lightwood</a></td>
-                            <td>7.15</td>
-                            <td>02/24/2016</td>
-                            <td class="state-active">Active</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" title="edit"
-                                            data-target="#edit">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-death" data-toggle="modal"
-                                            title="ban">
-                                        <span class="glyphicon glyphicon-ban-circle"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" title="delete"
-                                            data-target="#delete">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr data-status="banned">
-                            <th scope="row">4</th>
-                            <td><a href="user.html">Simon Lewis</a></td>
-                            <td>6.83</td>
-                            <td>01/12/2016</td>
-                            <td class="state-banned">Banned</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default" data-toggle="modal" title="edit"
-                                            data-target="#edit">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-success" data-toggle="modal"
-                                            title="activate">
-                                        <span class="glyphicon glyphicon-ok-circle"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" title="delete"
-                                            data-target="#delete">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        <c:forEach var="u" items="${userList}" varStatus="usersIter">
+                            <tr data-status="${fn:toLowerCase(u.state)}">
+                                <th scope="row">${usersIter.count}</th>
+                                <td>
+                                    <form id="profile-${u.id}" action="<c:url value="/Profile"/>" hidden>
+                                        <input value="${u.id}" name="login">
+                                    </form>
+                                    <a href="#"
+                                       onclick="document.getElementById('profile-${u.id}').submit()">${u.firstName} ${u.lastName}</a>
+                                </td>
+                                <td>${u.rating}</td>
+                                <td>${u.signUpDate}</td>
+                                <td class="state-${fn:toLowerCase(u.state)}">${u.state}</td>
+                                <c:if test="${user.isAdmin()}">
+                                    <td class="state-${fn:toLowerCase(u.archive)}">
+                                        <c:choose>
+                                            <c:when test="${u.archive}">
+                                                In archive
+                                            </c:when>
+                                            <c:otherwise>
+                                                Exist
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>${u.role}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default" data-toggle="modal"
+                                                    title="edit"
+                                                    data-target="#edit">
+                                                <span class="glyphicon glyphicon-edit"></span>
+                                            </button>
+                                            <c:choose>
+                                                <c:when test="${u.isActive()}">
+                                                    <button type="button" class="btn btn-death" data-toggle="modal"
+                                                            title="ban">
+                                                        <span class="glyphicon glyphicon-ban-circle"></span>
+                                                    </button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                                            title="activate">
+                                                        <span class="glyphicon glyphicon-ok-circle"></span>
+                                                    </button>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                    title="delete"
+                                                    data-target="#delete">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </c:if>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
+                    <%--<table id="user_list" class="table borderless dataTable">--%>
+                    <%--<thead>--%>
+                    <%--<tr>--%>
+                    <%--<th>#</th>--%>
+                    <%--<th>Username</th>--%>
+                    <%--<th>Rating</th>--%>
+                    <%--<th>Since</th>--%>
+                    <%--<th>State</th>--%>
+                    <%--<th>Actions</th>--%>
+                    <%--</tr>--%>
+                    <%--</thead>--%>
+                    <%--<tbody>--%>
+                    <%--<tr data-status="active">--%>
+                    <%--<th scope="row">1</th>--%>
+                    <%--<td><a href="user.html">Clarissa Fray</a></td>--%>
+                    <%--<td>8.88</td>--%>
+                    <%--<td>05/15/2016</td>--%>
+                    <%--<td class="state-active">Active</td>--%>
+                    <%--<td>--%>
+                    <%--<div class="btn-group">--%>
+                    <%--<button type="button" class="btn btn-default" data-toggle="modal" title="edit"--%>
+                    <%--data-target="#edit">--%>
+                    <%--<span class="glyphicon glyphicon-edit"></span>--%>
+                    <%--</button>--%>
+                    <%--<button type="button" class="btn btn-death" data-toggle="modal"--%>
+                    <%--title="ban">--%>
+                    <%--<span class="glyphicon glyphicon-ban-circle"></span>--%>
+                    <%--</button>--%>
+                    <%--<button type="button" class="btn btn-danger" data-toggle="modal" title="delete"--%>
+                    <%--data-target="#delete">--%>
+                    <%--<span class="glyphicon glyphicon-remove"></span>--%>
+                    <%--</button>--%>
+                    <%--</div>--%>
+                    <%--</td>--%>
+                    <%--</tr>--%>
+                    <%--<tr data-status="active">--%>
+                    <%--<th scope="row">2</th>--%>
+                    <%--<td><a href="user.html">Johnathan Wayland</a></td>--%>
+                    <%--<td>9.01</td>--%>
+                    <%--<td>10/22/2015</td>--%>
+                    <%--<td class="state-active">Active</td>--%>
+                    <%--<td>--%>
+                    <%--<div class="btn-group">--%>
+                    <%--<button type="button" class="btn btn-default" data-toggle="modal" title="edit"--%>
+                    <%--data-target="#edit">--%>
+                    <%--<span class="glyphicon glyphicon-edit"></span>--%>
+                    <%--</button>--%>
+                    <%--<button type="button" class="btn btn-death" data-toggle="modal"--%>
+                    <%--title="ban">--%>
+                    <%--<span class="glyphicon glyphicon-ban-circle"></span>--%>
+                    <%--</button>--%>
+                    <%--<button type="button" class="btn btn-danger" data-toggle="modal" title="delete"--%>
+                    <%--data-target="#delete">--%>
+                    <%--<span class="glyphicon glyphicon-remove"></span>--%>
+                    <%--</button>--%>
+                    <%--</div>--%>
+                    <%--</td>--%>
+                    <%--</tr>--%>
+                    <%--<tr data-status="active">--%>
+                    <%--<th scope="row">3</th>--%>
+                    <%--<td><a href="user.html">Isabelle Lightwood</a></td>--%>
+                    <%--<td>7.15</td>--%>
+                    <%--<td>02/24/2016</td>--%>
+                    <%--<td class="state-active">Active</td>--%>
+                    <%--<td>--%>
+                    <%--<div class="btn-group">--%>
+                    <%--<button type="button" class="btn btn-default" data-toggle="modal" title="edit"--%>
+                    <%--data-target="#edit">--%>
+                    <%--<span class="glyphicon glyphicon-edit"></span>--%>
+                    <%--</button>--%>
+                    <%--<button type="button" class="btn btn-death" data-toggle="modal"--%>
+                    <%--title="ban">--%>
+                    <%--<span class="glyphicon glyphicon-ban-circle"></span>--%>
+                    <%--</button>--%>
+                    <%--<button type="button" class="btn btn-danger" data-toggle="modal" title="delete"--%>
+                    <%--data-target="#delete">--%>
+                    <%--<span class="glyphicon glyphicon-remove"></span>--%>
+                    <%--</button>--%>
+                    <%--</div>--%>
+                    <%--</td>--%>
+                    <%--</tr>--%>
+                    <%--<tr data-status="banned">--%>
+                    <%--<th scope="row">4</th>--%>
+                    <%--<td><a href="user.html">Simon Lewis</a></td>--%>
+                    <%--<td>6.83</td>--%>
+                    <%--<td>01/12/2016</td>--%>
+                    <%--<td class="state-banned">Banned</td>--%>
+                    <%--<td>--%>
+                    <%--<div class="btn-group">--%>
+                    <%--<button type="button" class="btn btn-default" data-toggle="modal" title="edit"--%>
+                    <%--data-target="#edit">--%>
+                    <%--<span class="glyphicon glyphicon-edit"></span>--%>
+                    <%--</button>--%>
+                    <%--<button type="button" class="btn btn-success" data-toggle="modal"--%>
+                    <%--title="activate">--%>
+                    <%--<span class="glyphicon glyphicon-ok-circle"></span>--%>
+                    <%--</button>--%>
+                    <%--<button type="button" class="btn btn-danger" data-toggle="modal" title="delete"--%>
+                    <%--data-target="#delete">--%>
+                    <%--<span class="glyphicon glyphicon-remove"></span>--%>
+                    <%--</button>--%>
+                    <%--</div>--%>
+                    <%--</td>--%>
+                    <%--</tr>--%>
+                    <%--</tbody>--%>
+                    <%--</table>--%>
                 </div>
             </div>
         </div>

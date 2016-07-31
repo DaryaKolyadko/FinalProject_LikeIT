@@ -24,7 +24,7 @@ public class UserDao extends AbstractDao<String, User> {
             "sign_up_date, email";
 
     private static final String ORDER_BY_LOGIN = " ORDER BY login";
-    private static final String EXISTING = "  WHERE archive='false'";
+    private static final String EXISTING_USERS = "  WHERE archive='false' AND role='user'";
 
     private static final String SELECT_ALL = "SELECT " + ALL_COLUMNS + " FROM user";
     private static final String FIND_BY_ID = SELECT_ALL + "  WHERE login=?";
@@ -97,7 +97,7 @@ public class UserDao extends AbstractDao<String, User> {
 
     public ArrayList<User> findAllExisting() throws DaoException {
         try {
-            return findWithStatement(SELECT_ALL + EXISTING + ORDER_BY_LOGIN);
+            return findWithStatement(SELECT_ALL + EXISTING_USERS + ORDER_BY_LOGIN);
         } catch (SQLException e) {
             throw new DaoException(e);
         }

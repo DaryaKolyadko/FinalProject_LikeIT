@@ -42,7 +42,8 @@
                 <c:choose>
                     <c:when test="${empty sessionScope.user}">
                         <li id="menu_sign_up">
-                            <a href="<c:url value="/SignUp"/>"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                            <a href="<c:url value="/SignUp"/>"><span class="glyphicon glyphicon-user"></span> Sign
+                                Up</a>
                         </li>
                         <li id="menu_login">
                             <a href="<c:url value="/Login"/>"><span class="glyphicon glyphicon-log-in"></span> Login</a>
@@ -50,7 +51,10 @@
                     </c:when>
                     <c:otherwise>
                         <li>
-                            <a href="#"> Hello, ${sessionScope.user.firstName}! </a>
+                            <form id="profileForm" action="<c:url value="/Profile"/>" hidden>
+                                <input value="${user.id}" name="login">
+                            </form>
+                            <a href="#" onclick="document.getElementById('profileForm').submit()"> Hello, ${user.firstName}! </a>
                         </li>
                         <li>
                             <form id="form_menu_logout" method="post" action="${url_home}" hidden>

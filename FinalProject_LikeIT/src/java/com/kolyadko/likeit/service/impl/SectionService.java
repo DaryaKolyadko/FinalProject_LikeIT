@@ -28,20 +28,6 @@ public class SectionService extends AbstractService<Integer, Section> {
     }
 
     @Override
-    public ArrayList<Section> findAll() throws ServiceException {
-        ConnectionWrapper connection = getConnectionWrapper();
-        SectionDao sectionDao = new SectionDao(connection);
-
-        try {
-            return sectionDao.findAll();
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        } finally {
-            connection.close();
-        }
-    }
-
-    @Override
     public void create(Section section) throws ServiceException {
         ConnectionWrapper connection = getConnectionWrapper();
         SectionDao sectionDao = new SectionDao(connection);

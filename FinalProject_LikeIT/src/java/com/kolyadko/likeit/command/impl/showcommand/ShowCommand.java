@@ -14,6 +14,10 @@ public class ShowCommand implements Command {
         this.path = path;
     }
 
+    public String getPath() {
+        return path;
+    }
+
     @Override
     public String execute(RequestContent content) {
         return MappingManager.getInstance().getProperty(path);

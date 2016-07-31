@@ -32,13 +32,16 @@ public class UserService extends AbstractService<String, User> {
         }
     }
 
-    @Override
-    public ArrayList<User> findAll() throws ServiceException {
+    public ArrayList<User> findAll(boolean isAdmin) throws ServiceException {
         ConnectionWrapper connection = getConnectionWrapper();
         UserDao userDao = new UserDao(connection);
 
         try {
-            return userDao.findAll();
+            if (isAdmin) {
+                return userDao.findAll();
+            } else {
+                return userDao.findAllExisting();
+            }
         } catch (DaoException e) {
             throw new ServiceException(e);
         } finally {
