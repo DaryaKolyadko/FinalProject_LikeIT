@@ -4,7 +4,6 @@ import com.kolyadko.likeit.command.Command;
 import com.kolyadko.likeit.command.factory.ActionCommandFactory;
 import com.kolyadko.likeit.command.factory.ShowCommandFactory;
 import com.kolyadko.likeit.content.RequestContent;
-import com.kolyadko.likeit.util.HashUtil;
 import com.kolyadko.likeit.util.MappingManager;
 
 import javax.servlet.ServletException;
@@ -20,36 +19,29 @@ import java.io.IOException;
 @WebServlet(name = "LikeItServlet")
 public class LikeItServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response, false);
+        RequestContent requestContent = new RequestContent(request);
+        Command command = ActionCommandFactory.getCommand(requestContent);
+        String page = command.execute(requestContent);
+        requestContent.insertValues(request);
+
+        if (page == null) {
+            page = MappingManager.HOME_PAGE;
+        }
+
+        response.sendRedirect(page);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response, true);
-    }
-
-    private void processRequest(HttpServletRequest request, HttpServletResponse response, boolean getRequest) throws ServletException, IOException {
         RequestContent requestContent = new RequestContent(request);
-        Command command;
-
-        if (getRequest) {
-            command = ShowCommandFactory.getCommand(requestContent);
-        } else {
-            command = ActionCommandFactory.getCommand(requestContent);
-        }
-
+        Command command = ShowCommandFactory.getCommand(requestContent);
         String page = command.execute(requestContent);
 
-        if (page != null) {
-            if (!getRequest) {
-                command = ShowCommandFactory.getCommand(page);
-                page = command.execute(requestContent);
-            }
-
-            requestContent.insertValues(request);
-            getServletContext().getRequestDispatcher(page).forward(request, response);
-        } else {
-            page = MappingManager.getInstance().getProperty(MappingManager.HOME_PAGE);
-            response.sendRedirect(request.getContextPath() + page);
+        if (page == null) {
+            command = ShowCommandFactory.getCommand(MappingManager.HOME_PAGE);
+            page = command.execute(requestContent);
         }
+
+        requestContent.insertValues(request);
+        getServletContext().getRequestDispatcher(page).forward(request, response);
     }
 }
