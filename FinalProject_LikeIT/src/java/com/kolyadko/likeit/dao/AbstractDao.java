@@ -41,7 +41,7 @@ public abstract class AbstractDao<K, T extends Entity> {
         }
     }
 
-    protected ArrayList<T> findWithStatement(String query) throws SQLException {
+    protected ArrayList<T> findWithStatement(String query) throws DaoException {
         ArrayList<T> users = new ArrayList<>();
         Statement statement = null;
         ResultSet resultSet;
@@ -53,6 +53,8 @@ public abstract class AbstractDao<K, T extends Entity> {
             while (resultSet.next()) {
                 users.add(readEntity(resultSet));
             }
+        } catch (SQLException e) {
+            throw new DaoException(e);
         } finally {
             closeStatement(statement);
         }

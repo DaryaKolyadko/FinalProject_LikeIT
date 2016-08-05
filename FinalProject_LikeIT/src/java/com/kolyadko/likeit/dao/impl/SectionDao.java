@@ -45,11 +45,7 @@ public class SectionDao extends AbstractDao<Integer, Section> {
 
     @Override
     public ArrayList<Section> findAll() throws DaoException {
-        try {
-            return findWithStatement(SELECT_ALL + ORDER_BY_ID);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return findWithStatement(SELECT_ALL + ORDER_BY_ID);
     }
 
     @Override
@@ -77,19 +73,11 @@ public class SectionDao extends AbstractDao<Integer, Section> {
     }
 
     public ArrayList<Section> findMajorSections() throws DaoException {
-        try {
-            return findWithStatement(FIND_MAJOR_SECTIONS + ORDER_BY_ID);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return findWithStatement(FIND_MAJOR_SECTIONS + ORDER_BY_ID);
     }
 
     public ArrayList<Section> findExistingMajorSections() throws DaoException {
-        try {
-            return findWithStatement(FIND_MAJOR_SECTIONS + EXISTING + ORDER_BY_ID);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return findWithStatement(FIND_MAJOR_SECTIONS + EXISTING + ORDER_BY_ID);
     }
 
     private ArrayList<Section> findBy(String query, int someId) throws DaoException {

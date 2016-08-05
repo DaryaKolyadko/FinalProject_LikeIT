@@ -1,12 +1,8 @@
 package com.kolyadko.likeit.content;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by DaryaKolyadko on 15.07.2016.
@@ -17,7 +13,6 @@ public class RequestContent {
     private HashMap<String, Object> sessionAttributes;
     private String requestURI;
     private HttpSession session;
-    private ServletContext servletContext;
 
     public RequestContent(HttpServletRequest request) {
         requestAttributes = new HashMap<>();
@@ -27,8 +22,10 @@ public class RequestContent {
     }
 
     public void invalidateSession() {
-        session.invalidate();
-        session = null;
+        if (session != null) {
+            session.invalidate();
+            session = null;
+        }
     }
 
     public void extractValues(HttpServletRequest request) {
@@ -54,7 +51,6 @@ public class RequestContent {
             sessionAttributes.put(sessionAttributeName, session.getAttribute(sessionAttributeName));
         }
 
-        servletContext = request.getServletContext();
         requestURI = request.getRequestURI();
     }
 
@@ -63,15 +59,15 @@ public class RequestContent {
     }
 
     public String getRequestParameter(String parameterName) {
-        return getRequestParameters(parameterName) != null? getRequestParameters(parameterName)[0] : null;
-    }
-
-    public ServletContext getServletContext() {
-        return servletContext;
+        return getRequestParameters(parameterName) != null ? getRequestParameters(parameterName)[0] : null;
     }
 
     public Object getSessionAttribute(String attributeName) {
         return sessionAttributes.get(attributeName);
+    }
+
+    public Map<String, Object> getSessionAttributes() {
+        return Collections.unmodifiableMap(sessionAttributes);
     }
 
     public void setRequestAttribute(String attributeName, Object attributeValue) {
@@ -95,6 +91,7 @@ public class RequestContent {
         }
 
         iterator = sessionAttributes.entrySet().iterator();
+        session = request.getSession(false);
 
         if (session != null) {
             while (iterator.hasNext()) {

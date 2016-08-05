@@ -27,7 +27,7 @@ public class UserDao extends AbstractDao<String, User> {
     private static final String EXISTING_USERS = "  WHERE archive='false' AND role='user'";
 
     private static final String SELECT_ALL = "SELECT " + ALL_COLUMNS + " FROM user";
-    private static final String FIND_BY_ID = SELECT_ALL + "  WHERE login=BINARY?";
+    private static final String FIND_BY_ID = SELECT_ALL + "  WHERE login=?";
     private static final String CREATE = "INSERT INTO user (" + INSERT_COLUMNS + ") VALUES(" +
             StringUtils.repeat("?", ", ", INSERT_COLUMNS.split(",").length) + ");";
 
@@ -65,11 +65,7 @@ public class UserDao extends AbstractDao<String, User> {
 
     @Override
     public ArrayList<User> findAll() throws DaoException {
-        try {
-            return findWithStatement(SELECT_ALL + ORDER_BY_LOGIN);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return findWithStatement(SELECT_ALL + ORDER_BY_LOGIN);
     }
 
     @Override
@@ -96,11 +92,7 @@ public class UserDao extends AbstractDao<String, User> {
     }
 
     public ArrayList<User> findAllExisting() throws DaoException {
-        try {
-            return findWithStatement(SELECT_ALL + EXISTING_USERS + ORDER_BY_LOGIN);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return findWithStatement(SELECT_ALL + EXISTING_USERS + ORDER_BY_LOGIN);
     }
 
     protected User readEntity(ResultSet resultSet) throws SQLException {
