@@ -6,10 +6,6 @@ import com.kolyadko.likeit.exception.ConnectionPoolException;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.pool.ConnectionPool;
 import com.kolyadko.likeit.pool.ConnectionWrapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
 
 /**
  * Created by DaryaKolyadko on 22.07.2016.

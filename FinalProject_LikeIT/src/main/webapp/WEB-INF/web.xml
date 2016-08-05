@@ -9,6 +9,7 @@
 
     <servlet-mapping>
         <servlet-name>LikeItServlet</servlet-name>
+        <url-pattern>/LikeIT/Home</url-pattern>
         <url-pattern>/Home</url-pattern>
         <url-pattern>/Login</url-pattern>
         <url-pattern>/SignUp</url-pattern>
@@ -21,7 +22,9 @@
     </servlet-mapping>
 
     <listener>
-        <listener-class>com.kolyadko.likeit.listener.LikeItListener</listener-class>
+        <listener-class>com.kolyadko.likeit.listener.LikeItServletContextListener</listener-class>
+        <listener-class>com.kolyadko.likeit.listener.LikeItSessionListener</listener-class>
+        <listener-class>com.kolyadko.likeit.listener.LikeItServletRequestListener</listener-class>
     </listener>
 
     <filter>
@@ -46,12 +49,12 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <error-page>
-        <location>/jsp/error.jsp</location>
-    </error-page>
+    <!--<error-page>-->
+        <!--<location>/jsp/error.jsp</location>-->
+    <!--</error-page>-->
 
-    <error-page>
-        <exception-type>java.lang.RuntimeException</exception-type>
-        <location>/jsp/error.jsp</location>
-    </error-page>
+    <!--<error-page>-->
+        <!--<exception-type>java.lang.RuntimeException</exception-type>-->
+        <!--<location>/jsp/error.jsp</location>-->
+    <!--</error-page>-->
 </web-app>
