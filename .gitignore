@@ -30,5 +30,5 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-*.iml
+#*.iml
 # modules.xml
