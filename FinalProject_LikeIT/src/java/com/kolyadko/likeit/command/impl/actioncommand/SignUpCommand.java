@@ -5,10 +5,15 @@ import com.kolyadko.likeit.command.Command;
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.entity.User;
 import com.kolyadko.likeit.exception.ServiceException;
+import com.kolyadko.likeit.memorycontainer.impl.ErrorMemoryContainer;
+import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
+import com.kolyadko.likeit.memorycontainer.impl.UncompletedUserMemoryContainer;
 import com.kolyadko.likeit.service.impl.UserService;
 import com.kolyadko.likeit.type.GenderType;
+import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
-import com.kolyadko.likeit.util.ValidateUtil;
+import com.kolyadko.likeit.validator.LoginValidator;
+import com.kolyadko.likeit.validator.SignUpValidator;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -25,14 +30,21 @@ public class SignUpCommand implements Command {
     private static final String PARAM_EMAIL = "userEmail";
     private static final String PARAM_PASSWORD = "userPassword";
     private static final String PARAM_CONFIRM_PASSWORD = "userConfirmPassword";
-    private static final String PARAM_BIRTHDAY = "birthday";
+    private static final String PARAM_BIRTHDAY = "birthDate";
     private static final String PARAM_GENDER = "gender";
-    private static final String SESSION_ATTR_USER = "user";
-    private static final String ATTR_ERROR = "signUpError";
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+
+    private static final String SESSION_ATTR_USER = "userContainer";
+    private static final String SESSION_ATTR_ERROR = "signUpError";
+    private static final String SESSION_ATTR_UNCOMPLETED = "uncompleted";
+    private static final String SIGN_UP_ERROR_EXISTS = "error.userExists";
+    private static final String SIGN_UP_ERROR_CHECK = "error.checkForm";
+
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");  //TODO add locale dependency
 
     @Override
     public String execute(RequestContent content) {
+        UncompletedUserMemoryContainer container = initUncompletedUser(content);
+
         if (isInputDataValid(content)) {
             try {
                 UserService userService = new UserService();
@@ -44,28 +56,40 @@ public class SignUpCommand implements Command {
                 user.setBirthDate(new Date(DATE_FORMAT.parse(content.getRequestParameter(PARAM_BIRTHDAY)).getTime()));
                 user.setGender(GenderType.getGenderType(content.getRequestParameter(PARAM_GENDER)));
                 userService.create(user);
-                content.setSessionAttribute(SESSION_ATTR_USER, user);
+                content.setSessionAttribute(SESSION_ATTR_USER, new ObjectMemoryContainer(user,
+                        MemoryContainerType.LONG_LIVER));
                 return MappingManager.HOME_PAGE;
             } catch (ServiceException | ParseException e) {
-                content.setRequestAttribute(ATTR_ERROR, "User with such login already exists.");
+                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(SIGN_UP_ERROR_EXISTS));
                 LOG.error(e.getMessage());
             }
         } else {
-            content.setRequestAttribute(ATTR_ERROR, "Check your sign up form.");
-            content.copyParamsToRequestAttributes();
+            content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(SIGN_UP_ERROR_CHECK));
         }
 
-        // TODO MessageManager.getProperty("message.signUpError"));
+        content.setSessionAttribute(SESSION_ATTR_UNCOMPLETED, container);
         return MappingManager.SIGN_UP_PAGE;
     }
 
     private boolean isInputDataValid(RequestContent content) {
-        return ValidateUtil.isLoginValid(content.getRequestParameter(PARAM_LOGIN)) &&
-                ValidateUtil.isStringValid(content.getRequestParameter(PARAM_FIRST_NAME)) &&
-                ValidateUtil.isStringValid(content.getRequestParameter(PARAM_LAST_NAME)) &&
-                ValidateUtil.isEmailValid(content.getRequestParameter(PARAM_EMAIL)) &&
-                ValidateUtil.isPasswordValid(content.getRequestParameter(PARAM_PASSWORD)) &&
+        return LoginValidator.isLoginValid(content.getRequestParameter(PARAM_LOGIN)) &&
+                SignUpValidator.isStringValid(content.getRequestParameter(PARAM_FIRST_NAME)) &&
+                SignUpValidator.isStringValid(content.getRequestParameter(PARAM_LAST_NAME)) &&
+                SignUpValidator.isEmailValid(content.getRequestParameter(PARAM_EMAIL)) &&
+                LoginValidator.isPasswordValid(content.getRequestParameter(PARAM_PASSWORD)) &&
                 content.getRequestParameter(PARAM_PASSWORD).equals(content.getRequestParameter(PARAM_CONFIRM_PASSWORD)) &&
-                ValidateUtil.isDateValid(content.getRequestParameter(PARAM_BIRTHDAY));
+                SignUpValidator.isDateValid(content.getRequestParameter(PARAM_BIRTHDAY));
+    }
+
+    private UncompletedUserMemoryContainer initUncompletedUser(RequestContent content) {
+        UncompletedUserMemoryContainer memoryContainer = new UncompletedUserMemoryContainer();
+        memoryContainer.setLogin(content.getRequestParameter(PARAM_LOGIN));
+        memoryContainer.setFirstName(content.getRequestParameter(PARAM_FIRST_NAME));
+        memoryContainer.setLastName(content.getRequestParameter(PARAM_LAST_NAME));
+        memoryContainer.setEmail(content.getRequestParameter(PARAM_EMAIL));
+        memoryContainer.setPassword(content.getRequestParameter(PARAM_PASSWORD));
+        memoryContainer.setPasswordConfirmation(content.getRequestParameter(PARAM_CONFIRM_PASSWORD));
+        memoryContainer.setBirthDate(content.getRequestParameter(PARAM_BIRTHDAY));
+        return memoryContainer;
     }
 }

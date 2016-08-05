@@ -1,14 +1,11 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
-import com.kolyadko.likeit.command.type.ShowCommandType;
 import com.kolyadko.likeit.content.RequestContent;
-import com.kolyadko.likeit.entity.Section;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.service.impl.SectionService;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

@@ -5,7 +5,7 @@ import com.kolyadko.likeit.entity.User;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.service.impl.UserService;
 import com.kolyadko.likeit.util.MappingManager;
-import com.kolyadko.likeit.util.ValidateUtil;
+import com.kolyadko.likeit.validator.LoginValidator;
 
 /**
  * Created by DaryaKolyadko on 30.07.2016.
@@ -26,7 +26,7 @@ public class ShowProfilePageCommand extends ShowCommand {
         String profileLogin = content.getRequestParameter(PARAM_PROFILE_LOGIN);
         User currentUser = (User) content.getSessionAttribute(SESSION_ATTR_USER);
 
-        if (ValidateUtil.isLoginValid(profileLogin)) {
+        if (LoginValidator.isLoginValid(profileLogin)) {
             if (currentUser != null && profileLogin.equals(currentUser.getId())) {
                 content.setRequestAttribute(ATTR_PROFILE, content.getSessionAttribute(SESSION_ATTR_USER));
                 return super.execute(content);
