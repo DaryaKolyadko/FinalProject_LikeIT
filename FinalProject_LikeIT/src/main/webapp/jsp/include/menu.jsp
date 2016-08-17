@@ -59,7 +59,8 @@
                                     <input value="${userContainer.object.id}" name="login">
                                 </form>
                                 <a href="#" onclick="document.getElementById('profileForm').submit()">
-                                    <fmt:message key="hello"/> ${userContainer.object.firstName}! </a>
+                                    <fmt:message key="hello"/> ${userContainer.object.firstName}!
+                                    <span class="role"> (${userContainer.object.role})</span></a>
                             </li>
                             <li>
                                 <form id="form_menu_logout" method="post" action="${url_home}" hidden>

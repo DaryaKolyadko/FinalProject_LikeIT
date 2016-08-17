@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/login.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
-            <%--<script src="${pageContext.servletContext.contextPath}/resources/js/login.js"></script>--%>
+        <%--<script src="${pageContext.servletContext.contextPath}/resources/js/login.js"></script>--%>
         <link rel="icon" href="${pageContext.servletContext.contextPath}/resources/img/logo_icon.ico"/>
         <title><fmt:message key="title"/></title>
     </head>
