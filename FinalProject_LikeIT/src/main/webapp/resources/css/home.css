@@ -1,24 +1,25 @@
-div .major-section {
-    text-transform: uppercase;
-    font-size: 25px;
-    color: #86B645;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
+/*div .major-section {*/
+    /*text-transform: uppercase;*/
+    /*font-size: 25px;*/
+    /*color: #86B645;*/
+    /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+    /*padding-top: 30px;*/
+/*}*/
 
-div .major-section hr {
-    color: #50b622;
-    background-color: #50b622;
-    height: 1px;
-    margin: 4px;
-}
+/*div .major-section hr {*/
+    /*color: #50b622;*/
+    /*background-color: #50b622;*/
+    /*height: 1px;*/
+    /*margin: 4px;*/
+/*}*/
 
-div .major-section div {
-    float: right;
-    color: green;
-    padding-right: 1%;
-    padding-top: 0.5%;
-    font-size: 0.8em;
-}
+/*div .major-section div {*/
+    /*float: right;*/
+    /*color: green;*/
+    /*padding-right: 1%;*/
+    /*padding-top: 0.5%;*/
+    /*font-size: 0.8em;*/
+/*}*/
 
 div .sections {
     margin-left: 3%;
@@ -101,4 +102,9 @@ div .major-section a > div:hover {
     div .sections {
         margin-left: 0;
     }
+}
+
+.right-button-parent {
+    display: inline-block;
+    width: 100%;
 }
