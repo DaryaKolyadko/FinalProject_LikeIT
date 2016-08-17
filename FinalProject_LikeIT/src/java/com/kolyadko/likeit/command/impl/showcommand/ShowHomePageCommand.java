@@ -2,7 +2,9 @@ package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.exception.ServiceException;
+import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.SectionService;
+import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
 
@@ -28,7 +30,8 @@ public class ShowHomePageCommand extends ShowCommand {
             content.setRequestAttribute(ATTR_SECTIONS_CATALOGUE, catalogue);
         } catch (ServiceException e) {
             LOG.error(e);
-            return MappingManager.ERROR_PAGE;
+            content.setSessionAttribute(ATTR_SERVER_ERROR, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
+            return MappingManager.ERROR_PAGE_404;
         }
 
         return super.execute(content);

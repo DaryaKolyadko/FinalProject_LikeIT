@@ -42,7 +42,7 @@ public class LoginCommand implements Command {
                 }
             } catch (ServiceException e) {
                 LOG.error(e);
-                return MappingManager.ERROR_PAGE;
+                return MappingManager.ERROR_PAGE_404;
             }
         } else {
             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(LOGIN_ERROR_INVALID));

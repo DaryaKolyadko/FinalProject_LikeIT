@@ -28,7 +28,7 @@ public class ShowUserListPageCommand extends ShowCommand {
             content.setRequestAttribute(ATTR_USER_LIST, userList);
         } catch (ServiceException e) {
             LOG.error(e);
-            return MappingManager.ERROR_PAGE;
+            return MappingManager.ERROR_PAGE_404;
         }
 
         return super.execute(content);
