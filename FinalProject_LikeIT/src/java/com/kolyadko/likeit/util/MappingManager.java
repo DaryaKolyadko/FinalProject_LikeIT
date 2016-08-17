@@ -24,6 +24,7 @@ public class MappingManager {
     public static final String RECENT_PAGE = "/LikeIT/Recent";
     public static final String USER_LIST_PAGE = "/LikeIT/Users";
     public static final String PROFILE_PAGE = "/LikeIT/Profile";
+    public static final String ERROR_PAGE_404 = "/LikeIT/Error404";
     public static final String ERROR_PAGE = "/LikeIT/Error";
 
     private static String configFileName = "mapping.properties";
