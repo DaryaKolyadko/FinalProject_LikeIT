@@ -1,0 +1,22 @@
+.errorText {
+    color: #39351e;
+    font-family: Georgia, Times, Verdana, Geneva, Arial, Helvetica, sans-serif !important;
+    top: 50%;
+    transform: translate(0%, 50%);
+}
+
+.errorText p {
+    line-height: 26px;
+}
+
+h1 {
+    font-size: 40px !important;
+    margin-bottom: 35px !important;
+}
+
+@media screen and (max-width: 767px) {
+    .errorText {
+        top: 0;
+        transform: none;
+    }
+}

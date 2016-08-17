@@ -1,0 +1,14 @@
+body {
+    background-color: #F3FBFF;
+}
+
+.stack-trace {
+    font-family: monospace;
+    margin-left: 1%;
+    margin-bottom: 2%;
+}
+
+.img-center {
+    display: block;
+    margin: auto;
+}
