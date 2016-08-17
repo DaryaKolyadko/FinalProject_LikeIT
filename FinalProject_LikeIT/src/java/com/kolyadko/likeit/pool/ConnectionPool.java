@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by DaryaKolyadko on 13.07.2016.
  */
 public class ConnectionPool {
-    private static final int POOL_SIZE = 5;
+    private static final int POOL_SIZE = 2;
     private static final int TIMEOUT_NOT_APPLIED = 0;
     private static final Logger LOG = LogManager.getLogger(ConnectionPool.class);
 
@@ -56,16 +56,22 @@ public class ConnectionPool {
         }
     }
 
+    public static boolean isInitialized() {
+        return initialized.get();
+    }
+
     public static ConnectionPool getInstance() {
         if (!initialized.get()) {
             poolSingleLock.lock();
 
-            if (pool == null) {
-                pool = new ConnectionPool();
-                initialized.set(true);
+            try {
+                if (pool == null) {
+                    pool = new ConnectionPool();
+                    initialized.set(true);
+                }
+            } finally {
+                poolSingleLock.unlock();
             }
-
-            poolSingleLock.unlock();
         }
 
         return pool;

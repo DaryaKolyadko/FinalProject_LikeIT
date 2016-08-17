@@ -53,13 +53,6 @@ public class ConnectionWrapper {
 
     void finallyClose() throws SQLException {
         connection.close();
-
-        if (connection.isClosed()) {
-            LOG.info("Connection wss really closed");
-            LOG.info("isValid() = " + connection.isValid(0));
-        } else {
-            LOG.info("Connection is still alive! WTF?");
-        }
     }
 
     public boolean isClosed() throws SQLException {
