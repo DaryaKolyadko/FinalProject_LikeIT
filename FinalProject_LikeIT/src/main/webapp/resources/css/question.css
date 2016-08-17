@@ -1,0 +1,23 @@
+.jRate {
+    height: 20px;
+    float: right;
+}
+
+.rating-value {
+    float: right;
+    padding: 6px;
+}
+
+@media screen and (max-width: 500px) {
+    .jRate {
+        float: left;
+    }
+
+    .rating-value {
+        float: left;
+    }
+
+    .user-block {
+        display: block;
+    }
+}
