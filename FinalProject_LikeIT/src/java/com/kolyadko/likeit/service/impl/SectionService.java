@@ -24,6 +24,8 @@ public class SectionService extends AbstractService<Integer, Section> {
             return sectionDao.findById(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
+        } finally {
+            connection.close();
         }
     }
 
@@ -44,9 +46,8 @@ public class SectionService extends AbstractService<Integer, Section> {
     public HashMap selectSectionsCatalogueTree(boolean isAdmin)
             throws ServiceException {
         ConnectionWrapper connection = getConnectionWrapper();
-
         SectionDao sectionDao = new SectionDao(connection);
-        LinkedHashMap<Section, LinkedHashMap<Section, ArrayList<Section>>> catalogue = new LinkedHashMap<>();
+        LinkedHashMap<Section, ArrayList<Section>> catalogue = new LinkedHashMap<>();
         ArrayList<Section> majorSections;
 
         try {
@@ -55,14 +56,8 @@ public class SectionService extends AbstractService<Integer, Section> {
             for (Section majorSection : majorSections) {
                 ArrayList<Section> sections = isAdmin ? sectionDao.findByMajorId(majorSection.getId()) :
                         sectionDao.findExistingByMajorId(majorSection.getId());
-                LinkedHashMap<Section, ArrayList<Section>> sectionsWithSubsections = new LinkedHashMap<>();
 
-                for (Section section : sections) {
-                    sectionsWithSubsections.put(section, isAdmin ? sectionDao.findByMajorId(section.getId()) :
-                            sectionDao.findExistingByMajorId(section.getId()));
-                }
-
-                catalogue.put(majorSection, sectionsWithSubsections);
+                catalogue.put(majorSection, sections);
             }
 
             return catalogue;
@@ -72,4 +67,30 @@ public class SectionService extends AbstractService<Integer, Section> {
             connection.close();
         }
     }
+
+//    public HashMap<Integer, Section> findByIdIn(Integer[] indexes) throws ServiceException {
+//        ConnectionWrapper connection = getConnectionWrapper();
+//        SectionDao sectionDao = new SectionDao(connection);
+//
+//        try {
+//            return sectionDao.findByIdIn(indexes);
+//        } catch (DaoException e) {
+//            throw new ServiceException(e);
+//        } finally {
+//            connection.close();
+//        }
+//    }
+//
+//    public HashMap<Integer, Section> findMajorSectionsOf(Integer[] indexes) throws ServiceException {
+//        ConnectionWrapper connection = getConnectionWrapper();
+//        SectionDao sectionDao = new SectionDao(connection);
+//
+//        try {
+//            return sectionDao.findMajorSectionsOf(indexes);
+//        } catch (DaoException e) {
+//            throw new ServiceException(e);
+//        } finally {
+//            connection.close();
+//        }
+//    }
 }

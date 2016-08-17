@@ -12,6 +12,7 @@ import com.kolyadko.likeit.util.HashUtil;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created by DaryaKolyadko on 22.07.2016.
@@ -83,4 +84,17 @@ public class UserService extends AbstractService<String, User> {
 
         return null;
     }
+
+//    public HashMap<String, User> findByLoginIn(String[] loginList) throws ServiceException {
+//        ConnectionWrapper connection = getConnectionWrapper();
+//        UserDao userDao = new UserDao(connection);
+//
+//        try {
+//            return userDao.findByLoginIn(loginList);
+//        } catch (DaoException e) {
+//            throw new ServiceException(e);
+//        } finally {
+//            connection.close();
+//        }
+//    }
 }
