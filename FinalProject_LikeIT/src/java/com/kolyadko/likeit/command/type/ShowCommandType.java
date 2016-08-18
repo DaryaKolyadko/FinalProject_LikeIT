@@ -1,9 +1,6 @@
 package com.kolyadko.likeit.command.type;
 
-import com.kolyadko.likeit.command.impl.showcommand.ShowCommand;
-import com.kolyadko.likeit.command.impl.showcommand.ShowHomePageCommand;
-import com.kolyadko.likeit.command.impl.showcommand.ShowProfilePageCommand;
-import com.kolyadko.likeit.command.impl.showcommand.ShowUserListPageCommand;
+import com.kolyadko.likeit.command.impl.showcommand.*;
 
 /**
  * Created by DaryaKolyadko on 28.07.2016.
@@ -12,7 +9,9 @@ public enum ShowCommandType {
     SIMPLE_SHOW(null),
     SHOW_HOME_PAGE(new ShowHomePageCommand()),
     SHOW_USER_LIST_PAGE(new ShowUserListPageCommand()),
-    SHOW_PROFILE_PAGE(new ShowProfilePageCommand());
+    SHOW_PROFILE_PAGE(new ShowProfilePageCommand()),
+    SHOW_RECENT_PAGE(new ShowRecentQuestPageCommand()),
+    SHOW_TOP_PAGE(new ShowTopQuestPageCommand());
 
     private ShowCommand showCommand;
 

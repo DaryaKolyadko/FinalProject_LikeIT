@@ -3,6 +3,7 @@ package com.kolyadko.likeit.command.impl.showcommand;
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.entity.User;
 import com.kolyadko.likeit.exception.ServiceException;
+import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.UserService;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.validator.LoginValidator;
@@ -13,8 +14,9 @@ import com.kolyadko.likeit.validator.LoginValidator;
 public class ShowProfilePageCommand extends ShowCommand {
     private static final String PARAM_PROFILE_LOGIN = "login";
     private static final String ATTR_PROFILE = "profile";
-    private static final String SESSION_ATTR_USER = "user";
-    private static final String ATTR_ERROR = "noSuchProfileError";
+    private static final String SESSION_ATTR_USER = "userContainer";
+    private static final String ATTR_ERROR = "profileError";
+    private static final String PROFILE_ERROR_NO_SUCH = "error.noSuchProfile";
 
     public ShowProfilePageCommand() {
         super(MappingManager.PROFILE_PAGE);
@@ -24,29 +26,27 @@ public class ShowProfilePageCommand extends ShowCommand {
     public String execute(RequestContent content) {
         UserService userService = new UserService();
         String profileLogin = content.getRequestParameter(PARAM_PROFILE_LOGIN);
-        User currentUser = (User) content.getSessionAttribute(SESSION_ATTR_USER);
+        ObjectMemoryContainer user = (ObjectMemoryContainer) content.getSessionAttribute(SESSION_ATTR_USER);
+        User currentUser = null;
+
+        if (user != null) {
+            currentUser = (User) user.getObject();
+        }
 
         if (LoginValidator.isLoginValid(profileLogin)) {
-            if (currentUser != null && profileLogin.equals(currentUser.getId())) {
-                content.setRequestAttribute(ATTR_PROFILE, content.getSessionAttribute(SESSION_ATTR_USER));
-                return super.execute(content);
-            } else {
-                try {
-                    User userProfile = userService.findById(profileLogin);
+            try {
+                User userProfile = userService.findById(profileLogin);
 
-                    if (userProfile != null && (!userProfile.isAdmin() || currentUser != null && currentUser.isAdmin())) {
-                        content.setRequestAttribute(ATTR_PROFILE, userProfile);
-                        return super.execute(content);
-                    }
-                } catch (ServiceException e) {
-                    LOG.error(e);
+                if (userProfile != null && (!userProfile.isAdmin() || currentUser != null && currentUser.isAdmin())) {
+                    content.setRequestAttribute(ATTR_PROFILE, userProfile);
+                    return super.execute(content);
                 }
+            } catch (ServiceException e) {
+                LOG.error(e);
             }
         }
 
-        content.setRequestAttribute(ATTR_ERROR, "No such profile");
-        //TODO MessageManager.getProperty("message.loginError"));
-
+        content.setRequestAttribute(ATTR_ERROR, PROFILE_ERROR_NO_SUCH);
         return super.execute(content);
     }
 }
