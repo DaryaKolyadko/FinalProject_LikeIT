@@ -1,0 +1,35 @@
+title {
+    text-transform: capitalize;
+}
+
+.list-type {
+    text-transform: uppercase;
+}
+
+.question-post {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.question-title {
+    text-decoration: none;
+    color: black;
+}
+
+.question-title:hover {
+    text-decoration: none;
+    color: #e69126;
+    font-weight: bold;
+}
+
+.ask-button {
+    float: right;
+}
+
+div .list-header {
+    margin-top: 30px;
+}
+
+.label {
+    display: inline-block;
+}

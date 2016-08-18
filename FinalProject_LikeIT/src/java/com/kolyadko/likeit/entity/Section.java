@@ -8,6 +8,7 @@ public class Section extends Entity<Integer> {
     private String name;
     private int questionNum;
     private int answerNum;
+    private String labelColor;
     private boolean archive;
 
     public Section() {
@@ -44,6 +45,14 @@ public class Section extends Entity<Integer> {
 
     public void setQuestionNum(int questionNum) {
         this.questionNum = questionNum;
+    }
+
+    public String getLabelColor() {
+        return labelColor;
+    }
+
+    public void setLabelColor(String labelColor) {
+        this.labelColor = labelColor;
     }
 
     public int getAnswerNum() {

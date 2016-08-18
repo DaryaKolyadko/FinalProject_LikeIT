@@ -1,7 +1,7 @@
 package com.kolyadko.likeit.entity;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by DaryaKolyadko on 22.07.2016.
