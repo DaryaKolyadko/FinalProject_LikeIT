@@ -13,7 +13,7 @@ import java.util.HashMap;
 /**
  * Created by DaryaKolyadko on 28.07.2016.
  */
-public class ShowHomePageCommand extends ShowCommand {
+public class ShowHomePageCommand extends ShowDefaultContentCommand {
     private static final String ATTR_SECTIONS_CATALOGUE = "sectionsCatalogue";
 
     public ShowHomePageCommand() {

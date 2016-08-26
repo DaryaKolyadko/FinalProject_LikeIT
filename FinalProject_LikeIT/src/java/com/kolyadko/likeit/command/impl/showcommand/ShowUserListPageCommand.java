@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by DaryaKolyadko on 28.07.2016.
  */
-public class ShowUserListPageCommand extends ShowCommand {
+public class ShowUserListPageCommand extends ShowDefaultContentCommand {
     private static final String ATTR_USER_LIST = "userList";
 
     public ShowUserListPageCommand() {

@@ -23,7 +23,6 @@ public class ShowCommand implements Command {
 
     @Override
     public String execute(RequestContent content) {
-        LocaleUtil.changeLocaleIfNeeded(content);
         return MappingManager.getInstance().getProperty(path);
     }
 }

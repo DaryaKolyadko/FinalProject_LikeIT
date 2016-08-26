@@ -5,13 +5,14 @@ import com.kolyadko.likeit.entity.User;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.UserService;
+import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.validator.LoginValidator;
 
 /**
  * Created by DaryaKolyadko on 30.07.2016.
  */
-public class ShowProfilePageCommand extends ShowCommand {
+public class ShowProfilePageCommand extends ShowDefaultContentCommand {
     private static final String PARAM_PROFILE_LOGIN = "login";
     private static final String ATTR_PROFILE = "profile";
     private static final String SESSION_ATTR_USER = "userContainer";
@@ -39,6 +40,7 @@ public class ShowProfilePageCommand extends ShowCommand {
 
                 if (userProfile != null && (!userProfile.isAdmin() || currentUser != null && currentUser.isAdmin())) {
                     content.setRequestAttribute(ATTR_PROFILE, userProfile);
+//                    content.setSessionAttribute(ATTR_PROFILE, new ObjectMemoryContainer(userProfile, MemoryContainerType.ONE_OFF));
                     return super.execute(content);
                 }
             } catch (ServiceException e) {
