@@ -15,12 +15,12 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
         <link rel="stylesheet"
               href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css"/>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/languages.min.css"/>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbar_orange.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/languages.min.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbarOrange.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/signUp.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
-            <%--<script src="${pageContext.servletContext.contextPath}/resources/js/signUp.js"></script>--%>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/signUp.js"></script>
         <link rel="icon" href="${pageContext.servletContext.contextPath}/resources/img/logo_icon.ico"/>
         <title><fmt:message key="title"/></title>
     </head>
@@ -47,14 +47,16 @@
                                 <div class="form-group">
                                     <label for="first-name" class="sr-only"><fmt:message key="label.firstName"/></label>
                                     <input type="text" name="firstName" id="first-name" class="form-control"
-                                           placeholder="<fmt:message key="label.firstName"/>" value="${uncompleted.firstName}" required/>
+                                           placeholder="<fmt:message key="label.firstName"/>"
+                                           value="${uncompleted.firstName}" required/>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-6">
                                 <div class="form-group">
                                     <label for="first-name" class="sr-only"><fmt:message key="label.lastName"/></label>
                                     <input type="text" name="lastName" id="last-name" class="form-control"
-                                           placeholder="<fmt:message key="label.lastName"/>" value="${uncompleted.lastName}" required/>
+                                           placeholder="<fmt:message key="label.lastName"/>"
+                                           value="${uncompleted.lastName}" required/>
                                 </div>
                             </div>
                         </div>
@@ -66,15 +68,18 @@
                         <div class="form-group">
                             <label for="user-email" class="sr-only"><fmt:message key="label.email"/></label>
                             <input type="email" name="userEmail" id="user-email" class="form-control"
-                                   placeholder="<fmt:message key="label.email"/>" value="${uncompleted.email}" required/>
+                                   placeholder="<fmt:message key="label.email"/>" value="${uncompleted.email}"
+                                   required/>
                         </div>
                         <div class="form-group">
                             <label for="user-password" class="sr-only"><fmt:message key="label.password"/></label>
                             <input type="password" name="userPassword" id="user-password" class="form-control"
-                                   placeholder="<fmt:message key="label.password"/>" value="${uncompleted.password}" required/>
+                                   placeholder="<fmt:message key="label.password"/>" value="${uncompleted.password}"
+                                   required/>
                         </div>
                         <div class="form-group">
-                            <label for="user-confirm-password" class="sr-only"><fmt:message key="label.confirmPassword"/></label>
+                            <label for="user-confirm-password" class="sr-only"><fmt:message
+                                    key="label.confirmPassword"/></label>
                             <input type="password" name="userConfirmPassword" id="user-confirm-password"
                                    class="form-control" placeholder="<fmt:message key="label.confirmPassword"/>"
                                    value="${uncompleted.passwordConfirmation}" required/>
@@ -96,13 +101,16 @@
                                 <div class="col-xs-12 text-center">
                                     <div id="gender-choice" class="btn-group" data-toggle="buttons">
                                         <label class="btn btn-default">
-                                            <input type="radio" name="gender" value="male"/> <fmt:message key="gender.male"/>
+                                            <input type="radio" name="gender" value="male"/> <fmt:message
+                                                key="gender.male"/>
                                         </label>
                                         <label class="btn btn-default">
-                                            <input type="radio" name="gender" value="female"/> <fmt:message key="gender.female"/>
+                                            <input type="radio" name="gender" value="female"/> <fmt:message
+                                                key="gender.female"/>
                                         </label>
                                         <label class="btn btn-default">
-                                            <input type="radio" name="gender" value="other"/> <fmt:message key="gender.other"/>
+                                            <input type="radio" name="gender" value="other"/> <fmt:message
+                                                key="gender.other"/>
                                         </label>
                                     </div>
                                 </div>

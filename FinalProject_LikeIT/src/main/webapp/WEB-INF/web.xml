@@ -19,6 +19,7 @@
         <url-pattern>/Profile</url-pattern>
         <url-pattern>/TOP</url-pattern>
         <url-pattern>/Recent</url-pattern>
+        <url-pattern>/Questions</url-pattern>
         <url-pattern>/Error</url-pattern>
         <url-pattern>/Error404</url-pattern>
     </servlet-mapping>

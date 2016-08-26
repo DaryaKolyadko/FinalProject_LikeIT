@@ -74,6 +74,12 @@
                     </c:choose>
                     <li>
                         <form id="ruForm" action="${originUrl}" hidden>
+                            <c:if test="${not empty profile}">
+                                <input value="${profile.id}" name="login">
+                            </c:if>
+                            <c:if test="${not empty param.section}">
+                                <input value="${param.section}" name="section">
+                            </c:if>
                             <input value="ru_RU" name="locale">
                         </form>
                         <a href="#" onclick="document.getElementById('ruForm').submit()"><span class="lang-sm"
@@ -81,6 +87,12 @@
                     </li>
                     <li>
                         <form id="enForm" action="${originUrl}" hidden>
+                            <c:if test="${not empty profile}">
+                                <input value="${profile.id}" name="login">
+                            </c:if>
+                            <c:if test="${not empty param.section}">
+                                <input value="${param.section}" name="section">
+                            </c:if>
                             <input value="en_US" name="locale">
                         </form>
                         <a href="#" onclick="document.getElementById('enForm').submit()"><span class="lang-sm"

@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
  */
 public abstract class Validator {
     protected static boolean isMatching(String str, Pattern pattern) {
+
+        if (str == null)
+            return false;
+
         Matcher matcher = pattern.matcher(str);
         return matcher.matches();
     }
