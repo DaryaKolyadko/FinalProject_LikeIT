@@ -10,7 +10,7 @@ public class Comment extends Entity<Integer> {
     private String authorId;
     private int questionId;
     private String text;
-    private Date creationDate;
+    private Timestamp creationDate;
     private byte version;
     private Timestamp lastModify;
     private boolean answer;
@@ -46,11 +46,11 @@ public class Comment extends Entity<Integer> {
         this.text = text;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
