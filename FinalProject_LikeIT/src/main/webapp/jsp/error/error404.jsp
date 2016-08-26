@@ -12,8 +12,8 @@
         <link rel="stylesheet"
               href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"/>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/languages.min.css"/>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbar_orange.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/languages.min.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbarOrange.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/error404.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
@@ -24,7 +24,7 @@
     <%@include file="/jsp/include/menu.jsp" %>
     <div class="container-fluid text-center main-wrapper">
         <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-4 col-lg-offset-1 text-left">
+            <div class="col-sm-12 col-md-12 col-lg-5 col-lg-offset-1 text-left">
                 <div class="errorText">
                     <h1><fmt:message key="header"/></h1>
                     <p><fmt:message key="parag1"/></p>
@@ -35,11 +35,10 @@
                     <a class="btn btn-default" href="<c:url value="/Users"/>"> <fmt:message key="button.users"/> </a>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-5">
+            <div class="col-sm-12 col-md-12 col-lg-6">
                 <img src="${pageContext.servletContext.contextPath}/resources/img/404.jpg" alt="404"
                      style="width:100%;"/>
             </div>
-            <%@include file="/jsp/include/rightSidePanel.jsp" %>
         </div>
         <%@include file="/jsp/include/footer.jsp" %>
     </div>

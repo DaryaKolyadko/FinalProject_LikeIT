@@ -1,0 +1,32 @@
+.thumbnail {
+    position: relative;
+}
+
+.caption {
+    position: absolute;
+    top: 45%;
+    left: 0;
+    width: 100%;
+}
+
+.widget-inside {
+    margin-top: 50px;
+    background-image: url(../img/about_logo.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: scroll;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+@media screen and (max-width: 767px) {
+    .widget-inside {
+        margin-top: 10px;
+    }
+}
+
+.shadow {
+    color: white;
+    font-weight: bold;
+    text-shadow: 4px 4px 6px #413D3D, 0 0 1em #413D3D;
+}
