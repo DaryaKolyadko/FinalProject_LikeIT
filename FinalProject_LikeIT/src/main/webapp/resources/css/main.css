@@ -246,3 +246,7 @@ footer:hover {
 .right {
     float: right;
 }
+
+.no-decor, .no-decor:hover, .no-decor:visited, .no-decor:link {
+    text-decoration: none;
+}

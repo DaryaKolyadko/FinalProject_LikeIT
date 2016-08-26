@@ -6,7 +6,7 @@
     max-height: 11px;
     background-repeat: no-repeat;
     display: inline-block;
-    background-image: url(../img/languages.png)
+    background-image: url(../../img/languages.png)
 }
 
 .lang-sm {
@@ -17,7 +17,7 @@
     max-height: 16px;
     background-repeat: no-repeat;
     display: inline-block;
-    background-image: url(../img/languages.png)
+    background-image: url(../../img/languages.png)
 }
 
 .lang-lg {
@@ -28,7 +28,7 @@
     max-height: 22px;
     background-repeat: no-repeat;
     display: inline-block;
-    background-image: url(../img/languages.png)
+    background-image: url(../../img/languages.png)
 }
 
 .lang-xs[lang=ar] {

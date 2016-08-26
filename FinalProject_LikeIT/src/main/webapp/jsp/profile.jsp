@@ -14,8 +14,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.js"></script>
         <link rel="stylesheet"
               href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css"/>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/languages.min.css"/>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbar_orange.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/languages.min.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbarOrange.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/profile.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
