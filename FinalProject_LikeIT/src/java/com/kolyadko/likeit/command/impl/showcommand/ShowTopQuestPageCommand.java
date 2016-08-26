@@ -1,5 +1,6 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
+import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.service.impl.QuestionService;
 import com.kolyadko.likeit.util.MappingManager;
@@ -15,9 +16,9 @@ public class ShowTopQuestPageCommand extends ShowQuestionListCommand {
     }
 
     @Override
-    public QuestionService.ReturnData serviceCall() {
+    public QuestionService.QuestionListData serviceCall(RequestContent content) {
         QuestionService questionService = new QuestionService();
-        QuestionService.ReturnData data = null;
+        QuestionService.QuestionListData data = null;
 
         try {
             data = questionService.findTopQuestions();

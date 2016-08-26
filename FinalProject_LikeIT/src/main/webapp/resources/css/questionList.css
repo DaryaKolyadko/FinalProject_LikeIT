@@ -6,6 +6,11 @@ title {
     text-transform: uppercase;
 }
 
+.none-transform {
+    text-transform: none;
+    font-weight: bold;
+}
+
 .question-post {
     margin-top: 30px;
     margin-bottom: 20px;

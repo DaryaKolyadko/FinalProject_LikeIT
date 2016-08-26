@@ -3,6 +3,7 @@ package com.kolyadko.likeit.command.factory;
 import com.kolyadko.likeit.command.Command;
 import com.kolyadko.likeit.command.impl.actioncommand.EmptyCommand;
 import com.kolyadko.likeit.command.impl.showcommand.ShowCommand;
+import com.kolyadko.likeit.command.impl.showcommand.ShowDefaultContentCommand;
 import com.kolyadko.likeit.command.type.ShowCommandType;
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.util.MappingManager;
@@ -27,7 +28,7 @@ public class ShowCommandFactory {
         ShowCommandType type = ShowCommandType.getCommandWithURI(requestURI);
 
         if (type == ShowCommandType.SIMPLE_SHOW) {
-            return new ShowCommand(requestURI);
+            return new ShowDefaultContentCommand(requestURI);
         }
 
         return type.getShowCommand();

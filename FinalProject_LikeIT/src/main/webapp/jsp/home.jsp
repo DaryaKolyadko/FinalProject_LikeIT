@@ -13,8 +13,8 @@
         <link rel="stylesheet"
               href="${pageContext.servletContext.contextPath}/resources/css/lib/jquery.minicolors.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/languages.min.css"/>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbar_orange.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/languages.min.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbarOrange.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/home.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/lib/jquery.minicolors.min.js"></script>
         <script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
@@ -70,7 +70,16 @@
                                                    varStatus="sectionIter">
                                             <tr>
                                                 <th scope="row">${sectionIter.count}</th>
-                                                <td><a href="#">${section.name}</a></td>
+                                                <td>
+                                                    <form id="section-${section.id}"
+                                                          action="<c:url value="/Questions"/>" hidden>
+                                                        <input value="${section.name}" name="section">
+                                                    </form>
+                                                    <a href="#"
+                                                       onclick="document.getElementById('section-${section.id}').submit()">
+                                                            ${section.name}
+                                                    </a>
+                                                </td>
                                                 <td>${section.questionNum}</td>
                                                 <td>
                                                     <c:set var="answerPercent"

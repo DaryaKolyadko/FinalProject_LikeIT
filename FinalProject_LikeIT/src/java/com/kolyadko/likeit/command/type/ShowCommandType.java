@@ -11,7 +11,8 @@ public enum ShowCommandType {
     SHOW_USER_LIST_PAGE(new ShowUserListPageCommand()),
     SHOW_PROFILE_PAGE(new ShowProfilePageCommand()),
     SHOW_RECENT_PAGE(new ShowRecentQuestPageCommand()),
-    SHOW_TOP_PAGE(new ShowTopQuestPageCommand());
+    SHOW_TOP_PAGE(new ShowTopQuestPageCommand()),
+    SHOW_SECTION_QUESTIONS_PAGE(new ShowSectionQuestPageCommand());
 
     private ShowCommand showCommand;
 
