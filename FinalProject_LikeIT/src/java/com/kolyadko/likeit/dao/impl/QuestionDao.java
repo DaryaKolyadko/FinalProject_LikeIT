@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class QuestionDao extends AbstractDao<Integer, Question> {
     private static final String ALL_COLUMNS = "question_id, author_id, section_id, title, text, creation_date, " +
             "version, last_modify, comment_num, answer_num, mark_num, rating, archive";
-    private static final String INSERT_COLUMNS = "author_id, section_id, title, text";
+    private static final String INSERT_COLUMNS = "author_id, section_id, title, text, creation_date";
 
     private static final String DESC_ORDER_BY_CREATE_DATE = " ORDER BY creation_date DESC";
 //    private static final String DESC_ORDER_BY_RATING = " ORDER BY rating DESC";
@@ -52,7 +52,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
             closeStatement(preparedStatement);
         }
 
-        if (questions.size() > 0) {
+        if (!questions.isEmpty()) {
             return questions.get(0);
         }
 
@@ -74,6 +74,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
             preparedStatement.setInt(2, question.getSectionId());
             preparedStatement.setString(3, question.getTitle());
             preparedStatement.setString(4, question.getText());
+            preparedStatement.setTimestamp(5, question.getCreationDate());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new DaoException(e);

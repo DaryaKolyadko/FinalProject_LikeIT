@@ -58,7 +58,7 @@ public class UserDao extends AbstractDao<String, User> {
             closeStatement(preparedStatement);
         }
 
-        if (users.size() > 0) {
+        if (!users.isEmpty()) {
             return users.get(0);
         }
 

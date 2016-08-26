@@ -29,6 +29,19 @@ public class SectionService extends AbstractService<Integer, Section> {
         }
     }
 
+    public Section findByName(String name, boolean isAdmin) throws ServiceException {
+        ConnectionWrapper connection = getConnectionWrapper();
+        SectionDao sectionDao = new SectionDao(connection);
+
+        try {
+            return isAdmin ? sectionDao.findByName(name) : sectionDao.findExistingByName(name);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        } finally {
+            connection.close();
+        }
+    }
+
     @Override
     public void create(Section section) throws ServiceException {
         ConnectionWrapper connection = getConnectionWrapper();

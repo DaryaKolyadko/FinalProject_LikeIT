@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by DaryaKolyadko on 29.07.2016.
@@ -23,9 +22,10 @@ public class SectionDao extends AbstractDao<Integer, Section> {
     private static final String EXISTING = "  AND archive='false'";
 
     private static final String SELECT_ALL = "SELECT " + ALL_COLUMNS + " FROM section";
-//    private static final String SECTION_ID_IN = "  WHERE section_id IN";
+    //    private static final String SECTION_ID_IN = "  WHERE section_id IN";
 //    private static final String SELECT_IN = SELECT_ALL + SECTION_ID_IN;
     private static final String FIND_BY_ID = SELECT_ALL + "  WHERE section_id=?";
+    private static final String FIND_BY_NAME = SELECT_ALL + "  WHERE name=?";
     private static final String FIND_BY_MAJOR_SECTION_ID = SELECT_ALL + "  WHERE major_section_id=?";
     private static final String FIND_MAJOR_SECTIONS = SELECT_ALL + "  WHERE major_section_id IS NULL";
     private static final String CREATE = "INSERT INTO section (" + INSERT_COLUMNS + ") VALUES(" +
@@ -37,9 +37,21 @@ public class SectionDao extends AbstractDao<Integer, Section> {
 
     @Override
     public Section findById(Integer id) throws DaoException {
-        ArrayList<Section> sections = findBy(FIND_BY_ID, id);
+        return findOnlyOne(FIND_BY_ID, id);
+    }
 
-        if (sections != null && sections.size() > 0) {
+    public Section findByName(String name) throws DaoException {
+        return findOnlyOne(FIND_BY_NAME, name);
+    }
+
+    public Section findExistingByName(String name) throws DaoException {
+        return findOnlyOne(FIND_BY_NAME + EXISTING, name);
+    }
+
+    private Section findOnlyOne(String query, Object param) throws DaoException {
+        ArrayList<Section> sections = findBy(query, param);
+
+        if (sections != null && !sections.isEmpty()) {
             return sections.get(0);
         }
 
@@ -68,7 +80,7 @@ public class SectionDao extends AbstractDao<Integer, Section> {
         }
     }
 
-    public ArrayList<Section> findByMajorId(int majorSectionId) throws DaoException {
+    public ArrayList<Section> findByMajorId(Integer majorSectionId) throws DaoException {
         return findBy(FIND_BY_MAJOR_SECTION_ID + ORDER_BY_ID, majorSectionId);
     }
 
@@ -84,14 +96,14 @@ public class SectionDao extends AbstractDao<Integer, Section> {
         return findWithStatement(FIND_MAJOR_SECTIONS + EXISTING + ORDER_BY_ID);
     }
 
-    private ArrayList<Section> findBy(String query, int someId) throws DaoException {
+    private ArrayList<Section> findBy(String query, Object param) throws DaoException {
         ArrayList<Section> sections = new ArrayList<>();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet;
 
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, someId);
+            preparedStatement.setObject(1, param);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

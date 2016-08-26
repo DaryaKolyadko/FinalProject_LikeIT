@@ -1,7 +1,6 @@
 package com.kolyadko.likeit.entity;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * Created by DaryaKolyadko on 22.07.2016.
@@ -11,7 +10,7 @@ public class Question extends Entity<Integer> {
     private int sectionId;
     private String title;
     private String text;
-    private Date creationDate;
+    private Timestamp creationDate;
     private byte version;
     private Timestamp lastModify;
     private int commentNum;
@@ -56,11 +55,11 @@ public class Question extends Entity<Integer> {
         this.text = text;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
