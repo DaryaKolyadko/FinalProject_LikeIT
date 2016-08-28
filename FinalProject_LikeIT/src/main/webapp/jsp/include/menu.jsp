@@ -80,6 +80,9 @@
                             <c:if test="${not empty param.section}">
                                 <input value="${param.section}" name="section">
                             </c:if>
+                            <c:if test="${not empty param.question}">
+                                <input value="${param.question}" name="question">
+                            </c:if>
                             <input value="ru_RU" name="locale">
                         </form>
                         <a href="#" onclick="document.getElementById('ruForm').submit()"><span class="lang-sm"
@@ -92,6 +95,9 @@
                             </c:if>
                             <c:if test="${not empty param.section}">
                                 <input value="${param.section}" name="section">
+                            </c:if>
+                            <c:if test="${not empty param.question}">
+                                <input value="${param.question}" name="question">
                             </c:if>
                             <input value="en_US" name="locale">
                         </form>

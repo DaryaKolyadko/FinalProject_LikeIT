@@ -250,3 +250,7 @@ footer:hover {
 .no-decor, .no-decor:hover, .no-decor:visited, .no-decor:link {
     text-decoration: none;
 }
+
+.fa {
+    font-size: 18px;
+}
