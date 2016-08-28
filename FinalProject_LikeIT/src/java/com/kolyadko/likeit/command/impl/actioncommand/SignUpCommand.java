@@ -49,19 +49,25 @@ public class SignUpCommand implements Command {
             try {
                 UserService userService = new UserService();
                 User user = new User(content.getRequestParameter(PARAM_LOGIN));
-                user.setFirstName(content.getRequestParameter(PARAM_FIRST_NAME));
-                user.setLastName(content.getRequestParameter(PARAM_LAST_NAME));
-                user.setEmail(content.getRequestParameter(PARAM_EMAIL));
-                user.setPassword(content.getRequestParameter(PARAM_PASSWORD));
-                user.setBirthDate(new Date(DATE_FORMAT.parse(content.getRequestParameter(PARAM_BIRTHDAY)).getTime()));
-                user.setGender(GenderType.getGenderType(content.getRequestParameter(PARAM_GENDER)));
-                userService.create(user);
-                content.setSessionAttribute(SESSION_ATTR_USER, new ObjectMemoryContainer(user,
-                        MemoryContainerType.LONG_LIVER));
-                return MappingManager.HOME_PAGE;
+
+                if (userService.findById(user.getId()) == null) {
+                    user.setFirstName(content.getRequestParameter(PARAM_FIRST_NAME));
+                    user.setLastName(content.getRequestParameter(PARAM_LAST_NAME));
+                    user.setEmail(content.getRequestParameter(PARAM_EMAIL));
+                    user.setPassword(content.getRequestParameter(PARAM_PASSWORD));
+                    user.setBirthDate(new Date(DATE_FORMAT.parse(content.getRequestParameter(PARAM_BIRTHDAY)).getTime()));
+                    user.setGender(GenderType.getGenderType(content.getRequestParameter(PARAM_GENDER)));
+                    userService.create(user);
+                    content.setSessionAttribute(SESSION_ATTR_USER, new ObjectMemoryContainer(user,
+                            MemoryContainerType.LONG_LIVER));
+                    return MappingManager.HOME_PAGE;
+                } else {
+                    content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(SIGN_UP_ERROR_EXISTS));
+                }
             } catch (ServiceException | ParseException e) {
-                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(SIGN_UP_ERROR_EXISTS));
-                LOG.error(e.getMessage());
+                LOG.error(e);
+                content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
+                return MappingManager.ERROR_PAGE_500;
             }
         } else {
             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(SIGN_UP_ERROR_CHECK));

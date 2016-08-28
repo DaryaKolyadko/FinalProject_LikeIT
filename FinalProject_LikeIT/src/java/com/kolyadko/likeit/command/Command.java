@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
  */
 public interface Command {
     Logger LOG = LogManager.getLogger(Command.class);
+    String EXCEPTION = "exceptionContainer";
 
     String execute(RequestContent content);
 }

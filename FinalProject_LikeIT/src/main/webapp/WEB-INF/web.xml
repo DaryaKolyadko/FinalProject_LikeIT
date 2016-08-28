@@ -10,7 +10,6 @@
 
     <servlet-mapping>
         <servlet-name>LikeItServlet</servlet-name>
-        <!--<url-pattern>/LikeIT/Home</url-pattern>-->
         <url-pattern>/Home</url-pattern>
         <url-pattern>/Login</url-pattern>
         <url-pattern>/SignUp</url-pattern>
@@ -20,7 +19,9 @@
         <url-pattern>/TOP</url-pattern>
         <url-pattern>/Recent</url-pattern>
         <url-pattern>/Questions</url-pattern>
-        <url-pattern>/Error</url-pattern>
+        <url-pattern>/Question</url-pattern>
+        <url-pattern>/CreateQuestion</url-pattern>
+        <url-pattern>/Error500</url-pattern>
         <url-pattern>/Error404</url-pattern>
     </servlet-mapping>
 

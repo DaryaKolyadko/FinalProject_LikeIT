@@ -30,8 +30,8 @@ public class ShowHomePageCommand extends ShowDefaultContentCommand {
             content.setRequestAttribute(ATTR_SECTIONS_CATALOGUE, catalogue);
         } catch (ServiceException e) {
             LOG.error(e);
-            content.setSessionAttribute(ATTR_SERVER_ERROR, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
-            return MappingManager.ERROR_PAGE_404;
+            content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
+            return MappingManager.getInstance().getProperty(MappingManager.ERROR_PAGE_500);
         }
 
         return super.execute(content);

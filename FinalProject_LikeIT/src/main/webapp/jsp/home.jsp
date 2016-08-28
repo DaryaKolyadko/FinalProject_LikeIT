@@ -7,9 +7,10 @@
     <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/bootstrap.min.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/font-awesome.min.css"/>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/lib/jquery.min.js"></script>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrap.min.js"></script>
         <link rel="stylesheet"
               href="${pageContext.servletContext.contextPath}/resources/css/lib/jquery.minicolors.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
@@ -31,13 +32,19 @@
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-9 col-lg-offset-1 text-left">
                 <div class="panel-group sections top-padding" id="collapse-group">
-                    <ctm:adminOnly>
+                    <ctm:authenticatedOnly>
                         <div class="top-padding bottom-padding right-button-parent">
-                            <button class="btn btn-primary right" data-toggle="modal" data-target="#add">
-                                <span class="glyphicon glyphicon-plus"></span> Add section
-                            </button>
+                            <ctm:adminOnly>
+                                <button class="btn btn-success" data-toggle="modal" data-target="#add">
+                                    <span class="glyphicon glyphicon-plus"></span> <fmt:message
+                                        key="button.addSection"/>
+                                </button>
+                            </ctm:adminOnly>
+                            <a href="<c:url value="/CreateQuestion"/>" type="button"
+                               class="btn btn-primary ask-button right"><i class="fa fa-question"></i>
+                                <fmt:message key="button.ask"/></a>
                         </div>
-                    </ctm:adminOnly>
+                    </ctm:authenticatedOnly>
                     <c:forEach items="${sectionsCatalogue}" var="majorSection">
                         <div class="panel panel-default">
                             <div class="panel-heading clearfix" data-toggle="collapse"
@@ -73,7 +80,7 @@
                                                 <td>
                                                     <form id="section-${section.id}"
                                                           action="<c:url value="/Questions"/>" hidden>
-                                                        <input value="${section.name}" name="section">
+                                                        <input value="${section.id}" name="section">
                                                     </form>
                                                     <a href="#"
                                                        onclick="document.getElementById('section-${section.id}').submit()">

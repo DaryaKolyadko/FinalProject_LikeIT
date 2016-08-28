@@ -8,7 +8,9 @@ import com.kolyadko.likeit.command.impl.showcommand.*;
 public enum ShowCommandType {
     SIMPLE_SHOW(null),
     SHOW_HOME_PAGE(new ShowHomePageCommand()),
+    SHOW_CREATE_QUESTION_PAGE(new ShowCreateQuestionPageCommand()),
     SHOW_USER_LIST_PAGE(new ShowUserListPageCommand()),
+    SHOW_QUESTION_PAGE(new ShowQuestionPageCommand()),
     SHOW_PROFILE_PAGE(new ShowProfilePageCommand()),
     SHOW_RECENT_PAGE(new ShowRecentQuestPageCommand()),
     SHOW_TOP_PAGE(new ShowTopQuestPageCommand()),

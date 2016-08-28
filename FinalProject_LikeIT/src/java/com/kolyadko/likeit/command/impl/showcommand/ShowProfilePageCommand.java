@@ -16,7 +16,6 @@ public class ShowProfilePageCommand extends ShowDefaultContentCommand {
     private static final String PARAM_PROFILE_LOGIN = "login";
     private static final String ATTR_PROFILE = "profile";
     private static final String SESSION_ATTR_USER = "userContainer";
-    private static final String ATTR_ERROR = "profileError";
     private static final String PROFILE_ERROR_NO_SUCH = "error.noSuchProfile";
 
     public ShowProfilePageCommand() {
@@ -40,15 +39,16 @@ public class ShowProfilePageCommand extends ShowDefaultContentCommand {
 
                 if (userProfile != null && (!userProfile.isAdmin() || currentUser != null && currentUser.isAdmin())) {
                     content.setRequestAttribute(ATTR_PROFILE, userProfile);
-//                    content.setSessionAttribute(ATTR_PROFILE, new ObjectMemoryContainer(userProfile, MemoryContainerType.ONE_OFF));
                     return super.execute(content);
                 }
             } catch (ServiceException e) {
                 LOG.error(e);
+                content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
+                return MappingManager.getInstance().getProperty(MappingManager.ERROR_PAGE_500);
             }
         }
 
-        content.setRequestAttribute(ATTR_ERROR, PROFILE_ERROR_NO_SUCH);
+        content.setRequestAttribute(ATTR_SERVER_ERROR, PROFILE_ERROR_NO_SUCH);
         return super.execute(content);
     }
 }

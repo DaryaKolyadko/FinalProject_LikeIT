@@ -37,12 +37,13 @@ public class LoginCommand implements Command {
                     content.setSessionAttribute(SESSION_ATTR_USER, new ObjectMemoryContainer(user,
                             MemoryContainerType.LONG_LIVER));
                     return MappingManager.HOME_PAGE;
-                } else {
-                    content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(LOGIN_ERROR_INCORRECT));
                 }
+
+                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(LOGIN_ERROR_INCORRECT));
             } catch (ServiceException e) {
                 LOG.error(e);
-                return MappingManager.ERROR_PAGE_404;
+                content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
+                return MappingManager.ERROR_PAGE_500;
             }
         } else {
             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(LOGIN_ERROR_INVALID));
