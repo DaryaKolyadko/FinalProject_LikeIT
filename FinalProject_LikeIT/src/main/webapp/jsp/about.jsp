@@ -5,9 +5,9 @@
     <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/bootstrap.min.css"/>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/lib/jquery.min.js"></script>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrap.min.js"></script>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/languages.min.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbarOrange.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
@@ -36,28 +36,21 @@
                         </div>
                     </div>
                 </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip
-                    ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                    nisi
-                    ut aliquip ex ea commodo consequat.</p>
-                    <%--<div class="row">--%>
-                    <%--<div class="thumbnail text-center">--%>
-                    <%--<img src="${pageContext.servletContext.contextPath}/resources/img/like-all.png" alt="logo"--%>
-                    <%--class="img-responsive">--%>
-                    <%--<div class="caption">--%>
-                    <%--<p> LikeIT is one of the largest online community for programmers to learn and share their--%>
-                    <%--knowledge.</p>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<img src="${pageContext.servletContext.contextPath}/resources/img/like-all.png" alt="logo"--%>
-                    <%--style="width:100%;">--%>
+                <p><fmt:message key="text"/></p>
+                <form class="form-horizontal">
+                    <h2><fmt:message key="contacts"/></h2>
+                    <p><fmt:message key="contacts.text"/></p>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-2 control-label"><fmt:message key="label.email"/></label>
+                        <span id="email" class="col-sm-4 form-control-static">darya.kolyadko@gmail.com</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="col-sm-2 control-label">
+                            <fmt:message key="label.phone"/>
+                        </label>
+                        <span id="phone" class="col-sm-4 form-control-static">BY: +375(29)678-90-12</span>
+                    </div>
+                </form>
             </div>
             <%@include file="/jsp/include/rightSidePanel.jsp" %>
         </div>

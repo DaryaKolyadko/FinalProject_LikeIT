@@ -11,6 +11,7 @@
 
 .widget-inside {
     margin-top: 50px;
+    margin-bottom: 20px;
     background-image: url(../img/about_logo.png);
     background-repeat: no-repeat;
     background-position: center center;
@@ -22,6 +23,7 @@
 @media screen and (max-width: 767px) {
     .widget-inside {
         margin-top: 10px;
+        margin-bottom: 0;
     }
 }
 
