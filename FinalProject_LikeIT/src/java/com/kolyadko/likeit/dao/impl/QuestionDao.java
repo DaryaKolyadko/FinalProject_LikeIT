@@ -34,29 +34,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
 
     @Override
     public Question findById(Integer id) throws DaoException {
-        ArrayList<Question> questions = new ArrayList<>();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet;
-
-        try {
-            preparedStatement = connection.prepareStatement(FIND_BY_ID);
-            preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                questions.add(readEntity(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
-        } finally {
-            closeStatement(preparedStatement);
-        }
-
-        if (!questions.isEmpty()) {
-            return questions.get(0);
-        }
-
-        return null;
+        return findOnlyOne(FIND_BY_ID, id);
     }
 
     @Override

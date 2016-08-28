@@ -20,6 +20,7 @@ import java.util.HashMap;
 public class UserService extends AbstractService<String, User> {
     private static final Calendar CALENDAR = Calendar.getInstance();
 
+    @Override
     public User findById(String id) throws ServiceException {
         ConnectionWrapper connection = getConnectionWrapper();
         UserDao userDao = new UserDao(connection);

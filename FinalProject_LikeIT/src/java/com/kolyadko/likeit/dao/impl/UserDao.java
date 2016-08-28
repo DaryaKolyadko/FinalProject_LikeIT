@@ -40,29 +40,7 @@ public class UserDao extends AbstractDao<String, User> {
 
     @Override
     public User findById(String login) throws DaoException {
-        ArrayList<User> users = new ArrayList<>();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet;
-
-        try {
-            preparedStatement = connection.prepareStatement(FIND_BY_ID);
-            preparedStatement.setString(1, login);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                users.add(readEntity(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
-        } finally {
-            closeStatement(preparedStatement);
-        }
-
-        if (!users.isEmpty()) {
-            return users.get(0);
-        }
-
-        return null;
+        return findOnlyOne(FIND_BY_ID, login);
     }
 
     @Override

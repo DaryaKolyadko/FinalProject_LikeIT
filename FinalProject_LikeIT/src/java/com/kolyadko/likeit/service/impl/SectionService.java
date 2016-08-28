@@ -29,12 +29,12 @@ public class SectionService extends AbstractService<Integer, Section> {
         }
     }
 
-    public Section findByName(String name, boolean isAdmin) throws ServiceException {
+    public Section findById(Integer sectionId, boolean isAdmin) throws ServiceException {
         ConnectionWrapper connection = getConnectionWrapper();
         SectionDao sectionDao = new SectionDao(connection);
 
         try {
-            return isAdmin ? sectionDao.findByName(name) : sectionDao.findExistingByName(name);
+            return isAdmin ? sectionDao.findById(sectionId) : sectionDao.findExistingById(sectionId);
         } catch (DaoException e) {
             throw new ServiceException(e);
         } finally {
@@ -49,6 +49,19 @@ public class SectionService extends AbstractService<Integer, Section> {
 
         try {
             sectionDao.create(section);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        } finally {
+            connection.close();
+        }
+    }
+
+    public ArrayList<Section> findNotMajorSections() throws ServiceException {
+        ConnectionWrapper connection = getConnectionWrapper();
+        SectionDao sectionDao = new SectionDao(connection);
+
+        try {
+            return sectionDao.findNotMajorSections();
         } catch (DaoException e) {
             throw new ServiceException(e);
         } finally {

@@ -16,26 +16,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by DaryaKolyadko on 29.07.2016.
  */
 public class QuestionService extends AbstractService<Integer, Question> {
-    private static final String SELECT_QUEST_USER_SECT = "SELECT question_id, author_id, Q.section_id, title, text, creation_date, version, last_modify, Q.comment_num, " +
+    private static final String SELECT_GENERAL = "SELECT Q.question_id, author_id, Q.section_id, title, text, creation_date, version, last_modify, Q.comment_num, " +
             "Q.answer_num, mark_num, Q.rating, Q.archive, login, avatar_id, first_name, last_name, gender, password, birth_date," +
             "sign_up_date, email, email_confirmed, role, state, U.rating, U.answer_num, U.question_num, U.comment_num, U.archive, " +
-            "S.section_id, S.major_section_id, S.name, S.question_num, S.answer_num, MS.label_color, S.archive " +
-            "FROM question Q JOIN user U ON Q.author_id = U.login join section S ON Q.section_id = S.section_id JOIN section MS " +
+            "S.section_id, S.major_section_id, S.name, S.question_num, S.answer_num, MS.label_color, S.archive";
+    private static final String JOIN_GENERAL = "JOIN user U ON Q.author_id = U.login JOIN section S ON Q.section_id = S.section_id JOIN section MS " +
             "ON S.major_section_id = MS.section_id";
+    private static final String SELECT_QUEST_USER_SECT = SELECT_GENERAL + ", null as mark FROM question Q " + JOIN_GENERAL;
+    private static final String SELECT_QUEST_USER_SECT_MARK = SELECT_GENERAL + ", ifnull(QR.mark,0) as mark  FROM question Q " +
+            JOIN_GENERAL + " LEFT OUTER JOIN (SELECT question_id, mark FROM question_rating WHERE user_id=?) QR " +
+            "ON Q.question_id=QR.question_id";
     private static final String ALL_COLUMNS = "question_id, author_id, section_id, title, text, creation_date, " +
             "version, last_modify, comment_num, answer_num, mark_num, rating, archive";
     private static final String SELECT_ALL = "SELECT " + ALL_COLUMNS + " FROM question Q";
 
+    private static final String QUEST_ID = "  AND Q.question_id=?";
+
     private static final String DESC_ORDER_BY_CREATE_DATE = " ORDER BY creation_date DESC";
-    private static final String DESC_ORDER_BY_RATING = "  ORDER BY Q.rating DESC";
-    private static final String FROM_PARTICULAR_SECTION = " S.name=?";
+    private static final String DESC_ORDER_BY_RATING = " ORDER BY Q.rating DESC";
+    private static final String FROM_PARTICULAR_SECTION = " S.section_id=?";
     private static final String EXISTING = " WHERE Q.archive=false";
     private static final String AND = " AND";
     private static final String WHERE = " WHERE";
@@ -69,26 +73,25 @@ public class QuestionService extends AbstractService<Integer, Question> {
         }
     }
 
-    public QuestionListData findQuestionsFromSection(String sectionName, boolean isAdmin) throws ServiceException {
-        ConnectionWrapper connection = getConnectionWrapper();
-        PreparedStatement preparedStatement = null;
-
-        try {
-            preparedStatement = connection.prepareStatement(SELECT_QUEST_USER_SECT +
-                    (isAdmin ? WHERE : (EXISTING + AND))+ FROM_PARTICULAR_SECTION
-                    + DESC_ORDER_BY_CREATE_DATE);
-            preparedStatement.setString(1, sectionName);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return extractData(connection, resultSet);
-        } catch (SQLException e) {
-            throw new ServiceException(e);
-        } finally {
-            closeStatement(preparedStatement);
-            connection.close();
-        }
+    public QuestionData findQuestionData(int questionId) throws ServiceException {
+        return findOnlyOne(SELECT_QUEST_USER_SECT + EXISTING + QUEST_ID, questionId);
     }
 
-    public QuestionListData findRecentQuestions() throws ServiceException {
+    public QuestionData findQuestionData(int questionId, String login) throws ServiceException {
+        if (login != null) {
+            return findOnlyOne(SELECT_QUEST_USER_SECT_MARK + EXISTING + QUEST_ID, login, questionId);
+        }
+
+        return findQuestionData(questionId);
+    }
+
+    public ArrayList<QuestionData> findQuestionsFromSection(Integer sectionId, boolean isAdmin) throws ServiceException {
+        return findBy(SELECT_QUEST_USER_SECT +
+                (isAdmin ? WHERE : (EXISTING + AND)) + FROM_PARTICULAR_SECTION
+                + DESC_ORDER_BY_CREATE_DATE, sectionId);
+    }
+
+    public ArrayList<QuestionData> findRecentQuestions() throws ServiceException {
         return findData(SELECT_QUEST_USER_SECT + EXISTING +
                 DESC_ORDER_BY_CREATE_DATE);
     }
@@ -117,11 +120,48 @@ public class QuestionService extends AbstractService<Integer, Question> {
         }
     }
 
-    public QuestionListData findTopQuestions() throws ServiceException {
+    public ArrayList<QuestionData> findTopQuestions() throws ServiceException {
         return findData(SELECT_QUEST_USER_SECT + EXISTING + DESC_ORDER_BY_RATING);
     }
 
-    private QuestionListData findData(String query) throws ServiceException {
+    private QuestionData findOnlyOne(String query, Object... params) throws ServiceException {
+        ArrayList<QuestionData> entities = findBy(query, params);
+
+        if (!checkNull(entities) && !entities.isEmpty()) {
+            return entities.get(0);
+        }
+
+        return null;
+    }
+
+    private ArrayList<QuestionData> findBy(String query, Object... params) throws ServiceException {
+        ConnectionWrapper connection = getConnectionWrapper();
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            int counter = 1;
+
+            for (Object param : params) {
+                if (!checkNull(param)) {
+                    preparedStatement.setObject(counter, param);
+                    counter++;
+                } else {
+                    LOG.warn("Null param was passed into query. It wasn't placed inside it.");
+                }
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return extractData(connection, resultSet);
+        } catch (SQLException e) {
+            throw new ServiceException(e);
+        } finally {
+            closeStatement(preparedStatement);
+            connection.close();
+        }
+    }
+
+    private ArrayList<QuestionData> findData(String query) throws ServiceException {
         ConnectionWrapper connection = getConnectionWrapper();
         Statement statement = null;
 
@@ -137,94 +177,64 @@ public class QuestionService extends AbstractService<Integer, Question> {
         }
     }
 
-    private QuestionListData extractData(ConnectionWrapper connection, ResultSet resultSet) throws ServiceException {
+    private ArrayList<QuestionData> extractData(ConnectionWrapper connection, ResultSet resultSet) throws ServiceException {
         QuestionDao questionDao = new QuestionDao(connection);
         UserDao userDao = new UserDao(connection);
         SectionDao sectionDao = new SectionDao(connection);
-        QuestionListData data = new QuestionListData();
+        ArrayList<QuestionData> dataList = new ArrayList<>();
 
         try {
             while (resultSet.next()) {
-                data.addQuestion(questionDao.readEntity(resultSet));
-                data.addUser(userDao.readEntity(resultSet));
-                data.addSection(sectionDao.readEntity(resultSet));
+                QuestionData data = new QuestionData();
+                data.setQuestion(questionDao.readEntity(resultSet));
+                data.setUser(userDao.readEntity(resultSet));
+                data.setSection(sectionDao.readEntity(resultSet));
+                data.setMark(resultSet.getInt("mark"));
+                dataList.add(data);
             }
         } catch (DaoException | SQLException e) {
             throw new ServiceException(e);
         }
 
-        return data;
+        return dataList;
     }
 
-    public class QuestionListData {
-        private ArrayList<Question> questions;
-        private ArrayList<User> users;
-        private ArrayList<Section> sections;
+    public class QuestionData {
+        private Question question;
+        private User user;
+        private Section section;
+        private Integer mark;
 
-        public QuestionListData() {
-            questions = new ArrayList<>();
-            users = new ArrayList<>();
-            sections = new ArrayList<>();
+        public Question getQuestion() {
+            return question;
         }
 
-        public void addQuestion(Question question) {
-            questions.add(question);
+        public void setQuestion(Question question) {
+            this.question = question;
         }
 
-        public void addUser(User user) {
-            users.add(user);
+        public User getUser() {
+            return user;
         }
 
-        public void addSection(Section section) {
-            sections.add(section);
+        public void setUser(User user) {
+            this.user = user;
         }
 
-        public List<Question> getQuestions() {
-            return Collections.unmodifiableList(questions);
+        public Section getSection() {
+            return section;
         }
 
-        public List<User> getUsers() {
-            return Collections.unmodifiableList(users);
+        public void setSection(Section section) {
+            this.section = section;
         }
 
-        public List<Section> getSections() {
-            return Collections.unmodifiableList(sections);
+        public Integer getMark() {
+            return mark;
+        }
+
+        public void setMark(Integer mark) {
+            this.mark = mark;
         }
     }
-
-//    public class QuestionsFromSectionData {
-//        private ArrayList<Question> questions;
-//        private ArrayList<User> users;
-//        private Section section;
-//
-//        public QuestionsFromSectionData() {
-//            questions = new ArrayList<>();
-//            users = new ArrayList<>();
-//            section = new Section();
-//        }
-//
-//        public void addQuestion(Question question) {
-//            questions.add(question);
-//        }
-//
-//        public void addUser(User user) {
-//            users.add(user);
-//        }
-//
-//        public void setSection(Section section) {
-//            this.section = section;
-//        }
-//
-//        public List<Question> getQuestions() {
-//            return Collections.unmodifiableList(questions);
-//        }
-//
-//        public List<User> getUsers() {
-//            return Collections.unmodifiableList(users);
-//        }
-//
-//        public Section getSection() {
-//            return section;
-//        }
-//    }
 }

@@ -26,35 +26,12 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
     private static final String DESC_ORDER_BY_CREATE_DATE = " ORDER BY creation_date DESC";
     private static final String SELECT_ALL = "SELECT " + ALL_COLUMNS + " FROM comment";
     private static final String FIND_BY_ID = SELECT_ALL + "  WHERE comment_id=?";
-    private static final String FIND_BY_QUEST_ID = SELECT_ALL + "  WHERE question_id=?";
     private static final String CREATE = "INSERT INTO comment (" + INSERT_COLUMNS + ") VALUES(" +
             StringUtils.repeat("?", ", ", INSERT_COLUMNS.split(",").length) + ");";
 
     @Override
     public Comment findById(Integer id) throws DaoException {
-        ArrayList<Comment> comments = new ArrayList<>();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet;
-
-        try {
-            preparedStatement = connection.prepareStatement(FIND_BY_ID);
-            preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                comments.add(readEntity(resultSet));
-            }
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
-        } finally {
-            closeStatement(preparedStatement);
-        }
-
-        if (!comments.isEmpty()) {
-            return comments.get(0);
-        }
-
-        return null;
+        return findOnlyOne(FIND_BY_ID, id);
     }
 
     @Override
@@ -100,4 +77,6 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
             throw new DaoException(e);
         }
     }
+
+
 }

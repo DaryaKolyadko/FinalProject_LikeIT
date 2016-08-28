@@ -1,6 +1,7 @@
 package com.kolyadko.likeit.service;
 
 
+import com.kolyadko.likeit.dao.AbstractDao;
 import com.kolyadko.likeit.entity.Entity;
 import com.kolyadko.likeit.exception.ConnectionPoolException;
 import com.kolyadko.likeit.exception.ServiceException;
@@ -17,7 +18,6 @@ import java.sql.Statement;
  */
 public abstract class AbstractService<K, T extends Entity> {
     protected static final Logger LOG = LogManager.getLogger(AbstractService.class);
-
 
     public abstract T findById(K id) throws ServiceException;
 
@@ -45,7 +45,7 @@ public abstract class AbstractService<K, T extends Entity> {
         }
     }
 
-    private boolean checkNull(Object object) {
+    protected boolean checkNull(Object object) {
         return object == null;
     }
 }
