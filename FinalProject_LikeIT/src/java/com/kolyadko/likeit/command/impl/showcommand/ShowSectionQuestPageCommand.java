@@ -3,10 +3,14 @@ package com.kolyadko.likeit.command.impl.showcommand;
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.entity.Section;
 import com.kolyadko.likeit.exception.ServiceException;
+import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.QuestionService;
 import com.kolyadko.likeit.service.impl.SectionService;
+import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
+
+import java.util.ArrayList;
 
 /**
  * Created by DaryaKolyadko on 24.08.2016.
@@ -15,7 +19,6 @@ public class ShowSectionQuestPageCommand extends ShowQuestionListCommand {
     private static final String ATTR_LIST_TYPE_VAL = "fromSection";
     private static final String PARAM_SECTION = "section";
     private static final String ATTR_SECTION = "currentSection";
-    private static final String ATTR_ERROR = "sectionError";
     private static final String SECTION_ERROR_NO_SUCH = "error.noSuchSection";
 
     public ShowSectionQuestPageCommand() {
@@ -23,27 +26,28 @@ public class ShowSectionQuestPageCommand extends ShowQuestionListCommand {
     }
 
     @Override
-    protected QuestionService.QuestionListData serviceCall(RequestContent content) {
+    protected ArrayList<QuestionService.QuestionData> serviceCall(RequestContent content) {
         QuestionService questionService = new QuestionService();
         SectionService sectionService = new SectionService();
-        QuestionService.QuestionListData data = null;
+        ArrayList<QuestionService.QuestionData> dataList = null;
 
         try {
             String sectionName = content.getRequestParameter(PARAM_SECTION);
             boolean isAdmin = RequestContentUtil.isCurrentUserAdmin(content);
-            Section section = sectionService.findByName(sectionName, isAdmin);
+            Section section = sectionService.findById(Integer.parseInt(sectionName), isAdmin);
 
             if (section != null) {
-                data = questionService.findQuestionsFromSection(sectionName, isAdmin);
+                dataList = questionService.findQuestionsFromSection(section.getId(), isAdmin);
                 content.setRequestAttribute(ATTR_SECTION, section);
             }
             else {
-                content.setRequestAttribute(ATTR_ERROR, SECTION_ERROR_NO_SUCH);
+                content.setRequestAttribute(ATTR_SERVER_ERROR, SECTION_ERROR_NO_SUCH);
             }
         } catch (ServiceException e) {
             LOG.error(e);
+            content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
         }
 
-        return data;
+        return dataList;
     }
 }

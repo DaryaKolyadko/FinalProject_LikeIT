@@ -1,18 +1,17 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.content.RequestContent;
-import com.kolyadko.likeit.memorycontainer.impl.TextMemoryContainer;
 import com.kolyadko.likeit.service.impl.QuestionService;
-import com.kolyadko.likeit.type.MemoryContainerType;
+import com.kolyadko.likeit.util.MappingManager;
+
+import java.util.ArrayList;
 
 /**
  * Created by DaryaKolyadko on 13.08.2016.
  */
 public abstract class ShowQuestionListCommand extends ShowDefaultContentCommand {
     protected static final String ATTR_LIST_TYPE = "listType";
-    protected static final String ATTR_QUEST_LIST = "questionsList";
-    protected static final String ATTR_SECTION_LIST = "sectionsList";
-    protected static final String ATTR_AUTHORS_LIST = "authorsList";
+    protected static final String ATTR_QUEST_DATA_LIST = "questionDataList";
 
     private String ATTR_LIST_TYPE_VAL;
 
@@ -21,20 +20,18 @@ public abstract class ShowQuestionListCommand extends ShowDefaultContentCommand 
         this.ATTR_LIST_TYPE_VAL = listType;
     }
 
-    protected abstract QuestionService.QuestionListData serviceCall(RequestContent content);
+    protected abstract ArrayList<QuestionService.QuestionData> serviceCall(RequestContent content);
 
     @Override
     public String execute(RequestContent content) {
-        content.setSessionAttribute(ATTR_LIST_TYPE, new TextMemoryContainer(ATTR_LIST_TYPE_VAL,
-                MemoryContainerType.ONE_OFF));
-        QuestionService.QuestionListData data = serviceCall(content);
+        content.setRequestAttribute(ATTR_LIST_TYPE, ATTR_LIST_TYPE_VAL);
+        ArrayList<QuestionService.QuestionData> dataList = serviceCall(content);
 
-        if (data != null) {
-            content.setRequestAttribute(ATTR_QUEST_LIST, data.getQuestions());
-            content.setRequestAttribute(ATTR_SECTION_LIST, data.getSections());
-            content.setRequestAttribute(ATTR_AUTHORS_LIST, data.getUsers());
+        if (dataList == null) {
+            return MappingManager.getInstance().getProperty(MappingManager.ERROR_PAGE_500);
         }
 
+        content.setRequestAttribute(ATTR_QUEST_DATA_LIST, dataList);
         return super.execute(content);
     }
 }

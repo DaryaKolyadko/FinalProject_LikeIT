@@ -8,88 +8,104 @@
     <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/bootstrap.min.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/font-awesome.min.css"/>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/lib/jquery.min.js"></script>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrap.min.js"></script>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/languages.min.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbarOrange.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/questionList.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
         <link rel="icon" href="${pageContext.servletContext.contextPath}/resources/img/logo_icon.ico"/>
-        <title><fmt:message key="${listType.text}"/> <fmt:message key="questions"/></title>
+        <title><fmt:message key="${listType}"/> <fmt:message key="questions"/></title>
     </head>
     <body>
     <%@include file="/jsp/include/menu.jsp" %>
     <script type="text/javascript">
-        selectMenuItem('#menu_${listType.text}')
+        selectMenuItem('#menu_${listType}')
     </script>
     <div class="container-fluid text-center main-wrapper">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-9 col-lg-offset-1 text-left">
                 <c:choose>
-                    <c:when test="${not empty sectionError}">
-                        <div><h2><fmt:message key="${sectionError}"/> '${param.section}'</h2></div>
+                    <c:when test="${not empty serverError}">
+                        <div><h2><fmt:message key="${serverError}"/></h2></div>
                     </c:when>
                     <c:otherwise>
                         <div class="list-header">
-                            <div>
-                                <small class="list-type"><fmt:message key="${listType.text}"/>
-                                    <c:choose>
-                                        <c:when test="${not empty currentSection}">
-                                            <small class="none-transform">
-                                                "${currentSection.name}"
-                                            </small>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <fmt:message key="questions"/>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </small>
-                                <a href="createQuestion.html" type="button"
-                                   class="btn btn-primary ask-button"><fmt:message
+                            <small class="list-type"><fmt:message key="${listType}"/>
+                                <c:choose>
+                                    <c:when test="${not empty currentSection}">
+                                        <small class="none-transform">
+                                            "${currentSection.name}"
+                                        </small>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <fmt:message key="questions"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </small>
+                            <ctm:authenticatedOnly>
+                                <a href="<c:url value="/CreateQuestion"/>" type="button"
+                                   class="btn btn-primary ask-button"><i class="fa fa-question"></i> <fmt:message
                                         key="button.ask"/></a>
-                            </div>
+                            </ctm:authenticatedOnly>
                         </div>
                         <hr>
                         <c:choose>
-                            <c:when test="${empty questionsList}">
+                            <c:when test="${empty questionDataList}">
                                 <div><h2><fmt:message key="emptyList"/></h2></div>
                             </c:when>
                             <c:otherwise>
-                                <c:forEach items="${questionsList}" var="question" varStatus="questIter">
+                                <c:forEach items="${questionDataList}" var="data">
                                     <div class="question-post">
-                                        <h2><a class="question-title" href="question.html">${question.title}</a></h2>
+                                        <form id="question-title-${data.question.id}"
+                                              action="<c:url value="/Question"/>"
+                                              hidden>
+                                            <input value="${data.question.id}" name="question">
+                                        </form>
+                                        <h2>
+                                            <a href="#" class="question-title"
+                                               onclick="document.getElementById('question-title-${data.question.id}').submit()">${data.question.title}</a>
+                                        </h2>
                                         <h5 class="section-label"><span class="label"
-                                                                        style="background-color: #${sectionsList[questIter.index].labelColor}">
-                                                ${sectionsList[questIter.index].name}
+                                                                        style="background-color: #${data.section.labelColor}">
+                                                ${data.section.name}
                                         </span>
                                         </h5>
                                         <h5><span class="glyphicon glyphicon-time"></span> <fmt:message key="askedBy"/>
-                                            <form id="profile-${question.authorId}" action="<c:url value="/Profile"/>"
+                                            <form id="profile-${data.question.authorId}"
+                                                  action="<c:url value="/Profile"/>"
                                                   hidden>
-                                                <input value="${question.authorId}" name="login">
+                                                <input value="${data.question.authorId}" name="login">
                                             </form>
                                             <a href="#"
-                                               onclick="document.getElementById('profile-${question.authorId}').submit()">
-                                                    ${authorsList[questIter.index].firstName}
-                                                    ${authorsList[questIter.index].lastName}</a>
+                                               onclick="document.getElementById('profile-${data.question.authorId}').submit()">
+                                                    ${data.user.firstName}
+                                                    ${data.user.lastName}</a>
                                             <fmt:formatDate type="both" timeStyle="short"
-                                                            value="${question.creationDate}"/>
+                                                            value="${data.question.creationDate}"/>
                                         </h5>
                                         <br>
-                                        <p>
+                                        <div>
                                             <c:choose>
-                                                <c:when test="${fn:length(question.text) > 200}">
-                                                    ${fn:substring(question.text, 0, 200)}... <a
-                                                        href="question.html"><fmt:message
-                                                        key="link.readMore"/></a>
+                                                <c:when test="${fn:length(data.question.text) > 200}">
+                                                    <form id="question-${data.question.id}"
+                                                          action="<c:url value="/Question"/>"
+                                                          hidden>
+                                                        <input value="${data.question.id}" name="question">
+                                                    </form>
+                                                    ${fn:substring(data.question.text, 0, 200)}...
+                                                    <a href="#"
+                                                       onclick="document.getElementById('question-${data.question.id}').submit()">
+                                                        <fmt:message key="link.readMore"/></a>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    ${question.text}
+                                                    ${data.question.text}
                                                 </c:otherwise>
                                             </c:choose>
-                                        </p>
+                                        </div>
                                         <hr>
                                     </div>
                                 </c:forEach>
