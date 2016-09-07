@@ -1,0 +1,20 @@
+question\comment set mark 
+triggers on change\add mark
+comment as answer
+need triggers to support answer_num // may be delete it... than square green scale block need to be deleted from home page =(
+triggers for rating
+comment add\edit\delete
+show commands with allowAction(..) VS auth filter
+exceptions + text
+javadoc for ConnectionPool, AbstractDao, AbstractService and other where necessary
+tests
+
+SLICK MOMENTS:
+user manage (ban\active)  // trouble with "outdated" object in session
+jsp/home.jsp s welcome .... delete index.jsp?
+get param abraakadabra
+dao and service singleton/static methods
+
+DELETE:
+My Questions button on profile
+edit user password

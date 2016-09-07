@@ -33,14 +33,6 @@
                         <a href="<c:url value="/TOP"/>"> <fmt:message key="top"/></a>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group has-feedback">
-                        <label for="search-input" class="sr-only"><fmt:message key="search"/></label>
-                        <input id="search-input" type="text" class="form-control"
-                               placeholder="<fmt:message key="search"/>"/>
-                        <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                    </div>
-                </form>
                 <ul class="nav navbar-nav navbar-right">
                     <c:choose>
                         <c:when test="${empty userContainer}">
@@ -83,10 +75,13 @@
                             <c:if test="${not empty param.question}">
                                 <input value="${param.question}" name="question">
                             </c:if>
+                            <c:if test="${not empty param.login}">
+                                <input value="${param.login}" name="login">
+                            </c:if>
                             <input value="ru_RU" name="locale">
                         </form>
-                        <a href="#" onclick="document.getElementById('ruForm').submit()"><span class="lang-sm"
-                                                                                               lang="ru"></span></a>
+                        <a href="#" onclick="document.getElementById('ruForm').submit()">
+                            <span class="lang-sm" lang="ru"></span></a>
                     </li>
                     <li>
                         <form id="enForm" action="${originUrl}" hidden>
@@ -98,6 +93,9 @@
                             </c:if>
                             <c:if test="${not empty param.question}">
                                 <input value="${param.question}" name="question">
+                            </c:if>
+                            <c:if test="${not empty param.login}">
+                                <input value="${param.login}" name="login">
                             </c:if>
                             <input value="en_US" name="locale">
                         </form>
