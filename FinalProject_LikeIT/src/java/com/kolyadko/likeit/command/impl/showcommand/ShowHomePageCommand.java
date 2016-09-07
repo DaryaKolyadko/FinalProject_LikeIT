@@ -1,10 +1,9 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.content.RequestContent;
+import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
-import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.SectionService;
-import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
 
@@ -21,7 +20,7 @@ public class ShowHomePageCommand extends ShowDefaultContentCommand {
     }
 
     @Override
-    public String execute(RequestContent content) {
+    public String execute(RequestContent content) throws CommandException {
         SectionService sectionService = new SectionService();
 
         try {
@@ -29,9 +28,7 @@ public class ShowHomePageCommand extends ShowDefaultContentCommand {
                     RequestContentUtil.isCurrentUserAdmin(content));
             content.setRequestAttribute(ATTR_SECTIONS_CATALOGUE, catalogue);
         } catch (ServiceException e) {
-            LOG.error(e);
-            content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
-            return MappingManager.getInstance().getProperty(MappingManager.ERROR_PAGE_500);
+            throw new CommandException(e);
         }
 
         return super.execute(content);

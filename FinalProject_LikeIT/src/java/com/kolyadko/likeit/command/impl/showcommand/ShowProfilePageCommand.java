@@ -2,10 +2,10 @@ package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.entity.User;
+import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.UserService;
-import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.validator.LoginValidator;
 
@@ -23,7 +23,7 @@ public class ShowProfilePageCommand extends ShowDefaultContentCommand {
     }
 
     @Override
-    public String execute(RequestContent content) {
+    public String execute(RequestContent content) throws CommandException {
         UserService userService = new UserService();
         String profileLogin = content.getRequestParameter(PARAM_PROFILE_LOGIN);
         ObjectMemoryContainer user = (ObjectMemoryContainer) content.getSessionAttribute(SESSION_ATTR_USER);
@@ -35,16 +35,15 @@ public class ShowProfilePageCommand extends ShowDefaultContentCommand {
 
         if (LoginValidator.isLoginValid(profileLogin)) {
             try {
-                User userProfile = userService.findById(profileLogin);
+                boolean archiveVisible = currentUser != null && currentUser.isAdmin();
+                User userProfile = userService.findById(profileLogin, archiveVisible);
 
-                if (userProfile != null && (!userProfile.isAdmin() || currentUser != null && currentUser.isAdmin())) {
+                if (userProfile != null) {
                     content.setRequestAttribute(ATTR_PROFILE, userProfile);
                     return super.execute(content);
                 }
             } catch (ServiceException e) {
-                LOG.error(e);
-                content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
-                return MappingManager.getInstance().getProperty(MappingManager.ERROR_PAGE_500);
+                throw new CommandException(e);
             }
         }
 

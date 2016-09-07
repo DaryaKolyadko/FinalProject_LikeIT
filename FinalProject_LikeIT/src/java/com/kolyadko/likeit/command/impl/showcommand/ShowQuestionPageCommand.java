@@ -1,11 +1,10 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.content.RequestContent;
+import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
-import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.CommentService;
 import com.kolyadko.likeit.service.impl.QuestionService;
-import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
 
@@ -23,7 +22,7 @@ public class ShowQuestionPageCommand extends ShowDefaultContentCommand {
     }
 
     @Override
-    public String execute(RequestContent content) {
+    public String execute(RequestContent content) throws CommandException {
         QuestionService questionService = new QuestionService();
         CommentService commentService = new CommentService();
         String questionId = content.getRequestParameter(PARAM_QUESTION);
@@ -32,7 +31,7 @@ public class ShowQuestionPageCommand extends ShowDefaultContentCommand {
             try {
                 String currentUserLogin = RequestContentUtil.getCurrentUserLogin(content);
                 QuestionService.QuestionData data = questionService.findQuestionData(Integer.parseInt(questionId),
-                        currentUserLogin);
+                        RequestContentUtil.isCurrentUserAdmin(content), currentUserLogin);
 
                 if (data != null) {
                     content.setRequestAttribute(ATTR_QUESTION, data);
@@ -41,9 +40,7 @@ public class ShowQuestionPageCommand extends ShowDefaultContentCommand {
                     return super.execute(content);
                 }
             } catch (ServiceException | NumberFormatException e) {
-                LOG.error(e);
-                content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
-                return MappingManager.getInstance().getProperty(MappingManager.ERROR_PAGE_500);
+                throw new CommandException(e);
             }
         }
 
