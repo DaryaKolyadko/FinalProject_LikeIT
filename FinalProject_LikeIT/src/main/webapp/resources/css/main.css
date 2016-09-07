@@ -235,12 +235,20 @@ footer:hover {
     }
 }
 
+.medium-top-padding {
+    padding-top: 5%;
+}
+
 .top-padding {
     padding-top: 1%;
 }
 
 .bottom-padding {
     padding-bottom: 1%;
+}
+
+.top-margin {
+    margin-top: 1%;
 }
 
 .right {
@@ -253,4 +261,40 @@ footer:hover {
 
 .fa {
     font-size: 18px;
+}
+
+.no-resize {
+    resize: none;
+}
+
+.restore-color {
+    color: #eea236 !important;
+}
+
+.delete-color {
+    color: red !important;
+}
+
+.edit-color {
+    color: #1d5e9e !important;
+}
+
+.small-left-margin {
+    margin-left: 10px;
+}
+
+.font-icon {
+    font-size: 18px;
+}
+
+.archive-label {
+    color: silver;
+}
+
+.button-bottom {
+    text-align: center;
+}
+
+.par-with-lines {
+    white-space:pre;
 }

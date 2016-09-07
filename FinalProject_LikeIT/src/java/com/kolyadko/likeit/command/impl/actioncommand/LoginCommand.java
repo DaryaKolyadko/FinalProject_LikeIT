@@ -1,8 +1,8 @@
 package com.kolyadko.likeit.command.impl.actioncommand;
 
-import com.kolyadko.likeit.command.Command;
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.entity.User;
+import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.memorycontainer.impl.ErrorMemoryContainer;
 import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
@@ -14,7 +14,7 @@ import com.kolyadko.likeit.validator.LoginValidator;
 /**
  * Created by DaryaKolyadko on 15.07.2016.
  */
-public class LoginCommand implements Command {
+public class LoginCommand extends ActionCommand {
     private static final String PARAM_LOGIN = "userLogin";
     private static final String PARAM_PASSWORD = "userPassword";
 
@@ -24,7 +24,7 @@ public class LoginCommand implements Command {
     private static final String LOGIN_ERROR_INVALID = "error.invalid";
 
 
-    public String execute(RequestContent content) {
+    public String execute(RequestContent content) throws CommandException {
         if (isInputDataValid(content)) {
             UserService userService = new UserService();
 
@@ -41,9 +41,7 @@ public class LoginCommand implements Command {
 
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(LOGIN_ERROR_INCORRECT));
             } catch (ServiceException e) {
-                LOG.error(e);
-                content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
-                return MappingManager.ERROR_PAGE_500;
+                throw new CommandException(e);
             }
         } else {
             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(LOGIN_ERROR_INVALID));
@@ -52,7 +50,8 @@ public class LoginCommand implements Command {
         return MappingManager.LOGIN_PAGE;
     }
 
-    private boolean isInputDataValid(RequestContent content) {
+    @Override
+    protected boolean isInputDataValid(RequestContent content) {
         return LoginValidator.isLoginValid(content.getRequestParameter(PARAM_LOGIN)) &&
                 LoginValidator.isPasswordValid(content.getRequestParameter(PARAM_PASSWORD));
     }

@@ -4,6 +4,8 @@ title {
 
 .list-type {
     text-transform: uppercase;
+    color: #808284;
+    display: inline;
 }
 
 .none-transform {
@@ -14,17 +16,6 @@ title {
 .question-post {
     margin-top: 30px;
     margin-bottom: 20px;
-}
-
-.question-title {
-    text-decoration: none;
-    color: black;
-}
-
-.question-title:hover {
-    text-decoration: none;
-    color: #e69126;
-    font-weight: bold;
 }
 
 .ask-button {
