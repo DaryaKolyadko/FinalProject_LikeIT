@@ -24,6 +24,10 @@ public class MappingManager {
     public static final String QUESTIONS_PAGE = "/LikeIT/Questions";
     public static final String QUESTION_PAGE = "/LikeIT/Question";
     public static final String CREATE_QUESTION_PAGE = "/LikeIT/CreateQuestion";
+    public static final String CREATE_SECTION_PAGE = "/LikeIT/CreateSection";
+    public static final String EDIT_SECTION_PAGE = "/LikeIT/EditSection";
+    public static final String EDIT_QUESTION_PAGE = "/LikeIT/EditQuestion";
+    public static final String EDIT_PROFILE_PAGE = "/LikeIT/EditProfile";
     public static final String USER_LIST_PAGE = "/LikeIT/Users";
     public static final String PROFILE_PAGE = "/LikeIT/Profile";
     public static final String ERROR_PAGE_404 = "/LikeIT/Error404";
@@ -46,18 +50,18 @@ public class MappingManager {
         }
     }
 
-    public static boolean changeConfigFile(String newConfigFile) {
-        managerSingleLock.lock();
-        boolean result = false;
-
-        if (manager == null) {
-            configFileName = newConfigFile;
-            result = true;
-        }
-
-        managerSingleLock.unlock();
-        return result;
-    }
+//    public static boolean changeConfigFile(String newConfigFile) {
+//        managerSingleLock.lock();
+//        boolean result = false;
+//
+//        if (manager == null) {
+//            configFileName = newConfigFile;
+//            result = true;
+//        }
+//
+//        managerSingleLock.unlock();
+//        return result;
+//    }
 
     public static MappingManager getInstance() {
         if (!initialized.get()) {

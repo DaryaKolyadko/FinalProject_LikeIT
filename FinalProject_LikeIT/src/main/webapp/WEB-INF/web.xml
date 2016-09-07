@@ -21,6 +21,10 @@
         <url-pattern>/Questions</url-pattern>
         <url-pattern>/Question</url-pattern>
         <url-pattern>/CreateQuestion</url-pattern>
+        <url-pattern>/CreateSection</url-pattern>
+        <url-pattern>/EditSection</url-pattern>
+        <url-pattern>/EditQuestion</url-pattern>
+        <url-pattern>/EditProfile</url-pattern>
         <url-pattern>/Error500</url-pattern>
         <url-pattern>/Error404</url-pattern>
     </servlet-mapping>
@@ -40,9 +44,23 @@
         </init-param>
     </filter>
 
+    <filter>
+        <filter-name>JspAccessFilter</filter-name>
+        <filter-class>com.kolyadko.likeit.filter.JspAccessFilter</filter-class>
+        <init-param>
+            <param-name>redirectTo</param-name>
+            <param-value>/Home</param-value>
+        </init-param>
+    </filter>
+
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>JspAccessFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
     </filter-mapping>
 
     <session-config>
@@ -51,7 +69,7 @@
     </session-config>
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>jsp/home.jsp</welcome-file>
     </welcome-file-list>
 
     <error-page>
@@ -65,7 +83,7 @@
     </error-page>
 
     <!--<error-page>-->
-        <!--<exception-type>java.lang.RuntimeException</exception-type>-->
-        <!--<location>/jsp/error.jsp</location>-->
+    <!--<exception-type>java.lang.RuntimeException</exception-type>-->
+    <!--<location>/jsp/error.jsp</location>-->
     <!--</error-page>-->
 </web-app>
