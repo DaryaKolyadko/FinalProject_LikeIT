@@ -23,8 +23,8 @@ public class ConnectionPool {
 
     private static AtomicBoolean initialized = new AtomicBoolean(false);
     private static Lock poolSingleLock = new ReentrantLock();
-    private BlockingQueue<ConnectionWrapper> connectionsAvailable;
-    private BlockingQueue<ConnectionWrapper> connectionsInUse;
+    private BlockingQueue<ConnectionProxy> connectionsAvailable;
+    private BlockingQueue<ConnectionProxy> connectionsInUse;
     private static ConnectionPool pool;
 
     private ConnectionPool() {
@@ -47,11 +47,11 @@ public class ConnectionPool {
 
         for (int i = 0; i < needConnectionsNumber; i++) {
             try {
-                ConnectionWrapper connectionWrapper = new ConnectionWrapper(DatabaseConnector.getConnection());
-                connectionWrapper.setAutoCommit(true);
-                connectionsAvailable.put(connectionWrapper);
+                ConnectionProxy connectionProxy = new ConnectionProxy(DatabaseConnector.getConnection());
+                connectionProxy.setAutoCommit(true);
+                connectionsAvailable.put(connectionProxy);
             } catch (DatabaseConnectorException | InterruptedException | SQLException e) {
-                LOG.error(e.getMessage());
+                LOG.error(e);
             }
         }
     }
@@ -77,32 +77,32 @@ public class ConnectionPool {
         return pool;
     }
 
-    public ConnectionWrapper getConnection() throws ConnectionPoolException {
-        ConnectionWrapper connectionWrapper;
+    public ConnectionProxy getConnection() throws ConnectionPoolException {
+        ConnectionProxy connectionProxy;
 
         try {
-            connectionWrapper = connectionsAvailable.take();
-            connectionsInUse.put(connectionWrapper);
+            connectionProxy = connectionsAvailable.take();
+            connectionsInUse.put(connectionProxy);
         } catch (InterruptedException e) {
-            throw new ConnectionPoolException(e.getMessage());
+            throw new ConnectionPoolException(e);
         }
 
-        return connectionWrapper;
+        return connectionProxy;
     }
 
-    public void closeConnection(ConnectionWrapper connectionWrapper) throws ConnectionPoolException {
-        boolean success = connectionsInUse.remove(connectionWrapper);
+    public void closeConnection(ConnectionProxy connectionProxy) throws ConnectionPoolException {
+        boolean success = connectionsInUse.remove(connectionProxy);
 
         try {
-            if (success && connectionWrapper.isValid(TIMEOUT_NOT_APPLIED)) {
-                connectionsAvailable.put(connectionWrapper);
+            if (success && connectionProxy.isValid(TIMEOUT_NOT_APPLIED)) {
+                connectionsAvailable.put(connectionProxy);
             } else {
-                ConnectionWrapper newConnection = new ConnectionWrapper(DatabaseConnector.getConnection());
+                ConnectionProxy newConnection = new ConnectionProxy(DatabaseConnector.getConnection());
                 newConnection.setAutoCommit(true);
                 connectionsAvailable.put(newConnection);
             }
         } catch (SQLException | DatabaseConnectorException | InterruptedException e) {
-            throw new ConnectionPoolException(e.getMessage());
+            throw new ConnectionPoolException(e);
         }
     }
 
@@ -110,24 +110,24 @@ public class ConnectionPool {
         if (initialized.get()) {
             initialized.set(false);
 
-            for (ConnectionWrapper connectionWrapper : connectionsAvailable) {
+            for (ConnectionProxy connectionProxy : connectionsAvailable) {
                 try {
-                    if (!connectionWrapper.getAutoCommit()) {
-                        connectionWrapper.setAutoCommit(true);
+                    if (!connectionProxy.getAutoCommit()) {
+                        connectionProxy.setAutoCommit(true);
                     }
 
-                    connectionWrapper.finallyClose();
-                    connectionsAvailable.remove(connectionWrapper);
+                    connectionProxy.finallyClose();
+                    connectionsAvailable.remove(connectionProxy);
                     LOG.info("closed successfully (available)");
                 } catch (SQLException e) {
                     LOG.warn("problem with connection closing (available)");
                 }
             }
 
-            for (ConnectionWrapper connectionWrapper : connectionsInUse) {
+            for (ConnectionProxy connectionProxy : connectionsInUse) {
                 try {
-                    connectionWrapper.finallyClose();
-                    connectionsInUse.remove(connectionWrapper);
+                    connectionProxy.finallyClose();
+                    connectionsInUse.remove(connectionProxy);
                     LOG.info("close successfully (inUse)");
                 } catch (SQLException e) {
                     LOG.warn("problem with connection closing (inUse)");

@@ -1,5 +1,7 @@
 package com.kolyadko.likeit.validator;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,20 +17,23 @@ public class SignUpValidator extends Validator {
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
     public static boolean isStringValid(String str) {
-        return isMatching(str, STRING_PATTERN);
+        return isMatching(str, STRING_PATTERN) && !StringUtils.isBlank(str);
     }
 
     public static boolean isEmailValid(String email) {
         return isMatching(email, EMAIL_PATTERN);
     }
 
-    // TODO evaluate it with different locales
     public static boolean isDateValid(String date) {
         try {
-            Date value = DATE_FORMAT.parse(date);
+            DATE_FORMAT.parse(date);
             return true;
         } catch (ParseException e) {
             return false;
         }
+    }
+
+    public static boolean isGenderValid(String gender) {
+        return gender != null && !StringUtils.isBlank(gender);
     }
 }

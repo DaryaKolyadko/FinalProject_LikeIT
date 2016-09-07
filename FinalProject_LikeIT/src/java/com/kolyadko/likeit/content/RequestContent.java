@@ -62,6 +62,10 @@ public class RequestContent {
         return getRequestParameters(parameterName) != null ? getRequestParameters(parameterName)[0] : null;
     }
 
+    public Map<String, String[]> getRequestParameters() {
+        return Collections.unmodifiableMap(requestParameters);
+    }
+
     public Object getSessionAttribute(String attributeName) {
         return sessionAttributes.get(attributeName);
     }
@@ -101,10 +105,10 @@ public class RequestContent {
         }
     }
 
-    public void copyParamsToRequestAttributes() {
-        for (Object o : requestParameters.entrySet()) {
-            Map.Entry<String, Object> pair = (Map.Entry) o;
-            requestAttributes.put(pair.getKey(), ((String[]) pair.getValue())[0]);
-        }
-    }
+//    public void copyParamsToRequestAttributes() {
+//        for (Object o : requestParameters.entrySet()) {
+//            Map.Entry<String, Object> pair = (Map.Entry) o;
+//            requestAttributes.put(pair.getKey(), ((String[]) pair.getValue())[0]);
+//        }
+//    }
 }
