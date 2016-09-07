@@ -11,8 +11,6 @@ public class Question extends Entity<Integer> {
     private String title;
     private String text;
     private Timestamp creationDate;
-    private byte version;
-    private Timestamp lastModify;
     private int commentNum;
     private int answerNum;
     private int markNum;
@@ -61,22 +59,6 @@ public class Question extends Entity<Integer> {
 
     public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public byte getVersion() {
-        return version;
-    }
-
-    public void setVersion(byte version) {
-        this.version = version;
-    }
-
-    public Timestamp getLastModify() {
-        return lastModify;
-    }
-
-    public void setLastModify(Timestamp lastModify) {
-        this.lastModify = lastModify;
     }
 
     public int getCommentNum() {

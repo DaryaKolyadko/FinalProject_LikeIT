@@ -2,7 +2,6 @@ package com.kolyadko.likeit.command.factory;
 
 import com.kolyadko.likeit.command.Command;
 import com.kolyadko.likeit.command.impl.actioncommand.EmptyCommand;
-import com.kolyadko.likeit.command.impl.showcommand.ShowCommand;
 import com.kolyadko.likeit.command.impl.showcommand.ShowDefaultContentCommand;
 import com.kolyadko.likeit.command.type.ShowCommandType;
 import com.kolyadko.likeit.content.RequestContent;

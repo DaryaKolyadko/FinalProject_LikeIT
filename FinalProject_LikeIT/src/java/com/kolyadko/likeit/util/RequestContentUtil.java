@@ -6,7 +6,6 @@ import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.type.RoleType;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by DaryaKolyadko on 30.07.2016.

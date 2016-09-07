@@ -4,30 +4,22 @@ package com.kolyadko.likeit.entity;
  * Created by DaryaKolyadko on 22.07.2016.
  */
 public class Section extends Entity<Integer> {
-    private int majorSectionId;
+    private Integer majorSectionId;
     private String name;
-    private int questionNum;
-    private int answerNum;
+    private Integer questionNum;
+    private Integer answerNum;
     private String labelColor;
-    private boolean archive;
+    private Boolean archive;
 
     public Section() {
         super(0);
     }
 
-    public boolean isArchive() {
-        return archive;
-    }
-
-    public void setArchive(boolean archive) {
-        this.archive = archive;
-    }
-
-    public int getMajorSectionId() {
+    public Integer getMajorSectionId() {
         return majorSectionId;
     }
 
-    public void setMajorSectionId(int majorSectionId) {
+    public void setMajorSectionId(Integer majorSectionId) {
         this.majorSectionId = majorSectionId;
     }
 
@@ -39,12 +31,20 @@ public class Section extends Entity<Integer> {
         this.name = name;
     }
 
-    public int getQuestionNum() {
+    public Integer getQuestionNum() {
         return questionNum;
     }
 
-    public void setQuestionNum(int questionNum) {
+    public void setQuestionNum(Integer questionNum) {
         this.questionNum = questionNum;
+    }
+
+    public Integer getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(Integer answerNum) {
+        this.answerNum = answerNum;
     }
 
     public String getLabelColor() {
@@ -55,11 +55,15 @@ public class Section extends Entity<Integer> {
         this.labelColor = labelColor;
     }
 
-    public int getAnswerNum() {
-        return answerNum;
+    public Boolean getArchive() {
+        return archive;
     }
 
-    public void setAnswerNum(int answerNum) {
-        this.answerNum = answerNum;
+    public void setArchive(Boolean archive) {
+        this.archive = archive;
+    }
+
+    public boolean isMajor() {
+        return majorSectionId == null || majorSectionId == 0;
     }
 }

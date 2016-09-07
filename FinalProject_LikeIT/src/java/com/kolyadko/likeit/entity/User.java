@@ -11,7 +11,6 @@ import java.sql.Date;
  * Created by DaryaKolyadko on 15.07.2016.
  */
 public class User extends Entity<String> {
-    private int avatarId;
     private String firstName;
     private String lastName;
     private GenderType gender;
@@ -19,7 +18,6 @@ public class User extends Entity<String> {
     private Date birthDate;
     private Date signUpDate;
     private String email;
-    private boolean emailConfirmed;
     private RoleType role = RoleType.USER;
     private StateType state = StateType.ACTIVE;
     private float rating;
@@ -38,14 +36,6 @@ public class User extends Entity<String> {
 
     public boolean isActive() {
         return state == StateType.ACTIVE;
-    }
-
-    public int getAvatarId() {
-        return avatarId;
-    }
-
-    public void setAvatarId(int avatarId) {
-        this.avatarId = avatarId;
     }
 
     public String getFirstName() {
@@ -102,14 +92,6 @@ public class User extends Entity<String> {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public boolean isEmailConfirmed() {
-        return emailConfirmed;
-    }
-
-    public void setEmailConfirmed(boolean emailConfirmed) {
-        this.emailConfirmed = emailConfirmed;
     }
 
     public RoleType getRole() {
