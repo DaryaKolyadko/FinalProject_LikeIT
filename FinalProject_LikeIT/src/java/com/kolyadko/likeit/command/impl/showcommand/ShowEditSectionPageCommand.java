@@ -4,29 +4,26 @@ import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.entity.Section;
 import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
-import com.kolyadko.likeit.service.impl.QuestionService;
 import com.kolyadko.likeit.service.impl.SectionService;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
 
 /**
- * Created by DaryaKolyadko on 24.08.2016.
+ * Created by DaryaKolyadko on 28.07.2016.
  */
-public class ShowSectionQuestPageCommand extends ShowQuestionListCommand {
-    private static final String ATTR_LIST_TYPE_VAL = "fromSection";
+public class ShowEditSectionPageCommand extends ShowDefaultContentCommand {
     private static final String PARAM_SECTION = "section";
-    private static final String ATTR_SECTION = "currentSection";
+    private static final String ATTR_SECTION = "sectionToEdit";
     private static final String SECTION_ERROR_NO_SUCH = "error.noSuchSection";
+    protected static final String SESSION_ATTR_ERROR = "actionError";
 
-    public ShowSectionQuestPageCommand() {
-        super(MappingManager.QUESTIONS_PAGE, ATTR_LIST_TYPE_VAL);
+    public ShowEditSectionPageCommand() {
+        super(MappingManager.EDIT_SECTION_PAGE);
     }
 
     @Override
-    protected QuestionService.QuestionListWrapper serviceCall(RequestContent content, int page) throws CommandException {
-        QuestionService questionService = new QuestionService();
+    public String execute(RequestContent content) throws CommandException {
         SectionService sectionService = new SectionService();
-        QuestionService.QuestionListWrapper dataList = null;
 
         try {
             String sectionId = content.getRequestParameter(PARAM_SECTION);
@@ -34,15 +31,18 @@ public class ShowSectionQuestPageCommand extends ShowQuestionListCommand {
             Section section = sectionService.findById(Integer.parseInt(sectionId), isAdmin);
 
             if (section != null) {
-                dataList = questionService.findQuestionsFromSection(section.getId(), page, isAdmin);
-                content.setRequestAttribute(ATTR_SECTION, section);
+                Object afterError = content.getSessionAttribute(SESSION_ATTR_ERROR);
+
+                if (afterError == null) {
+                    content.setRequestAttribute(ATTR_SECTION, section);
+                }
             } else {
                 content.setRequestAttribute(ATTR_SERVER_ERROR, SECTION_ERROR_NO_SUCH);
             }
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
 
-        return dataList;
+        return super.execute(content);
     }
 }

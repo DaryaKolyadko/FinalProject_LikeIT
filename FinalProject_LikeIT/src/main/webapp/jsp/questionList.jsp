@@ -34,18 +34,18 @@
                     </c:when>
                     <c:otherwise>
                         <div class="list-header">
-                            <small class="list-type"><fmt:message key="${listType}"/>
+                            <h4 class="list-type"><fmt:message key="${listType}"/>
                                 <c:choose>
                                     <c:when test="${not empty currentSection}">
-                                        <small class="none-transform">
+                                        <span class="none-transform">
                                             "${currentSection.name}"
-                                        </small>
+                                        </span>
                                     </c:when>
                                     <c:otherwise>
                                         <fmt:message key="questions"/>
                                     </c:otherwise>
                                 </c:choose>
-                            </small>
+                            </h4>
                             <ctm:authenticatedOnly>
                                 <a href="<c:url value="/CreateQuestion"/>" type="button"
                                    class="btn btn-primary ask-button"><i class="fa fa-question"></i> <fmt:message
@@ -61,16 +61,17 @@
                                 <c:forEach items="${questionDataList}" var="data">
                                     <div class="question-post">
                                         <form id="question-title-${data.question.id}"
-                                              action="<c:url value="/Question"/>"
-                                              hidden>
+                                              action="<c:url value="/Question"/>" hidden>
                                             <input value="${data.question.id}" name="question">
                                         </form>
                                         <h2>
-                                            <a href="#" class="question-title"
-                                               onclick="document.getElementById('question-title-${data.question.id}').submit()">${data.question.title}</a>
+                                            <a href="#"
+                                               onclick="$('#question-title-${data.question.id}').submit()">${data.question.title}</a>
+                                            <c:if test="${data.question.archive eq true}">
+                                                <span class="archive-label">(<fmt:message key="label.archive"/>)</span>
+                                            </c:if>
                                         </h2>
-                                        <h5 class="section-label"><span class="label"
-                                                                        style="background-color: #${data.section.labelColor}">
+                                        <h5><span class="label" style="background-color: #${data.section.labelColor}">
                                                 ${data.section.name}
                                         </span>
                                         </h5>
@@ -81,31 +82,27 @@
                                                 <input value="${data.question.authorId}" name="login">
                                             </form>
                                             <a href="#"
-                                               onclick="document.getElementById('profile-${data.question.authorId}').submit()">
+                                               onclick="$('#profile-${data.question.authorId}').submit()">
                                                     ${data.user.firstName}
                                                     ${data.user.lastName}</a>
                                             <fmt:formatDate type="both" timeStyle="short"
                                                             value="${data.question.creationDate}"/>
                                         </h5>
                                         <br>
-                                        <div>
+                                        <p>
                                             <c:choose>
                                                 <c:when test="${fn:length(data.question.text) > 200}">
-                                                    <form id="question-${data.question.id}"
-                                                          action="<c:url value="/Question"/>"
-                                                          hidden>
-                                                        <input value="${data.question.id}" name="question">
-                                                    </form>
-                                                    ${fn:substring(data.question.text, 0, 200)}...
-                                                    <a href="#"
-                                                       onclick="document.getElementById('question-${data.question.id}').submit()">
-                                                        <fmt:message key="link.readMore"/></a>
+                                                    <ctm:newLineFormat
+                                                            text="${fn:substring(data.question.text, 0, 200)}"/>...
                                                 </c:when>
                                                 <c:otherwise>
-                                                    ${data.question.text}
+                                                    <ctm:newLineFormat text="${data.question.text}"/>
                                                 </c:otherwise>
                                             </c:choose>
-                                        </div>
+                                            <a href="#"
+                                               onclick="$('#question-title-${data.question.id}').submit()">
+                                                <fmt:message key="link.readMore"/></a>
+                                        </p>
                                         <hr>
                                     </div>
                                 </c:forEach>
@@ -115,25 +112,63 @@
                 </c:choose>
                 <nav class="text-center">
                     <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
+                        <c:if test="${currentPage != 1}">
+                            <li class="page-item" id="previous">
+                                <form id="page-previous" action="${originUrl}" hidden>
+                                    <input name="page" value="${currentPage-1}">
+                                    <c:if test="${not empty param.section}">
+                                        <input value="${param.section}" name="section">
+                                    </c:if>
+                                </form>
+                                <a class="page-link" onclick="$('#page-previous').submit()"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        </c:if>
+                        <c:set value="1" var="shift"/>
+                        <c:set value="${numOfPages}" var="intermediate"/>
+                        <c:if test="${currentPage+shift lt numOfPages}">
+                            <c:set value="${currentPage+shift}" var="intermediate"/>
+                        </c:if>
+                        <c:forEach begin="${currentPage}" end="${intermediate}" var="i">
+                            <c:choose>
+                                <c:when test="${currentPage eq i}">
+                                    <li class="page-item active">
+                                        <a class="page-link">${i}</a>
+                                    </li>
+                                </c:when>
+                                <c:otherwise>
+                                    <form id="page-${i}" action="${originUrl}" hidden>
+                                        <input name="page" value="${i}">
+                                        <c:if test="${not empty param.section}">
+                                            <input value="${param.section}" name="section">
+                                        </c:if>
+                                    </form>
+                                    <li class="page-item"><a class="page-link"
+                                                             onclick="$('#page-${i}').submit()">${i}</a></li>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+
+                        <c:if test="${intermediate ne numOfPages}">
+                            <li class="page-item"><a class="page-link">...</a></li>
+                        </c:if>
+
+                        <c:if test="${currentPage lt numOfPages}">
+                            <li class="page-item">
+                                <form id="page-next" action="${originUrl}" hidden>
+                                    <input name="page" value="${currentPage+1}">
+                                    <c:if test="${not empty param.section}">
+                                        <input value="${param.section}" name="section">
+                                    </c:if>
+                                </form>
+                                <a class="page-link" onclick="$('#page-next').submit()" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </c:if>
                     </ul>
                 </nav>
             </div>
