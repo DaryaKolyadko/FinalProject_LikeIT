@@ -1,20 +1,35 @@
 var stringPattern = '^[A-Za-z \pL{А-я}]+$';
 var loginPattern = '^[A-Za-z][_A-Za-z0-9-\.]{2,24}$';
-var passwordPattern = '^[_A-Za-z0-9-\.]{3,24}$';
+//var passwordPattern = '^[_A-Za-z0-9-\.]{3,24}$';
 var emailPattern = '^[A-Za-z][_A-Za-z0-9-\.]*@([A-Za-z]+\.)[A-Za-z]{2,4}$';
 
 $(document).ready(function () {
+    //$('#edit-profile-submit').click(function(e) {
+    //    $('#password-fields input').prop('required', false).each(function() {
+    //        !$(this).val() || $('#password-fields input').prop('required', true);
+    //        $('#edit-profile-form').bootstrapValidator('revalidateField', this.name);
+    //    });
+    //});
+
     $('#birthday-picker').datepicker({
         format: 'mm/dd/yyyy',
         autoclose: true,
         endDate: '0d',
         language: $('#birthday-picker').attr('data-locale')
     }).on('changeDate', function (e) {
-        $('#sign-up-form').bootstrapValidator('revalidateField', 'birthDate');
+        $('#edit-profile-form').bootstrapValidator('revalidateField', 'birthDate');
     });
 
+    var gender = $('#gender-choice').attr('data-new-value');
 
-    $('#sign-up-form').bootstrapValidator({
+    if (gender) {
+        $('#gender-choice').val(gender);
+        $('#gender-choice').selectpicker('refresh');
+        $('#gender-choice').change();
+    }
+
+
+    $('#edit-profile-form').bootstrapValidator({
         framework: 'bootstrap',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -67,31 +82,44 @@ $(document).ready(function () {
                     }
                 }
             },
-            userPassword: {
-                validators: {
-                    regexp: {
-                        regexp: passwordPattern,
-                        message: 'Password is invalid'
-                    },
-                    stringLength: {
-                        min: 3,
-                        max: 30,
-                        message: 'Password must be more than 3 and less than 30 characters long'
-                    },
-                    identical: {
-                        field: 'userConfirmPassword',
-                        message: 'The password and its confirm are not the same'
-                    }
-                }
-            },
-            userConfirmPassword: {
-                validators: {
-                    identical: {
-                        field: 'userPassword',
-                        message: 'The password and its confirm are not the same'
-                    }
-                }
-            },
+            //oldUserPassword: {
+            //    validators: {
+            //        regexp: {
+            //            regexp: passwordPattern,
+            //            message: 'Password is invalid'
+            //        },
+            //        stringLength: {
+            //            min: 3,
+            //            max: 30,
+            //            message: 'Password must be more than 3 and less than 30 characters long'
+            //        }
+            //    }
+            //},
+            //userPassword: {
+            //    validators: {
+            //        regexp: {
+            //            regexp: passwordPattern,
+            //            message: 'Password is invalid'
+            //        },
+            //        stringLength: {
+            //            min: 3,
+            //            max: 30,
+            //            message: 'Password must be more than 3 and less than 30 characters long'
+            //        },
+            //        identical: {
+            //            field: 'userConfirmPassword',
+            //            message: 'The password and its confirm are not the same'
+            //        }
+            //    }
+            //},
+            //userConfirmPassword: {
+            //    validators: {
+            //        identical: {
+            //            field: 'userPassword',
+            //            message: 'The password and its confirm are not the same'
+            //        }
+            //    }
+            //},
             gender: {
                 validators: {
                     notEmpty: {

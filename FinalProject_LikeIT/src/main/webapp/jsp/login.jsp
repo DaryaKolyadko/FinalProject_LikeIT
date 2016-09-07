@@ -29,7 +29,7 @@
     <div class="container-fluid text-center main-wrapper">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-9 col-lg-offset-1 text-left">
-                <div class="form-wrap" id="login">
+                <div class="form-wrap medium-top-padding">
                     <div class="form-main-title"><fmt:message key="formHeader"/></div>
                     <c:if test="${not empty loginError}">
                         <div class="alert alert-danger">

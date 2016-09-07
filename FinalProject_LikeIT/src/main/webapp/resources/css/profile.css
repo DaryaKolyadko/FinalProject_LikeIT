@@ -21,7 +21,3 @@
 .profile {
     text-transform: capitalize;
 }
-
-.glyphicon-envelope:hover {
-    cursor: pointer;
-}

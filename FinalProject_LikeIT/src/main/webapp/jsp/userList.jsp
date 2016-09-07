@@ -33,14 +33,6 @@
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-9 col-lg-offset-1 text-left">
             <div class="row">
-                <div class="col-md-4 col-sm-7">
-                    <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group has-feedback">
-                            <input type="text" class="form-control userSearch" placeholder="Search by name"/>
-                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                        </div>
-                    </form>
-                </div>
                 <div class="col-md-4 col-sm-7 text-center">
                     <div class="btn-group" id="filter-group">
                         <button type="button" class="btn btn-success btn-filter" data-target="active">Active

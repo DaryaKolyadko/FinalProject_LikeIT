@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${locale.text}"/>
 <fmt:bundle basename="likeit" prefix="signUp.">
@@ -13,6 +14,7 @@
               href="${pageContext.servletContext.contextPath}/resources/css/lib/bootstrapValidator.min.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrapValidator.min.js"></script>
         <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrap-datepicker.min.js"></script>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrap-datepicker.ru.js"></script>
         <link rel="stylesheet"
               href="${pageContext.servletContext.contextPath}/resources/css/lib/datepicker3.min.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/languages.min.css"/>
@@ -32,7 +34,7 @@
     <div class="container-fluid text-center main-wrapper">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-9 col-lg-offset-1 text-left">
-                <div class="form-wrap" id="signUp">
+                <div class="form-wrap medium-top-padding">
                     <div class="form-main-title "><fmt:message key="formHeader"/></div>
                     <c:if test="${not empty signUpError}">
                         <div class="alert alert-danger">
@@ -85,7 +87,8 @@
                                    value="${uncompleted.passwordConfirmation}" required/>
                         </div>
                         <div class="form-group">
-                            <div class="input-group date" id="birthday-picker" data-provide="datepicker">
+                            <div class="input-group date" id="birthday-picker" data-provide="datepicker"
+                            data-locale="${fn:substring(locale.text, 0, 2)}">
                                 <label for="picker" class="sr-only"><fmt:message key="label.birthDate"/></label>
                                 <input type="text" id="picker" class="form-control"
                                        placeholder="<fmt:message key="label.birthDate"/>"
@@ -100,15 +103,15 @@
                                 <label class="sr-only" for="gender-choice"><fmt:message key="label.gender"/></label>
                                 <div class="col-xs-12 text-center">
                                     <div id="gender-choice" class="btn-group" data-toggle="buttons">
-                                        <label class="btn btn-default">
+                                        <label class="btn btn-default" id="btn-male">
                                             <input type="radio" name="gender" value="male"/> <fmt:message
                                                 key="gender.male"/>
                                         </label>
-                                        <label class="btn btn-default">
+                                        <label class="btn btn-default" id="btn-female">
                                             <input type="radio" name="gender" value="female"/> <fmt:message
                                                 key="gender.female"/>
                                         </label>
-                                        <label class="btn btn-default">
+                                        <label class="btn btn-default" id="btn-other">
                                             <input type="radio" name="gender" value="other"/> <fmt:message
                                                 key="gender.other"/>
                                         </label>

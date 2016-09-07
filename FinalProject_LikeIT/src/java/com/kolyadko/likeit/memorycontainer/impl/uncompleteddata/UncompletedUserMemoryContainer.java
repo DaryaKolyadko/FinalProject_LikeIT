@@ -1,4 +1,4 @@
-package com.kolyadko.likeit.memorycontainer.impl;
+package com.kolyadko.likeit.memorycontainer.impl.uncompleteddata;
 
 import com.kolyadko.likeit.memorycontainer.MemoryContainer;
 import com.kolyadko.likeit.type.MemoryContainerType;
@@ -14,6 +14,7 @@ public class UncompletedUserMemoryContainer extends MemoryContainer {
     private String passwordConfirmation;
     private String birthDate;
     private String email;
+    private String gender;
 
     public UncompletedUserMemoryContainer() {
         containerType = MemoryContainerType.ONE_OFF;
@@ -73,5 +74,13 @@ public class UncompletedUserMemoryContainer extends MemoryContainer {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
