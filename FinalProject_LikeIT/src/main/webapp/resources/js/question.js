@@ -39,3 +39,7 @@ function generateQuestionJRate(a, b) {
 
     $("#rating-q-" + a + "-value").text(b);
 }
+
+$(document).ready(function () {
+    $('[data-tool="tooltip"]').tooltip();
+});

@@ -1,13 +1,10 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.content.RequestContent;
+import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
-import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.QuestionService;
-import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
-
-import java.util.ArrayList;
 
 /**
  * Created by DaryaKolyadko on 13.08.2016.
@@ -20,17 +17,13 @@ public class ShowTopQuestPageCommand extends ShowQuestionListCommand {
     }
 
     @Override
-    public ArrayList<QuestionService.QuestionData> serviceCall(RequestContent content) {
+    public QuestionService.QuestionListWrapper serviceCall(RequestContent content, int page) throws CommandException {
         QuestionService questionService = new QuestionService();
-        ArrayList<QuestionService.QuestionData> dataList = null;
 
         try {
-            dataList = questionService.findTopQuestions();
+            return questionService.findTopQuestionsOnPage(page);
         } catch (ServiceException e) {
-            LOG.error(e);
-            content.setSessionAttribute(EXCEPTION, new ObjectMemoryContainer(e, MemoryContainerType.ONE_OFF));
+            throw new CommandException(e);
         }
-
-        return dataList;
     }
 }

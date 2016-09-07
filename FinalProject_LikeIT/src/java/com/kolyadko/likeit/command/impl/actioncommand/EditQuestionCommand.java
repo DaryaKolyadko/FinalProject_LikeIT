@@ -15,50 +15,59 @@ import com.kolyadko.likeit.validator.QuestionActionValidator;
 import com.kolyadko.likeit.validator.Validator;
 
 /**
- * Created by DaryaKolyadko on 26.08.2016.
+ * Created by DaryaKolyadko on 29.08.2016.
  */
-public class CreateQuestionCommand extends ActionCommand {
+public class EditQuestionCommand extends ActionCommand {
+    private static final String PARAM_QUESTION_ID = "question";
     private static final String PARAM_SECTION_ID = "sectionId";
     private static final String PARAM_TITLE = "title";
     private static final String PARAM_TEXT = "text";
+    private static final String PARAM_AUTHOR = "authorId";
 
     private static final String SESSION_ATTR_UNCOMPLETED = "uncompleted";
-    private static final String CREATE_QUESTION_ERROR_CHECK = "error.checkForm";
-    private static final String CREATE_SUCCESS = "info.createQuestion.success";
-    private static final String CREATE_PROBLEM = "info.createQuestion.problem";
+    private static final String EDIT_QUESTION_ERROR_CHECK = "error.checkForm";
+    private static final String EDIT_SUCCESS = "info.editQuestion.success";
+    private static final String EDIT_PROBLEM = "info.editQuestion.problem";
 
     @Override
     public String execute(RequestContent content) throws CommandException {
         if (isAllowedAction(content)) {
-            UncompletedQuestionMemoryContainer container = initUncompletedSection(content);
+            UncompletedQuestionMemoryContainer container = initUncompletedQuestion(content);
 
             if (isInputDataValid(content)) {
                 try {
                     QuestionService questionService = new QuestionService();
-                    Question question = new Question();
-                    question.setAuthorId(RequestContentUtil.getCurrentUserLogin(content));
-                    question.setSectionId(Integer.parseInt(container.getSectionId()));
-                    question.setTitle(container.getTitle());
-                    question.setText(container.getText());
+                    int questionId = Integer.parseInt(content.getRequestParameter(PARAM_QUESTION_ID));
+                    Question question = questionService.findById(questionId, RequestContentUtil.isCurrentUserAdmin(content));
 
-                    if (questionService.create(question)) {
-                        content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(CREATE_SUCCESS, MemoryContainerType.ONE_OFF));
-                        return MappingManager.HOME_PAGE;
-                    } else {
-                        content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(CREATE_PROBLEM));
+                    if (question != null) {
+                        question.setSectionId(Integer.parseInt(container.getSectionId()));
+                        question.setTitle(container.getTitle());
+                        question.setText(container.getText());
+
+                        if (questionService.updateQuestion(question)) {
+                            content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(EDIT_SUCCESS, MemoryContainerType.ONE_OFF));
+                        } else {
+                            content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_PROBLEM));
+                        }
+
+                        return MappingManager.QUESTION_PAGE + RequestContentUtil.getParamAsQueryString(content,
+                                PARAM_QUESTION_ID);
                     }
                 } catch (ServiceException e) {
                     throw new CommandException(e);
                 }
             } else {
-                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(CREATE_QUESTION_ERROR_CHECK));
+                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_QUESTION_ERROR_CHECK));
             }
 
             content.setSessionAttribute(SESSION_ATTR_UNCOMPLETED, container);
-            return MappingManager.CREATE_QUESTION_PAGE;
+            return MappingManager.EDIT_QUESTION_PAGE + RequestContentUtil.getParamAsQueryString(content,
+                    PARAM_QUESTION_ID);
+        } else {
+            content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(NOT_ALLOWED));
         }
 
-        content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(NOT_ALLOWED));
         return MappingManager.HOME_PAGE;
     }
 
@@ -69,16 +78,17 @@ public class CreateQuestionCommand extends ActionCommand {
                 QuestionActionValidator.isTextValid(content.getRequestParameter(PARAM_TEXT));
     }
 
-    private UncompletedQuestionMemoryContainer initUncompletedSection(RequestContent content) {
+    @Override
+    protected boolean isAllowedAction(RequestContent content) {
+        return allowedAction(content, content.getRequestParameter(PARAM_AUTHOR));
+    }
+
+    private UncompletedQuestionMemoryContainer initUncompletedQuestion(RequestContent content) {
         UncompletedQuestionMemoryContainer memoryContainer = new UncompletedQuestionMemoryContainer();
+        memoryContainer.setAuthorId(content.getRequestParameter(PARAM_AUTHOR));
         memoryContainer.setSectionId(content.getRequestParameter(PARAM_SECTION_ID));
         memoryContainer.setTitle(content.getRequestParameter(PARAM_TITLE));
         memoryContainer.setText(content.getRequestParameter(PARAM_TEXT));
         return memoryContainer;
-    }
-
-    @Override
-    protected boolean isAllowedAction(RequestContent content) {
-        return RequestContentUtil.isAuthenticated(content) && RequestContentUtil.isActive(content);
     }
 }
