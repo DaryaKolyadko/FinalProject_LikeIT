@@ -1,6 +1,7 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.content.RequestContent;
+import com.kolyadko.likeit.dao.impl.QuestionDao;
 import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.service.impl.QuestionService;
@@ -17,7 +18,7 @@ public class ShowTopQuestPageCommand extends ShowQuestionListCommand {
     }
 
     @Override
-    public QuestionService.QuestionListWrapper serviceCall(RequestContent content, int page) throws CommandException {
+    public QuestionDao.QuestionListWrapper serviceCall(RequestContent content, int page) throws CommandException {
         QuestionService questionService = new QuestionService();
 
         try {

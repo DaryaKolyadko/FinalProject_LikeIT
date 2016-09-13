@@ -9,6 +9,6 @@ public enum GenderType {
     OTHER;
 
     public static GenderType getGenderType(String value) {
-        return valueOf(value.toUpperCase());
+        return value != null ? valueOf(value.toUpperCase()) : null;
     }
 }

@@ -36,7 +36,7 @@ public abstract class SimpleActionCommand extends ActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         return Validator.isNumIdValid(content.getRequestParameter(paramId));
     }
 }

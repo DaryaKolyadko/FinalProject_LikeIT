@@ -10,16 +10,16 @@ import com.kolyadko.likeit.service.impl.UserService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.LoginValidator;
+import com.kolyadko.likeit.validator.impl.LoginValidator;
 
 /**
  * Created by DaryaKolyadko on 05.09.2016.
  */
-public class BanProfileCommand extends SimpleActionCommand {
-    private static final String BAN_SUCCESS = "info.banProfile.success";
-    private static final String BAN_PROBLEM = "info.banProfile.problem";
+public class ActivateProfileCommand extends SimpleActionCommand {
+    private static final String ACTIVATE_SUCCESS = "info.activateProfile.success";
+    private static final String ACTIVATE_PROBLEM = "info.activateProfile.problem";
 
-    public BanProfileCommand() {
+    public ActivateProfileCommand() {
         super("login");
     }
 
@@ -31,22 +31,22 @@ public class BanProfileCommand extends SimpleActionCommand {
         try {
             User user = userService.findById(login, RequestContentUtil.isCurrentUserAdmin(content));
 
-            if (!user.isAdmin() && userService.banProfileById(login)) {
-                content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(BAN_SUCCESS,
+            if (!user.isAdmin() && userService.activateProfileById(login)) {
+                content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(ACTIVATE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
             } else {
-                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(BAN_PROBLEM));
+                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(ACTIVATE_PROBLEM));
             }
 
             resultPage = MappingManager.PROFILE_PAGE + RequestContentUtil.getParamAsQueryString(content,
                     paramId);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("",e);
         }
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         return LoginValidator.isLoginValid(content.getRequestParameter(paramId));
     }
 }

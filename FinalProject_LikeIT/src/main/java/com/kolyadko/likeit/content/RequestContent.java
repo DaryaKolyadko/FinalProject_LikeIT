@@ -104,11 +104,4 @@ public class RequestContent {
             }
         }
     }
-
-//    public void copyParamsToRequestAttributes() {
-//        for (Object o : requestParameters.entrySet()) {
-//            Map.Entry<String, Object> pair = (Map.Entry) o;
-//            requestAttributes.put(pair.getKey(), ((String[]) pair.getValue())[0]);
-//        }
-//    }
 }

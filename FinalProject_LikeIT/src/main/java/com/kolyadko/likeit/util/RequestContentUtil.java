@@ -51,21 +51,7 @@ public class RequestContentUtil {
         return "?" + String.join("&", stringValues);
     }
 
-//    public static String getRequestParamsAsString(RequestContent content) {
-//        StringBuilder stringBuilder = new StringBuilder("?");
-//        ArrayList<String> stringValues = parametersMapToStringArray(content);
-//        return String.join("&", stringValues);
-//    }
-
-//    private static ArrayList<String> parametersMapToStringArray(RequestContent content) {
-//        ArrayList<String> paramsString = new ArrayList<>();
-//        Map<String, String[]> params = content.getRequestParameters();
-//
-//        for (Object o : params.entrySet()) {
-//            Map.Entry<String, Object> pair = (Map.Entry) o;
-//            paramsString.add(pair.getKey() + "=" + ((String[]) pair.getValue())[0]);
-//        }
-//
-//        return paramsString;
-//    }
+    public static String generateQueryString(String paramName, Object paramValue) {
+        return "?" + paramName + "=" + paramValue.toString();
+    }
 }

@@ -9,7 +9,7 @@ import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.UserService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
-import com.kolyadko.likeit.validator.LoginValidator;
+import com.kolyadko.likeit.validator.impl.LoginValidator;
 
 /**
  * Created by DaryaKolyadko on 15.07.2016.
@@ -51,7 +51,7 @@ public class LoginCommand extends ActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         return LoginValidator.isLoginValid(content.getRequestParameter(PARAM_LOGIN)) &&
                 LoginValidator.isPasswordValid(content.getRequestParameter(PARAM_PASSWORD));
     }

@@ -12,8 +12,8 @@ import com.kolyadko.likeit.service.impl.UserService;
 import com.kolyadko.likeit.type.GenderType;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
-import com.kolyadko.likeit.validator.LoginValidator;
-import com.kolyadko.likeit.validator.SignUpValidator;
+import com.kolyadko.likeit.validator.impl.LoginValidator;
+import com.kolyadko.likeit.validator.impl.SignUpValidator;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -39,7 +39,7 @@ public class SignUpCommand extends ActionCommand {
     private static final String SIGN_UP_ERROR_EXISTS = "error.userExists";
     private static final String SIGN_UP_ERROR_CHECK = "error.checkForm";
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");  //TODO add locale dependency
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
     @Override
     public String execute(RequestContent content) throws CommandException {
@@ -76,7 +76,7 @@ public class SignUpCommand extends ActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         return LoginValidator.isLoginValid(content.getRequestParameter(PARAM_LOGIN)) &&
                 SignUpValidator.isStringValid(content.getRequestParameter(PARAM_FIRST_NAME)) &&
                 SignUpValidator.isStringValid(content.getRequestParameter(PARAM_LAST_NAME)) &&
@@ -95,7 +95,6 @@ public class SignUpCommand extends ActionCommand {
         memoryContainer.setEmail(content.getRequestParameter(PARAM_EMAIL));
         memoryContainer.setGender(content.getRequestParameter(PARAM_GENDER));
         memoryContainer.setPassword(content.getRequestParameter(PARAM_PASSWORD));
-        memoryContainer.setPasswordConfirmation(content.getRequestParameter(PARAM_CONFIRM_PASSWORD));
         memoryContainer.setBirthDate(content.getRequestParameter(PARAM_BIRTHDAY));
         return memoryContainer;
     }

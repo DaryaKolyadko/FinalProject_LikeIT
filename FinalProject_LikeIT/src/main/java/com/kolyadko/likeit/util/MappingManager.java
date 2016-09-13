@@ -3,7 +3,9 @@ package com.kolyadko.likeit.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
@@ -26,6 +28,7 @@ public class MappingManager {
     public static final String CREATE_QUESTION_PAGE = "/LikeIT/CreateQuestion";
     public static final String CREATE_SECTION_PAGE = "/LikeIT/CreateSection";
     public static final String EDIT_SECTION_PAGE = "/LikeIT/EditSection";
+    public static final String EDIT_COMMENT_PAGE = "/LikeIT/EditComment";
     public static final String EDIT_QUESTION_PAGE = "/LikeIT/EditQuestion";
     public static final String EDIT_PROFILE_PAGE = "/LikeIT/EditProfile";
     public static final String USER_LIST_PAGE = "/LikeIT/Users";
@@ -41,27 +44,20 @@ public class MappingManager {
     private static MappingManager manager;
 
     private MappingManager() {
-        try {
-            configuration = new Properties();
-            configuration.load(MappingManager.class.getClassLoader().getResourceAsStream(configFileName));
+        configuration = new Properties();
+        URL configFile = MappingManager.class.getClassLoader().getResource(configFileName);
+
+        if (configFile == null) {
+            throw new RuntimeException(ERROR + configFileName);
+        }
+
+        try (FileInputStream inputStream = new FileInputStream(configFile.getFile())) {
+            configuration.load(inputStream);
         } catch (IOException e) {
             LOG.error(ERROR);
             throw new RuntimeException(ERROR + configFileName);
         }
     }
-
-//    public static boolean changeConfigFile(String newConfigFile) {
-//        managerSingleLock.lock();
-//        boolean result = false;
-//
-//        if (manager == null) {
-//            configFileName = newConfigFile;
-//            result = true;
-//        }
-//
-//        managerSingleLock.unlock();
-//        return result;
-//    }
 
     public static MappingManager getInstance() {
         if (!initialized.get()) {
@@ -80,5 +76,13 @@ public class MappingManager {
 
     public String getProperty(String key) {
         return configuration.getProperty(key);
+    }
+
+    public static String getConfigFileName() {
+        return configFileName;
+    }
+
+    public static void setConfigFileName(String configFile) {
+        MappingManager.configFileName = configFile;
     }
 }

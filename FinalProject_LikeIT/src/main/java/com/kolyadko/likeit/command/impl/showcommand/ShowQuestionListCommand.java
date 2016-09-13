@@ -1,6 +1,7 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.content.RequestContent;
+import com.kolyadko.likeit.dao.impl.QuestionDao;
 import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.service.impl.QuestionService;
 
@@ -21,13 +22,13 @@ public abstract class ShowQuestionListCommand extends ShowDefaultContentCommand 
         this.ATTR_LIST_TYPE_VAL = listType;
     }
 
-    protected abstract QuestionService.QuestionListWrapper serviceCall(RequestContent content, int page)
+    protected abstract QuestionDao.QuestionListWrapper serviceCall(RequestContent content, int page)
             throws CommandException;
 
     @Override
     public String execute(RequestContent content) throws CommandException {
         content.setRequestAttribute(ATTR_LIST_TYPE, ATTR_LIST_TYPE_VAL);
-        QuestionService.QuestionListWrapper wrapper;
+        QuestionDao.QuestionListWrapper wrapper;
 
         try {
             String pageStr = content.getRequestParameter(PARAM_PAGE);

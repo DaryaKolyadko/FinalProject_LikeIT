@@ -7,7 +7,7 @@ import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.memorycontainer.impl.ObjectMemoryContainer;
 import com.kolyadko.likeit.service.impl.UserService;
 import com.kolyadko.likeit.util.MappingManager;
-import com.kolyadko.likeit.validator.LoginValidator;
+import com.kolyadko.likeit.validator.impl.LoginValidator;
 
 /**
  * Created by DaryaKolyadko on 30.07.2016.
