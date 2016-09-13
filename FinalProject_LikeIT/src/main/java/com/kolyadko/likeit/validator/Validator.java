@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
  */
 public abstract class Validator {
     protected static final Pattern ID_PATTERN = Pattern.compile("^\\d+$");
+    protected static final Pattern BOOLEAN_PATTERN = Pattern.compile("^true|false$");
 
     protected static boolean isMatching(String str, Pattern pattern) {
         if (str == null)
@@ -19,5 +20,9 @@ public abstract class Validator {
 
     public static boolean isNumIdValid(String sectionId) {
         return isMatching(sectionId, ID_PATTERN);
+    }
+
+    public static boolean isBooleanValid(String sectionId) {
+        return isMatching(sectionId, BOOLEAN_PATTERN);
     }
 }

@@ -1,5 +1,6 @@
-package com.kolyadko.likeit.validator;
+package com.kolyadko.likeit.validator.impl;
 
+import com.kolyadko.likeit.validator.Validator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Pattern;

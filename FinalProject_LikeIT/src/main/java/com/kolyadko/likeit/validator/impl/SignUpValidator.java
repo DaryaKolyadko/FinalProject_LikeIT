@@ -1,5 +1,7 @@
-package com.kolyadko.likeit.validator;
+package com.kolyadko.likeit.validator.impl;
 
+import com.kolyadko.likeit.type.GenderType;
+import com.kolyadko.likeit.validator.Validator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
@@ -13,7 +15,11 @@ import java.util.regex.Pattern;
 public class SignUpValidator extends Validator {
     private static final Pattern STRING_PATTERN = Pattern.compile("^[A-Za-z \\pL{А-я}]+$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z][_A-Za-z0-9-\\.]*@([A-Za-z]+\\.)[A-Za-z]{2,4}$");
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+    private static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+    static {
+        dateFormat.setLenient(false);
+    }
 
     public static boolean isStringValid(String str) {
         return isMatching(str, STRING_PATTERN) && !StringUtils.isBlank(str);
@@ -25,14 +31,17 @@ public class SignUpValidator extends Validator {
 
     public static boolean isDateValid(String date) {
         try {
-            DATE_FORMAT.parse(date);
-            return true;
+            return date != null && dateFormat.parse(date) != null;
         } catch (ParseException e) {
             return false;
         }
     }
 
     public static boolean isGenderValid(String gender) {
-        return gender != null && !StringUtils.isBlank(gender);
+        try {
+            return gender != null && !StringUtils.isBlank(gender) && GenderType.getGenderType(gender) != null;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
