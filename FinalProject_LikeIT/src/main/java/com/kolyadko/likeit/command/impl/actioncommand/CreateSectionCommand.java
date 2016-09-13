@@ -10,7 +10,7 @@ import com.kolyadko.likeit.memorycontainer.impl.uncompleteddata.UncompletedSecti
 import com.kolyadko.likeit.service.impl.SectionService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
-import com.kolyadko.likeit.validator.SectionActionValidator;
+import com.kolyadko.likeit.validator.impl.SectionActionValidator;
 import com.kolyadko.likeit.validator.Validator;
 
 /**
@@ -65,17 +65,16 @@ public class CreateSectionCommand extends ActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         return SectionActionValidator.isSectionNameValid(content.getRequestParameter(PARAM_SECTION_NAME)) &&
                 (SectionActionValidator.isHexColorValid(content.getRequestParameter(PARAM_LABEL_COLOR)) ||
                         Validator.isNumIdValid(content.getRequestParameter(PARAM_MAJOR_SECTION_ID)));
     }
 
     private UncompletedSectionMemoryContainer initUncompletedSection(RequestContent content) {
-        UncompletedSectionMemoryContainer memoryContainer = new UncompletedSectionMemoryContainer();
-        memoryContainer.setName(content.getRequestParameter(PARAM_SECTION_NAME));
-        memoryContainer.setLabelColor(content.getRequestParameter(PARAM_LABEL_COLOR));
-        memoryContainer.setMajorSectionId(content.getRequestParameter(PARAM_MAJOR_SECTION_ID));
-        return memoryContainer;
+        return new UncompletedSectionMemoryContainer(
+                content.getRequestParameter(PARAM_SECTION_NAME),
+                content.getRequestParameter(PARAM_LABEL_COLOR),
+                content.getRequestParameter(PARAM_MAJOR_SECTION_ID));
     }
 }

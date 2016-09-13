@@ -11,7 +11,7 @@ import com.kolyadko.likeit.service.impl.QuestionService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.QuestionActionValidator;
+import com.kolyadko.likeit.validator.impl.QuestionActionValidator;
 import com.kolyadko.likeit.validator.Validator;
 
 /**
@@ -30,7 +30,7 @@ public class CreateQuestionCommand extends ActionCommand {
     @Override
     public String execute(RequestContent content) throws CommandException {
         if (isAllowedAction(content)) {
-            UncompletedQuestionMemoryContainer container = initUncompletedSection(content);
+            UncompletedQuestionMemoryContainer container = initUncompletedQuestion(content);
 
             if (isInputDataValid(content)) {
                 try {
@@ -63,22 +63,21 @@ public class CreateQuestionCommand extends ActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         return Validator.isNumIdValid(content.getRequestParameter(PARAM_SECTION_ID)) &&
                 QuestionActionValidator.isTitleValid(content.getRequestParameter(PARAM_TITLE)) &&
                 QuestionActionValidator.isTextValid(content.getRequestParameter(PARAM_TEXT));
     }
 
-    private UncompletedQuestionMemoryContainer initUncompletedSection(RequestContent content) {
-        UncompletedQuestionMemoryContainer memoryContainer = new UncompletedQuestionMemoryContainer();
-        memoryContainer.setSectionId(content.getRequestParameter(PARAM_SECTION_ID));
-        memoryContainer.setTitle(content.getRequestParameter(PARAM_TITLE));
-        memoryContainer.setText(content.getRequestParameter(PARAM_TEXT));
-        return memoryContainer;
+    private UncompletedQuestionMemoryContainer initUncompletedQuestion(RequestContent content) {
+        return new UncompletedQuestionMemoryContainer(
+                content.getRequestParameter(PARAM_SECTION_ID),
+                content.getRequestParameter(PARAM_TITLE),
+                content.getRequestParameter(PARAM_TEXT));
     }
 
     @Override
-    protected boolean isAllowedAction(RequestContent content) {
+    public boolean isAllowedAction(RequestContent content) {
         return RequestContentUtil.isAuthenticated(content) && RequestContentUtil.isActive(content);
     }
 }

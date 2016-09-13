@@ -9,16 +9,16 @@ import com.kolyadko.likeit.service.impl.UserService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.LoginValidator;
+import com.kolyadko.likeit.validator.impl.LoginValidator;
 
 /**
- * Created by DaryaKolyadko on 31.08.2016.
+ * Created by DaryaKolyadko on 03.09.2016.
  */
-public class RestoreProfileCommand extends SimpleActionCommand {
-    private static final String RESTORE_SUCCESS = "info.restoreProfile.success";
-    private static final String RESTORE_PROBLEM = "info.restoreProfile.problem";
+public class DeleteProfileCommand extends SimpleActionCommand {
+    private static final String DELETE_SUCCESS = "info.deleteProfile.success";
+    private static final String DELETE_PROBLEM = "info.deleteProfile.problem";
 
-    public RestoreProfileCommand() {
+    public DeleteProfileCommand() {
         super("login");
     }
 
@@ -28,11 +28,14 @@ public class RestoreProfileCommand extends SimpleActionCommand {
         String login = content.getRequestParameter(paramId);
 
         try {
-            if (userService.restoreProfileFromArchive(login)) {
-                content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(RESTORE_SUCCESS,
+            if (userService.moveProfileToArchive(login)) {
+                content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(DELETE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
+                content.invalidateSession();
+                resultPage = MappingManager.HOME_PAGE;
+                return;
             } else {
-                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(RESTORE_PROBLEM));
+                content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(DELETE_PROBLEM));
             }
 
             resultPage = MappingManager.PROFILE_PAGE + RequestContentUtil.getParamAsQueryString(content,
@@ -43,7 +46,13 @@ public class RestoreProfileCommand extends SimpleActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isAllowedAction(RequestContent content) {
+        return allowedAction(content, content.getRequestParameter(paramId)) &&
+                !RequestContentUtil.isCurrentUserAdmin(content);
+    }
+
+    @Override
+    public boolean isInputDataValid(RequestContent content) {
         return LoginValidator.isLoginValid(content.getRequestParameter(paramId));
     }
 }

@@ -11,7 +11,7 @@ import com.kolyadko.likeit.service.impl.SectionService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.SectionActionValidator;
+import com.kolyadko.likeit.validator.impl.SectionActionValidator;
 import com.kolyadko.likeit.validator.Validator;
 
 /**
@@ -72,7 +72,7 @@ public class EditSectionCommand extends ActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         String optional = content.getRequestParameter(PARAM_LABEL_COLOR);
         boolean result = SectionActionValidator.isSectionNameValid(content.getRequestParameter(PARAM_SECTION_NAME)) &&
                 Validator.isNumIdValid(content.getRequestParameter(PARAM_SECTION_ID));

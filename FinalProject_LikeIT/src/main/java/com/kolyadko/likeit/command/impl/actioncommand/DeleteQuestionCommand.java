@@ -1,6 +1,7 @@
 package com.kolyadko.likeit.command.impl.actioncommand;
 
 import com.kolyadko.likeit.content.RequestContent;
+import com.kolyadko.likeit.entity.Question;
 import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.memorycontainer.impl.ErrorMemoryContainer;
@@ -16,7 +17,6 @@ import com.kolyadko.likeit.util.RequestContentUtil;
 public class DeleteQuestionCommand extends SimpleActionCommand {
     private static final String DELETE_SUCCESS = "info.deleteQuestion.success";
     private static final String DELETE_PROBLEM = "info.deleteQuestion.problem";
-    private static final String PARAM_AUTHOR = "authorId";
 
     public DeleteQuestionCommand() {
         super("question");
@@ -47,8 +47,15 @@ public class DeleteQuestionCommand extends SimpleActionCommand {
     }
 
     @Override
-    protected boolean isAllowedAction(RequestContent content) {
-        return allowedAction(content, content.getRequestParameter(PARAM_AUTHOR)) ||
-                super.isAllowedAction(content);
+    public boolean isAllowedAction(RequestContent content) {
+        try {
+            QuestionService questionService = new QuestionService();
+            String questionId = content.getRequestParameter(paramId);
+            Question question = questionService.findById(Integer.valueOf(questionId));
+            return question != null && allowedAction(content, question.getAuthorId()) ||
+                    super.isAllowedAction(content);
+        } catch (ServiceException e) {
+            return false;
+        }
     }
 }

@@ -11,7 +11,7 @@ import com.kolyadko.likeit.service.impl.QuestionService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.QuestionActionValidator;
+import com.kolyadko.likeit.validator.impl.QuestionActionValidator;
 import com.kolyadko.likeit.validator.Validator;
 
 /**
@@ -22,7 +22,6 @@ public class EditQuestionCommand extends ActionCommand {
     private static final String PARAM_SECTION_ID = "sectionId";
     private static final String PARAM_TITLE = "title";
     private static final String PARAM_TEXT = "text";
-    private static final String PARAM_AUTHOR = "authorId";
 
     private static final String SESSION_ATTR_UNCOMPLETED = "uncompleted";
     private static final String EDIT_QUESTION_ERROR_CHECK = "error.checkForm";
@@ -38,7 +37,8 @@ public class EditQuestionCommand extends ActionCommand {
                 try {
                     QuestionService questionService = new QuestionService();
                     int questionId = Integer.parseInt(content.getRequestParameter(PARAM_QUESTION_ID));
-                    Question question = questionService.findById(questionId, RequestContentUtil.isCurrentUserAdmin(content));
+                    Question question = questionService.findById(questionId,
+                            RequestContentUtil.isCurrentUserAdmin(content));
 
                     if (question != null) {
                         question.setSectionId(Integer.parseInt(container.getSectionId()));
@@ -46,7 +46,8 @@ public class EditQuestionCommand extends ActionCommand {
                         question.setText(container.getText());
 
                         if (questionService.updateQuestion(question)) {
-                            content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(EDIT_SUCCESS, MemoryContainerType.ONE_OFF));
+                            content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(EDIT_SUCCESS,
+                                    MemoryContainerType.ONE_OFF));
                         } else {
                             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_PROBLEM));
                         }
@@ -72,23 +73,28 @@ public class EditQuestionCommand extends ActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         return Validator.isNumIdValid(content.getRequestParameter(PARAM_SECTION_ID)) &&
                 QuestionActionValidator.isTitleValid(content.getRequestParameter(PARAM_TITLE)) &&
                 QuestionActionValidator.isTextValid(content.getRequestParameter(PARAM_TEXT));
     }
 
     @Override
-    protected boolean isAllowedAction(RequestContent content) {
-        return allowedAction(content, content.getRequestParameter(PARAM_AUTHOR));
+    public boolean isAllowedAction(RequestContent content) {
+        try {
+            QuestionService questionService = new QuestionService();
+            String questionId = content.getRequestParameter(PARAM_QUESTION_ID);
+            Question question = questionService.findById(Integer.valueOf(questionId));
+            return question != null && allowedAction(content, question.getAuthorId());
+        } catch (ServiceException e) {
+            return false;
+        }
     }
 
     private UncompletedQuestionMemoryContainer initUncompletedQuestion(RequestContent content) {
-        UncompletedQuestionMemoryContainer memoryContainer = new UncompletedQuestionMemoryContainer();
-        memoryContainer.setAuthorId(content.getRequestParameter(PARAM_AUTHOR));
-        memoryContainer.setSectionId(content.getRequestParameter(PARAM_SECTION_ID));
-        memoryContainer.setTitle(content.getRequestParameter(PARAM_TITLE));
-        memoryContainer.setText(content.getRequestParameter(PARAM_TEXT));
-        return memoryContainer;
+        return new UncompletedQuestionMemoryContainer(
+                content.getRequestParameter(PARAM_SECTION_ID),
+                content.getRequestParameter(PARAM_TITLE),
+                content.getRequestParameter(PARAM_TEXT));
     }
 }

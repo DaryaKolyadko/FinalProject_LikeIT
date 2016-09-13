@@ -13,7 +13,7 @@ import com.kolyadko.likeit.type.GenderType;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.SignUpValidator;
+import com.kolyadko.likeit.validator.impl.SignUpValidator;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -28,9 +28,6 @@ public class EditProfileCommand extends ActionCommand {
     private static final String PARAM_FIRST_NAME = "firstName";
     private static final String PARAM_LAST_NAME = "lastName";
     private static final String PARAM_EMAIL = "userEmail";
-    //    private static final String PARAM_OLD_PASSWORD = "oldUserPassword";
-//    private static final String PARAM_PASSWORD = "userPassword";
-//    private static final String PARAM_CONFIRM_PASSWORD = "userConfirmPassword";
     private static final String PARAM_BIRTHDAY = "birthDate";
     private static final String PARAM_GENDER = "gender";
 
@@ -57,7 +54,6 @@ public class EditProfileCommand extends ActionCommand {
                         user.setFirstName(container.getFirstName());
                         user.setLastName(container.getLastName());
                         user.setEmail(container.getEmail());
-//                        user.setPassword(container.getPassword());
                         user.setBirthDate(new Date(DATE_FORMAT.parse(container.getBirthDate()).getTime()));
                         user.setGender(GenderType.getGenderType(container.getGender()));
 
@@ -90,20 +86,16 @@ public class EditProfileCommand extends ActionCommand {
     }
 
     @Override
-    protected boolean isInputDataValid(RequestContent content) {
+    public boolean isInputDataValid(RequestContent content) {
         return SignUpValidator.isStringValid(content.getRequestParameter(PARAM_FIRST_NAME)) &&
                 SignUpValidator.isStringValid(content.getRequestParameter(PARAM_LAST_NAME)) &&
                 SignUpValidator.isEmailValid(content.getRequestParameter(PARAM_EMAIL)) &&
                 SignUpValidator.isDateValid(content.getRequestParameter(PARAM_BIRTHDAY)) &&
                 SignUpValidator.isGenderValid(content.getRequestParameter(PARAM_GENDER));
-        //TODO not always check (may be delete)
-//                LoginValidator.isPasswordValid(content.getRequestParameter(PARAM_PASSWORD)) &&
-//                content.getRequestParameter(PARAM_PASSWORD).equals(content.getRequestParameter(PARAM_CONFIRM_PASSWORD)) &&
-//                SignUpValidator.isDateValid(content.getRequestParameter(PARAM_BIRTHDAY));
     }
 
     @Override
-    protected boolean isAllowedAction(RequestContent content) {
+    public boolean isAllowedAction(RequestContent content) {
         return allowedAction(content, content.getRequestParameter(PARAM_LOGIN));
     }
 
@@ -113,8 +105,6 @@ public class EditProfileCommand extends ActionCommand {
         memoryContainer.setLastName(content.getRequestParameter(PARAM_LAST_NAME));
         memoryContainer.setEmail(content.getRequestParameter(PARAM_EMAIL));
         memoryContainer.setGender(content.getRequestParameter(PARAM_GENDER));
-//        memoryContainer.setPassword(content.getRequestParameter(PARAM_PASSWORD));
-//        memoryContainer.setPasswordConfirmation(content.getRequestParameter(PARAM_CONFIRM_PASSWORD));
         memoryContainer.setBirthDate(content.getRequestParameter(PARAM_BIRTHDAY));
         return memoryContainer;
     }
