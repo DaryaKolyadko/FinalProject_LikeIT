@@ -1,6 +1,6 @@
 var stringPattern = '^[A-Za-z \pL{А-я}]+$';
 var loginPattern = '^[A-Za-z][_A-Za-z0-9-\.]{2,24}$';
-var passwordPattern = '^[_A-Za-z0-9-\.]{3,24}$';
+var passwordPattern = '^[_A-Za-z0-9-\.]{3,25}$';
 var emailPattern = '^[A-Za-z][_A-Za-z0-9-\.]*@([A-Za-z]+\.)[A-Za-z]{2,4}$';
 
 $(document).ready(function () {

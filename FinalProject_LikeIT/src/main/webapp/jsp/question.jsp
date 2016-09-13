@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ctm" uri="customtags" %>
 <fmt:setLocale value="${locale.text}"/>
 <fmt:bundle basename="likeit" prefix="question.">
@@ -65,7 +66,6 @@
                         <span class="right-panel font-icon">
                         <c:if test="${questionData.user.id eq userContainer.object.id}">
                             <form id="form-edit-question" action="<c:url value="/EditQuestion"/>" hidden>
-                                <%--<input type="text" name="authorId" value="${questionData.user.id}">--%>
                                 <input type="text" name="question" value="${questionData.question.id}">
                             </form>
                             <a href="#" onclick="$('#form-edit-question').submit()"><i
@@ -75,7 +75,6 @@
                         and questionData.question.archive eq false}">
                             <form id="form-delete-question" action="<c:url value="/Home"/>" method="post" hidden>
                                 <input type="text" name="command" value="DELETE_QUESTION">
-                                <input type="text" name="authorId" value="${questionData.user.id}">
                                 <input type="text" name="question" value="${questionData.question.id}">
                             </form>
                             <a href="#" data-toggle="modal" data-target="#delete-question"><i
@@ -111,6 +110,12 @@
                                         <span id="rating-q-${questionData.question.id}" class="jRate"></span>
                                         <small id="rating-q-${questionData.question.id}-value"
                                                class="rating-value"></small>
+                                        <form id="rating-q-form-${questionData.question.id}" action="${url_home}"
+                                              method="post" hidden>
+                                            <input type="text" name="command" value="SET_QUESTION_MARK">
+                                            <input type="text" name="question" value="${questionData.question.id}">
+                                            <input type="text" name="mark" value="${questionData.mark}">
+                                        </form>
                                         <script>generateQuestionJRate(${questionData.question.id}, ${questionData.mark})</script>
                                     </li>
                                     <li class="divider">|</li>
@@ -123,7 +128,7 @@
                             </ul>
                             <hr>
                         </div>
-                        <p><span class="badge">${questionData.question.commentNum}</span> <fmt:message
+                        <p><span class="badge">${fn:length(commentsData)}</span> <fmt:message
                                 key="label.comments"/>
                         </p><br>
                         <div class="row">
@@ -132,12 +137,25 @@
                                     <div class="col-xs-2 col-sm-1 text-center answer-block">
                                         <c:choose>
                                             <c:when test="${questionData.user.id eq userContainer.object.id}">
+                                                <form id="answer-c-form-${commentData.comment.id}" action="${url_home}"
+                                                      method="post" hidden>
+                                                    <input type="text" name="command" value="NOTE_AS_ANSWER">
+                                                    <input type="text" name="comment" value="${commentData.comment.id}">
+                                                    <input type="text" name="questionAuthorId"
+                                                           value="${questionData.question.authorId}">
+                                                    <input type="text" name="answer"
+                                                           value="${commentData.comment.answer}">
+                                                </form>
                                                 <c:if test="${commentData.comment.answer eq true}">
-                                                    <a href="#"
+                                                    <a href="#ok" id="answer-c-${commentData.comment.id}"
+                                                       data-answer="${commentData.comment.answer}"
+                                                       data-comment="${commentData.comment.id}"
                                                        class="glyphicon glyphicon-ok answer-mark-on center"></a>
                                                 </c:if>
                                                 <c:if test="${commentData.comment.answer eq false}">
-                                                    <a href="#"
+                                                    <a href="#ok" id="answer-c-${commentData.comment.id}"
+                                                       data-answer="${commentData.comment.answer}"
+                                                       data-comment="${commentData.comment.id}"
                                                        class="glyphicon glyphicon-ok answer-mark-off center"></a>
                                                 </c:if>
                                             </c:when>
@@ -159,15 +177,54 @@
                                                onclick="document.getElementById('profile-${commentData.user.id}').submit()">
                                                     ${commentData.user.firstName}
                                                     ${commentData.user.lastName}</a>
-                                <span class="right-panel font-icon">
-                                    <c:if test="${commentData.user.id eq userContainer.object.id}">
-                                        <a href="#"><i class="glyphicon glyphicon-edit edit-color"></i></a>
-                                    </c:if>
-                                    <c:if test="${commentData.user.id eq userContainer.object.id or userContainer.object.isAdmin()}">
-                                        <a href="#"><i
-                                                class="glyphicon glyphicon-trash delete-color small-left-margin"></i></a>
-                                    </c:if>
-                                </span>
+                                            <c:if test="${commentData.comment.archive eq true}">
+                                                <span class="archive-label">(<fmt:message key="label.archive"/>)</span>
+                                            </c:if>
+                                            <span class="right-panel font-icon">
+                                                 <c:if test="${commentData.user.id eq userContainer.object.id}">
+                                                     <form id="form-edit-comment" action="<c:url value="/EditComment"/>" hidden>
+                                                         <input type="text" name="question" value="${questionData.question.id}">
+                                                         <input type="text" name="comment" value="${commentData.comment.id}">
+                                                     </form>
+                                                     <a href="#" onclick="$('#form-edit-comment').submit()"><i
+                                                             class="glyphicon glyphicon-edit edit-color"></i></a>
+                                                 </c:if>
+                                                <c:if test="${commentData.user.id eq userContainer.object.id or userContainer.object.isAdmin()}">
+                                                    <c:if test="${commentData.comment.archive eq false}">
+                                                        <form id="form-delete-${commentData.comment.id}" method="post"
+                                                              action="${url_home}" hidden>
+                                                            <input type="text" name="command"
+                                                                   value="DELETE_COMMENT">
+                                                            <input type="text" name="comment"
+                                                                   value="${commentData.comment.id}">
+                                                            <input type="text" name="question"
+                                                                   value="${questionData.question.id}">
+                                                        </form>
+                                                        <a href="#" data-toggle="modal" data-target="#delete-comment"
+                                                           data-comment="${commentData.comment.id}"><i
+                                                                class="glyphicon glyphicon-trash delete-color small-left-margin"></i></a>
+                                                        </a>
+                                                    </c:if>
+                                                </c:if>
+                                                <c:if test="${userContainer.object.isAdmin()}">
+                                                    <c:if test="${commentData.comment.archive eq true}">
+                                                        <form id="form-restore-${commentData.comment.id}" method="post"
+                                                              action="${url_home}" hidden>
+                                                            <input type="text" name="command"
+                                                                   value="RESTORE_COMMENT">
+                                                            <input type="text" name="comment"
+                                                                   value="${commentData.comment.id}">
+                                                            <input type="text" name="question"
+                                                                   value="${questionData.question.id}">
+                                                        </form>
+                                                        <a href="#" data-toggle="modal" data-target="#restore-comment"
+                                                           data-comment="${commentData.comment.id}"
+                                                           class="restore-color">
+                                                            <span class="glyphicon icon-unpackarchive small-left-margin"></span>
+                                                        </a>
+                                                    </c:if>
+                                                </c:if>
+                                            </span>
                                         </h4>
                                         <div class="clearfix visible-xs-block"></div>
                                         <p style="display: inline"><ctm:newLineFormat
@@ -186,12 +243,20 @@
                                                     <span id="rating-${commentData.comment.id}" class="jRate"></span>
                                                     <small id="rating-${commentData.comment.id}-value"
                                                            class="rating-value"></small>
+                                                    <form id="rating-c-form-${commentData.comment.id}"
+                                                          action="${url_home}"
+                                                          method="post" hidden>
+                                                        <input type="text" name="command" value="SET_COMMENT_MARK">
+                                                        <input type="text" name="comment"
+                                                               value="${commentData.comment.id}">
+                                                        <input type="text" name="mark" value="${commentData.mark}">
+                                                    </form>
                                                     <script>generateJRate(${commentData.comment.id}, ${commentData.mark})</script>
                                                 </li>
                                             </ctm:authenticatedOnly>
                                             <li class="divider">|</li>
                                             <li>
-                                                <small class="rating-div-custom-float"><fmt:formatNumber
+                                                <small class="rating-div-custom-float"><fmt:message key="label.rating"/><fmt:formatNumber
                                                         maxFractionDigits="1">${commentData.comment.rating}</fmt:formatNumber></small>
                                             </li>
                                         </ul>
@@ -209,9 +274,9 @@
                                         <div class="form-group">
                                             <label for="comment" hidden></label>
                                     <textarea id="comment" name="text" class="form-control no-resize" rows="6"
-                                              required></textarea>
+                                              required>${uncompleted.text}</textarea>
                                             <input name="command" value="CREATE_COMMENT" hidden>
-                                            <input name="question" value="${questionData.question.id}" hidden>
+                                            <input name="questionId" value="${questionData.question.id}" hidden>
                                         </div>
                                         <button id="addCommentButton" type="submit" data-tool="tooltip"
                                                 class="btn btn-success">
@@ -219,9 +284,7 @@
                                                     key="button.addComment"/></button>
                                         <c:if test="${not userContainer.object.isActive()}">
                                             <script type="text/javascript">
-                                                $('#addCommentButton').addClass('disabled');
-                                                $('#addCommentButton').attr('onclick', '');
-                                                $('#createQuestionButton').attr("type", 'button');
+                                                $('#addCommentButton').attr('disabled', 'true');
                                                 $('#addCommentButton').attr('title', '<fmt:message key="tooltip.banned"/>');
                                             </script>
                                         </c:if>
@@ -279,7 +342,60 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="restore-section" class="btn btn-success" onclick="$('#form-restore-question').submit()"><span
+                    <button id="restore-question-button" class="btn btn-success"
+                            onclick="$('#form-restore-question').submit()"><span
+                            class="glyphicon glyphicon-ok-sign"></span><fmt:message key="modal.button.yes"/>
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove"></span><fmt:message key="modal.button.no"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-comment" tabindex="-1" role="dialog" aria-labelledby="delete-comment"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <h4 class="modal-title custom_align"><fmt:message key="modal.deleteComment.title"/></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span>
+                        <fmt:message key="modal.deleteComment.text"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="delete-comment-button" class="btn btn-success"><span
+                            class="glyphicon glyphicon-ok-sign"></span><fmt:message key="modal.button.yes"/>
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove"></span><fmt:message key="modal.button.no"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="restore-comment" tabindex="-1" role="dialog" aria-labelledby="restore-comment"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <h4 class="modal-title custom_align"><fmt:message key="modal.restoreComment.title"/></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span>
+                        <fmt:message key="modal.restoreComment.text"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="restore-comment-button" class="btn btn-success"><span
                             class="glyphicon glyphicon-ok-sign"></span><fmt:message key="modal.button.yes"/>
                     </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><span

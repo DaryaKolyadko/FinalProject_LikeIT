@@ -56,9 +56,7 @@
                                 <fmt:message key="button.ask"/></button>
                             <c:if test="${not userContainer.object.isActive()}">
                                 <script type="text/javascript">
-                                    $('#createQuestionButton').addClass('disabled');
-                                    $('#createQuestionButton').attr("onclick", '');
-                                    $('#createQuestionButton').attr("type", 'button');
+                                    $('#createQuestionButton').attr("disabled", 'true');
                                     $('#createQuestionButton').attr('title', '<fmt:message key="tooltip.banned"/>');</script>
                             </c:if>
                         </div>

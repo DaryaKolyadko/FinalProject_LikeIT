@@ -33,12 +33,22 @@
 }
 
 .answer-mark-on {
+    outline: 0;
     color: #43c33b;
     text-decoration: none;
 }
 
+.answer-mark-on:focus {
+    outline: none;
+}
+
 .answer-mark-on:hover {
     color: #3d9835;
+    text-decoration: none;
+}
+
+.answer-mark-on:link {
+    color: #43c33b;
     text-decoration: none;
 }
 
@@ -47,8 +57,17 @@
     text-decoration: none;
 }
 
+.answer-mark-off:focus {
+    outline: none;
+}
+
 .answer-mark-off:hover {
     color: #c0c0c0;
+    text-decoration: none;
+}
+
+.answer-mark-off:link {
+    color: #f3f3f3;
     text-decoration: none;
 }
 

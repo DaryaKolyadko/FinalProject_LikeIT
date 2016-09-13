@@ -2,28 +2,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${locale.text}"/>
-<fmt:bundle basename="likeit" prefix="createSection.">
+<fmt:bundle basename="likeit" prefix="editComment.">
     <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/bootstrap.min.css"/>
         <link rel="stylesheet"
               href="${pageContext.servletContext.contextPath}/resources/css/lib/bootstrap-select.min.css"/>
-        <link rel="stylesheet"
-              href="${pageContext.servletContext.contextPath}/resources/css/lib/jquery.minicolors.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/lib/jquery.min.js"></script>
         <link rel="stylesheet"
               href="${pageContext.servletContext.contextPath}/resources/css/lib/bootstrapValidator.min.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrapValidator.min.js"></script>
         <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrap.min.js"></script>
         <script src="${pageContext.servletContext.contextPath}/resources/js/lib/bootstrap-select.min.js"></script>
-        <script src="${pageContext.servletContext.contextPath}/resources/js/lib/jquery.minicolors.min.js"></script>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/main.css"/>
-        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/createSection.css"/>
+        <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/createQuestion.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/lib/languages.min.css"/>
         <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/navbarOrange.css"/>
         <script src="${pageContext.servletContext.contextPath}/resources/js/main.js"></script>
-        <script src="${pageContext.servletContext.contextPath}/resources/js/createSection.js"></script>
+        <script src="${pageContext.servletContext.contextPath}/resources/js/editComment.js"></script>
         <title><fmt:message key="title"/></title>
     </head>
     <body>
@@ -41,7 +38,7 @@
                     <c:otherwise>
                         <div class="container medium-top-padding">
                             <div class="form-main-title"><fmt:message key="header"/></div>
-                            <form id="create-section-form" method="post" class="form-horizontal form-wrap"
+                            <form id="edit-question-form" class="form-horizontal form-wrap" method="post"
                                   action="${url_home}">
                                 <c:if test="${not empty actionError}">
                                     <div class="alert alert-danger">
@@ -49,41 +46,25 @@
                                         <fmt:message key="${actionError.text}"/>
                                     </div>
                                 </c:if>
-                                <input type="hidden" name="command" value="CREATE_SECTION"/>
+                                <input type="hidden" name="command" value="EDIT_COMMENT"/>
+                                <input type="hidden" name="comment"
+                                       value="${param.comment}"/>
                                 <div class="form-group">
-                                    <label for="sectionName" class="col-sm-4 control-label"><fmt:message
-                                            key="label.sectionName"/></label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="sectionName" name="sectionName"
-                                               placeholder="<fmt:message key='placeholder.enterName'/>"
-                                               value="${uncompleted.name}"/>
+                                    <label for="inputDescription" class="col-sm-2 control-label">
+                                        <fmt:message key="label.comment.text"/>
+                                    </label>
+                                    <div class="col-sm-10">
+                            <textarea class="form-control no-resize" rows="10" id="inputDescription" name="text"
+                                      placeholder="<fmt:message key="placeholder.enterText"/>"> ${uncompleted.text}${commentToEdit.text}</textarea>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="topic" class="col-sm-4 control-label"><fmt:message
-                                            key="label.majorSection"/></label>
-                                    <select class="selectpicker col-xs-12 col-sm-7" id="topic" data-live-search="true"
-                                            name="majorSectionId" data-new-value="${uncompleted.majorSectionId}">
-                                        <option data-content="<fmt:message key='dropdown.asMajorSection'/>"></option>
-                                        <c:forEach var="majorSection" items="${majorSections}">
-                                            <option data-content="${majorSection.name}">
-                                                    ${majorSection.id}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group" id="labelColorPicker">
-                                    <label for="hue-colorpicker" class="col-sm-4 control-label"><fmt:message
-                                            key="label.color"/></label>
-                                    <div class="col-sm-7">
-                                        <input name="labelColor" type="text" id="hue-colorpicker" class="form-control"
-                                               data-new-value="${uncompleted.labelColor}">
+                                <div class="form-group last">
+                                    <div class="button-bottom">
+                                        <button type="submit" class="btn btn-success"><fmt:message
+                                                key="button.finish"/></button>
+                                        <a href="${url_home}" class="btn btn-default"><fmt:message
+                                                key="button.cancel"/></a>
                                     </div>
-                                </div>
-                                <div class="form-group button-bottom">
-                                    <button type="submit" class="btn btn-success"><fmt:message
-                                            key="button.finish"/></button>
-                                    <a href="${url_home}" class="btn btn-default"><fmt:message key="button.cancel"/></a>
                                 </div>
                             </form>
                         </div>

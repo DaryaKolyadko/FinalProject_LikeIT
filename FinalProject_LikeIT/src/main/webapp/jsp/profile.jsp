@@ -137,7 +137,7 @@
                                                 <ctm:adminOnly>
                                                     <tr>
                                                         <td><fmt:message key="label.role"/></td>
-                                                        <td>${profile.role}</td>
+                                                        <td><span class="${fn:toLowerCase(profile.role)}-label">${profile.role}</span></td>
                                                     </tr>
                                                 </ctm:adminOnly>
                                                 <tr>
@@ -150,11 +150,12 @@
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.gender"/></td>
-                                                    <td>${profile.gender}</td>
+                                                    <td><fmt:message key="gender.${fn:toLowerCase(profile.gender)}"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.state"/></td>
-                                                    <td class="state-${fn:toLowerCase(profile.state)}">${profile.state}</td>
+                                                    <td class="state-${fn:toLowerCase(profile.state)}"><fmt:message
+                                                            key="${fn:toLowerCase(profile.state)}"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.rating"/></td>
@@ -167,15 +168,6 @@
                                                     </td>
                                                 </tbody>
                                             </table>
-                                            <%--<div class="text-center">--%>
-                                                <%--<c:if test="${profile.id eq userContainer.object.id}">--%>
-                                                    <%--<fmt:message key="label.buttonPrefix" var="buttonPrefix"/>--%>
-                                                <%--</c:if>--%>
-                                                <%--<button class="btn btn-success profile">${buttonPrefix} <fmt:message--%>
-                                                        <%--key="label.questions"/>--%>
-                                                    <%--(${profile.questionNum})--%>
-                                                <%--</button>--%>
-                                            <%--</div>--%>
                                         </div>
                                     </div>
                                 </div>

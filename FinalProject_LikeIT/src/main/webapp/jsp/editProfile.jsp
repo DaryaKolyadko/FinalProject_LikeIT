@@ -39,7 +39,9 @@
             <div class="col-sm-12 col-md-12 col-lg-9 col-lg-offset-1 text-left">
                 <c:choose>
                     <c:when test="${not empty serverError}">
-                        <div><h2><fmt:message key="${serverError}"/></h2></div>
+                        <div class="alert alert-danger top-margin">
+                            <fmt:message key="${serverError}"/>
+                        </div>
                     </c:when>
                     <c:otherwise>
                         <div class="container medium-top-padding">
@@ -116,43 +118,6 @@
                                         </select>
                                     </div>
                                 </div>
-
-                                    <%--<div class="form-main-title">--%>
-                                    <%--<span><fmt:message key="formHeader.changePassword"/>--%>
-                                    <%--</span>--%>
-                                    <%--<span class="optional"> (<fmt:message key="formHeader.changePassword.optional"/>)--%>
-                                    <%--</span>--%>
-                                    <%--</div>--%>
-                                    <%--<div id="password-fields">--%>
-                                    <%--<div class="form-group">--%>
-                                    <%--<label for="old-user-password" class="col-sm-4 control-label"><fmt:message--%>
-                                    <%--key="label.oldPassword"/></label>--%>
-                                    <%--<div class="col-sm-7">--%>
-                                    <%--<input type="password" name="oldUserPassword" id="old-user-password"--%>
-                                    <%--class="form-control"--%>
-                                    <%--placeholder="<fmt:message key="label.oldPassword"/>"/>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="form-group">--%>
-                                    <%--<label for="user-password" class="col-sm-4 control-label"><fmt:message--%>
-                                    <%--key="label.newPassword"/></label>--%>
-                                    <%--<div class="col-sm-7">--%>
-                                    <%--<input type="password" name="userPassword" id="user-password"--%>
-                                    <%--class="form-control"--%>
-                                    <%--placeholder="<fmt:message key="label.newPassword"/>"/>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="form-group">--%>
-                                    <%--<label for="user-confirm-password" class="col-sm-4 control-label"><fmt:message--%>
-                                    <%--key="label.confirmNewPassword"/></label>--%>
-                                    <%--<div class="col-sm-7">--%>
-                                    <%--<input type="password" name="userConfirmPassword" id="user-confirm-password"--%>
-                                    <%--class="form-control"--%>
-                                    <%--placeholder="<fmt:message key="label.confirmNewPassword"/>"/>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--</div>--%>
-
                                 <div class="form-group button-bottom">
                                     <button id="edit-profile-submit" type="submit" class="btn btn-success"><fmt:message
                                             key="button.finish"/></button>

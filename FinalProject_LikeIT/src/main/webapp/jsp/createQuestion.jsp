@@ -29,54 +29,67 @@
         <c:url value="/Home" var="url_home"/>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-9 col-lg-offset-1 text-left">
-                <div class="container medium-top-padding">
-                    <div class="form-main-title"><fmt:message key="header"/></div>
-                    <form id="create-question-form" class="form-horizontal form-wrap" method="post" action="${url_home}">
-                        <c:if test="${not empty actionError}">
-                            <div class="alert alert-danger">
-                                <a class="close" data-dismiss="alert" href="#">×</a>
-                                <fmt:message key="${actionError.text}"/>
-                            </div>
-                        </c:if>
-                        <input type="hidden" name="command" value="CREATE_QUESTION"/>
-                        <div class="form-group">
-                            <label for="topic" class="col-sm-2 control-label"><fmt:message key="label.section"/></label>
-                            <select class="selectpicker col-sm-10" name="sectionId" id="topic" data-live-search="true"
-                                    data-new-value="${uncompleted.sectionId}">
-                                <c:forEach var="section" items="${sections}">
-                                    <option value="${section.id}">${section.name}</option>
-                                </c:forEach>
-                            </select>
+                <c:choose>
+                    <c:when test="${not empty serverError}">
+                        <div class="alert alert-danger top-margin">
+                            <fmt:message key="${serverError}"/>
                         </div>
-                        <div class="form-group">
-                            <label for="inputTitle" class="col-sm-2 control-label">
-                                <fmt:message key="label.question.title"/>
-                            </label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="title" id="inputTitle"
-                                       placeholder="<fmt:message key="placeholder.enterTitle"/>"
-                                       value="${uncompleted.title}"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDescription" class="col-sm-2 control-label">
-                                <fmt:message key="label.question.text"/>
-                            </label>
-                            <div class="col-sm-10">
+                    </c:when>
+                    <c:otherwise>
+                        <div class="container medium-top-padding">
+                            <div class="form-main-title"><fmt:message key="header"/></div>
+                            <form id="create-question-form" class="form-horizontal form-wrap" method="post"
+                                  action="${url_home}">
+                                <c:if test="${not empty actionError}">
+                                    <div class="alert alert-danger">
+                                        <a class="close" data-dismiss="alert" href="#">×</a>
+                                        <fmt:message key="${actionError.text}"/>
+                                    </div>
+                                </c:if>
+                                <input type="hidden" name="command" value="CREATE_QUESTION"/>
+                                <div class="form-group">
+                                    <label for="topic" class="col-sm-2 control-label"><fmt:message
+                                            key="label.section"/></label>
+                                    <select class="selectpicker col-sm-10" name="sectionId" id="topic"
+                                            data-live-search="true"
+                                            data-new-value="${uncompleted.sectionId}">
+                                        <c:forEach var="section" items="${sections}">
+                                            <option value="${section.id}">${section.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputTitle" class="col-sm-2 control-label">
+                                        <fmt:message key="label.question.title"/>
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" name="title" id="inputTitle"
+                                               placeholder="<fmt:message key="placeholder.enterTitle"/>"
+                                               value="${uncompleted.title}"
+                                               required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputDescription" class="col-sm-2 control-label">
+                                        <fmt:message key="label.question.text"/>
+                                    </label>
+                                    <div class="col-sm-10">
                             <textarea class="form-control no-resize" rows="10" id="inputDescription" name="text"
                                       placeholder="<fmt:message key="placeholder.enterText"/>"> ${uncompleted.text}</textarea>
-                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group last">
+                                    <div class="button-bottom">
+                                        <button type="submit" class="btn btn-success"><fmt:message
+                                                key="button.finish"/></button>
+                                        <a href="${url_home}" class="btn btn-default"><fmt:message
+                                                key="button.cancel"/></a>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group last">
-                            <div class="button-bottom">
-                                <button type="submit" class="btn btn-success"><fmt:message
-                                        key="button.finish"/></button>
-                                <a href="${url_home}" class="btn btn-default"><fmt:message key="button.cancel"/></a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <%@include file="/jsp/include/rightSidePanel.jsp" %>
         </div>

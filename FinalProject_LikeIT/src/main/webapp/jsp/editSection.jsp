@@ -32,12 +32,14 @@
         <c:url value="/Home" var="url_home"/>
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-9 col-lg-offset-1 text-left">
-                <div class="container medium-top-padding">
-                    <c:choose>
-                        <c:when test="${not empty serverError}">
-                            <div><h2><fmt:message key="${serverError}"/></h2></div>
-                        </c:when>
-                        <c:otherwise>
+                <c:choose>
+                    <c:when test="${not empty serverError}">
+                        <div class="alert alert-danger top-margin">
+                            <fmt:message key="${serverError}"/>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="container medium-top-padding">
                             <div class="form-main-title"><fmt:message key="header"/></div>
                             <form id="edit-section-form" method="post" class="form-horizontal form-wrap"
                                   action="${url_home}">
@@ -72,13 +74,14 @@
                                     </div>
                                 </c:if>
                                 <div class="form-group button-bottom">
-                                    <button type="submit" class="btn btn-success"><fmt:message key="button.finish"/></button>
+                                    <button type="submit" class="btn btn-success"><fmt:message
+                                            key="button.finish"/></button>
                                     <a href="${url_home}" class="btn btn-default"><fmt:message key="button.cancel"/></a>
                                 </div>
                             </form>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <%@include file="/jsp/include/rightSidePanel.jsp" %>
         </div>

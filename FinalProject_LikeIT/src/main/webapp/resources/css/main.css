@@ -298,3 +298,13 @@ footer:hover {
 .par-with-lines {
     white-space:pre;
 }
+
+.admin-label {
+    color: #1D5E9E;
+    font-weight: bold;
+}
+
+.user-label {
+    color: #eea236;
+    font-weight: bold;
+}
