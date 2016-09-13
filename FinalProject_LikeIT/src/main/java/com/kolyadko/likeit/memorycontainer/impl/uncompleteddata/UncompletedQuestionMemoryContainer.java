@@ -7,7 +7,6 @@ import com.kolyadko.likeit.type.MemoryContainerType;
  * Created by DaryaKolyadko on 29.08.2016.
  */
 public class UncompletedQuestionMemoryContainer extends MemoryContainer {
-    private String authorId;
     private String sectionId;
     private String title;
     private String text;
@@ -16,12 +15,11 @@ public class UncompletedQuestionMemoryContainer extends MemoryContainer {
         containerType = MemoryContainerType.ONE_OFF;
     }
 
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
+    public UncompletedQuestionMemoryContainer(String sectionId, String title, String text) {
+        this();
+        this.sectionId = sectionId;
+        this.title = title;
+        this.text = text;
     }
 
     public String getSectionId() {

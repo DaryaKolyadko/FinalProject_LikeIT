@@ -5,21 +5,14 @@ import java.sql.Timestamp;
 /**
  * Created by DaryaKolyadko on 22.07.2016.
  */
-public class Question extends Entity<Integer> {
+public class Comment extends Entity<Integer> {
     private String authorId;
-    private int sectionId;
-    private String title;
+    private int questionId;
     private String text;
     private Timestamp creationDate;
-    private int commentNum;
-    private int answerNum;
-    private int markNum;
+    private boolean answer;
     private float rating;
     private boolean archive;
-
-    public Question() {
-        super(0);
-    }
 
     public String getAuthorId() {
         return authorId;
@@ -29,20 +22,12 @@ public class Question extends Entity<Integer> {
         this.authorId = authorId;
     }
 
-    public int getSectionId() {
-        return sectionId;
+    public int getQuestionId() {
+        return questionId;
     }
 
-    public void setSectionId(int sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 
     public String getText() {
@@ -61,20 +46,12 @@ public class Question extends Entity<Integer> {
         this.creationDate = creationDate;
     }
 
-    public int getCommentNum() {
-        return commentNum;
+    public boolean isAnswer() {
+        return answer;
     }
 
-    public void setCommentNum(int commentNum) {
-        this.commentNum = commentNum;
-    }
-
-    public int getMarkNum() {
-        return markNum;
-    }
-
-    public void setMarkNum(int markNum) {
-        this.markNum = markNum;
+    public void setAnswer(boolean answer) {
+        this.answer = answer;
     }
 
     public float getRating() {
@@ -91,13 +68,5 @@ public class Question extends Entity<Integer> {
 
     public void setArchive(boolean archive) {
         this.archive = archive;
-    }
-
-    public int getAnswerNum() {
-        return answerNum;
-    }
-
-    public void setAnswerNum(int answerNum) {
-        this.answerNum = answerNum;
     }
 }

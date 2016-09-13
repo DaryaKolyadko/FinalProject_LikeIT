@@ -67,7 +67,7 @@ public class ConnectionPool {
             try {
                 if (pool == null) {
                     pool = new ConnectionPool();
-                    initialized.set(true);
+                    initialized.getAndSet(true);
                 }
             } finally {
                 poolSingleLock.unlock();
@@ -108,29 +108,20 @@ public class ConnectionPool {
 
     public void closeAll() {
         if (initialized.get()) {
-            initialized.set(false);
+            initialized.getAndSet(false);
 
-            for (ConnectionProxy connectionProxy : connectionsAvailable) {
+            for (int i = 0; i < POOL_SIZE; i++) {
                 try {
+                    ConnectionProxy connectionProxy = connectionsAvailable.take();
+
                     if (!connectionProxy.getAutoCommit()) {
                         connectionProxy.setAutoCommit(true);
                     }
 
                     connectionProxy.finallyClose();
-                    connectionsAvailable.remove(connectionProxy);
-                    LOG.info("closed successfully (available)");
-                } catch (SQLException e) {
-                    LOG.warn("problem with connection closing (available)");
-                }
-            }
-
-            for (ConnectionProxy connectionProxy : connectionsInUse) {
-                try {
-                    connectionProxy.finallyClose();
-                    connectionsInUse.remove(connectionProxy);
-                    LOG.info("close successfully (inUse)");
-                } catch (SQLException e) {
-                    LOG.warn("problem with connection closing (inUse)");
+                    LOG.info(String.format("closed successfully (#%d)", i));
+                } catch (SQLException | InterruptedException e) {
+                    LOG.warn("problem with connection closing (#%d)");
                 }
             }
         }

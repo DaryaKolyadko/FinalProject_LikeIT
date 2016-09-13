@@ -11,10 +11,6 @@ public class Section extends Entity<Integer> {
     private String labelColor;
     private Boolean archive;
 
-    public Section() {
-        super(0);
-    }
-
     public Integer getMajorSectionId() {
         return majorSectionId;
     }

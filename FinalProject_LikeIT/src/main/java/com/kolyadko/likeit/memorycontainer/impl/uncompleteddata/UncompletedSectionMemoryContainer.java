@@ -15,6 +15,13 @@ public class UncompletedSectionMemoryContainer extends MemoryContainer {
         containerType = MemoryContainerType.ONE_OFF;
     }
 
+    public UncompletedSectionMemoryContainer(String name, String labelColor, String majorSectionId) {
+        this();
+        this.name = name;
+        this.labelColor = labelColor;
+        this.majorSectionId = majorSectionId;
+    }
+
     public String getName() {
         return name;
     }

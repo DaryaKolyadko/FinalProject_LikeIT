@@ -27,7 +27,7 @@ public class User extends Entity<String> {
     private boolean archive;
 
     public User(String login) {
-        super(login);
+        setId(login);
     }
 
     public boolean isAdmin() {
