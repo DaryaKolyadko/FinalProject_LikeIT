@@ -5,6 +5,7 @@ import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.exception.ServiceException;
 import com.kolyadko.likeit.service.impl.SectionService;
 import com.kolyadko.likeit.util.MappingManager;
+import com.kolyadko.likeit.util.RequestContentUtil;
 
 /**
  * Created by DaryaKolyadko on 28.07.2016.
@@ -18,14 +19,23 @@ public class ShowCreateQuestionPageCommand extends ShowDefaultContentCommand {
 
     @Override
     public String execute(RequestContent content) throws CommandException {
-        SectionService sectionService = new SectionService();
+        if (isAllowedAction(content)) {
+            SectionService sectionService = new SectionService();
 
-        try {
-            content.setRequestAttribute(ATTR_SECTIONS, sectionService.findNotMajorSections());
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+            try {
+                content.setRequestAttribute(ATTR_SECTIONS, sectionService.findNotMajorSections());
+            } catch (ServiceException e) {
+                throw new CommandException(e);
+            }
+        } else {
+            content.setRequestAttribute(ATTR_SERVER_ERROR, NOT_ALLOWED);
         }
 
         return super.execute(content);
+    }
+
+    @Override
+    public boolean isAllowedAction(RequestContent content) {
+        return RequestContentUtil.isAuthenticated(content) && RequestContentUtil.isActive(content);
     }
 }

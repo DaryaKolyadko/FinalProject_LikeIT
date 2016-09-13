@@ -1,6 +1,7 @@
 package com.kolyadko.likeit.command.impl.showcommand;
 
 import com.kolyadko.likeit.command.Command;
+import com.kolyadko.likeit.command.PermissionAccess;
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.exception.CommandException;
 import com.kolyadko.likeit.util.MappingManager;
@@ -8,7 +9,7 @@ import com.kolyadko.likeit.util.MappingManager;
 /**
  * Created by DaryaKolyadko on 28.07.2016.
  */
-public class ShowCommand implements Command {
+public abstract class ShowCommand implements Command, PermissionAccess {
     protected final static String ATTR_SERVER_ERROR = "serverError";
 
     private String path;
@@ -24,5 +25,10 @@ public class ShowCommand implements Command {
     @Override
     public String execute(RequestContent content) throws CommandException {
         return MappingManager.getInstance().getProperty(path);
+    }
+
+    @Override
+    public boolean isAllowedAction(RequestContent content) {
+        return true;
     }
 }
