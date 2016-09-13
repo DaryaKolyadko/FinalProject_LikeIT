@@ -9,9 +9,9 @@ import com.kolyadko.likeit.pool.ConnectionProxy;
 import com.kolyadko.likeit.service.AbstractService;
 import com.kolyadko.likeit.type.StateType;
 import com.kolyadko.likeit.util.HashUtil;
+import com.kolyadko.likeit.util.PagerUtil;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -33,15 +33,10 @@ public class UserService extends AbstractService<String, User> {
         return findById(id, true) != null;
     }
 
-    public ArrayList<User> findAll(boolean isAdmin) throws ServiceException {
+    public UserDao.UserListWrapper findAllUsers(Integer page, boolean isAdmin) throws ServiceException {
         try (ConnectionProxy connection = getConnectionWrapper()) {
             UserDao userDao = new UserDao(connection);
-
-            if (isAdmin) {
-                return userDao.findAll();
-            } else {
-                return userDao.findAllExisting();
-            }
+            return userDao.findAllUsers(page, isAdmin);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

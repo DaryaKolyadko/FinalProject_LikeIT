@@ -19,28 +19,29 @@ import java.util.ArrayList;
  */
 public class UserDao extends AbstractDao<String, User> {
     private static final String ALL_COLUMNS = "login, first_name, last_name, gender, password, birth_date, " +
-            "sign_up_date, email, role, state, rating, answer_num, question_num, comment_num, archive";
+            "sign_up_date, email, role, state, rating, archive";
     private static final String INSERT_COLUMNS = "login, first_name, last_name, gender, password, birth_date, " +
             "sign_up_date, email";
-    //    private static final String UPDATE_COLUMNS = "first_name, last_name, gender, password, birth_date, email";
     private static final String UPDATE_COLUMNS = "first_name, last_name, gender, birth_date, email";
 
     private static final String ORDER_BY_LOGIN = " ORDER BY login";
-    private static final String EXISTING = " archive='false'";// AND role='user'";
+    private static final String EXISTING = " archive='false'";
     private static final String AND = " AND";
     private static final String WHERE = " WHERE";
+    private static final String LIMIT = " LIMIT ?";
+    private static final String OFFSET_AND_LIMIT = LIMIT + ", ?";
 
-    private static final String SELECT_ALL = "SELECT " + ALL_COLUMNS + " FROM user";
-    private static final String FIND_BY_ID = SELECT_ALL + "  WHERE login=?";
+    private static final String SELECT_ALL = "SELECT SQL_CALC_FOUND_ROWS " + ALL_COLUMNS + " FROM user";
     private static final String CREATE = "INSERT INTO user (" + INSERT_COLUMNS + ") VALUES(" +
             StringUtils.repeat("?", ", ", INSERT_COLUMNS.split(",").length) + ");";
     private static final String WHERE_LOGIN = " WHERE login=?";
+    private static final String FIND_BY_ID = SELECT_ALL + WHERE_LOGIN;
     private static final String ARCHIVE_ACTIONS = "UPDATE user SET archive=?" + WHERE_LOGIN;
     private static final String STATE_ACTIONS = "UPDATE user SET state=?" + WHERE_LOGIN;
-    private static final String UPDATE_USER = "UPDATE user SET " + String.join("=?, ", UPDATE_COLUMNS.split(",")) +
-            "=?";
-    //TODO while stream api version crashes???
-//            Arrays.stream(UPDATE_COLUMNS.split(",")).map((c) -> c + "=?").collect(Collectors.joining(", "));
+    private static final String UPDATE_USER = "UPDATE user SET " + String.join("=?, ", UPDATE_COLUMNS.split(",")) + "=?";
+
+    public static final int USERS_PER_PAGE = 8;
+    private static final PagerUtil pager = new PagerUtil(USERS_PER_PAGE);
 
     public UserDao(ConnectionProxy connection) {
         super(connection);
@@ -54,12 +55,16 @@ public class UserDao extends AbstractDao<String, User> {
         return findOnlyOne(FIND_BY_ID + AND + EXISTING, login);
     }
 
-    public ArrayList<User> findAll() throws DaoException {
-        return findWithStatement(SELECT_ALL + ORDER_BY_LOGIN);
+    public ArrayList<User> findUserList(Integer page, boolean isAdmin) throws DaoException {
+        return findBy(SELECT_ALL + (isAdmin ? WHERE + EXISTING : "") + ORDER_BY_LOGIN + OFFSET_AND_LIMIT,
+                pager.calculateListOffset(page), USERS_PER_PAGE);
     }
 
-    public ArrayList<User> findAllExisting() throws DaoException {
-        return findWithStatement(SELECT_ALL + WHERE + EXISTING + ORDER_BY_LOGIN);
+    public UserListWrapper findAllUsers(Integer page, boolean isAdmin) throws DaoException {
+        UserListWrapper wrapper = new UserListWrapper();
+        wrapper.setUserList(findUserList(page, isAdmin));
+        wrapper.setPagesNumber(pager.calculatePagesNumber(connection));
+        return wrapper;
     }
 
     public boolean archiveActionById(boolean archive, String login) throws DaoException {
@@ -67,8 +72,6 @@ public class UserDao extends AbstractDao<String, User> {
     }
 
     public boolean updateUser(User user) throws DaoException {
-//        return updateEntityWithQuery(UPDATE_USER + WHERE_LOGIN, user.getFirstName(), user.getLastName(),
-//                user.getGender().name(), user.getPassword(), user.getBirthDate(), user.getEmail());
         return updateEntityWithQuery(UPDATE_USER + WHERE_LOGIN, user.getFirstName(), user.getLastName(),
                 user.getGender().name(), user.getBirthDate(), user.getEmail(), user.getId());
     }
@@ -108,13 +111,35 @@ public class UserDao extends AbstractDao<String, User> {
             user.setRole(RoleType.getRoleType(resultSet.getString("role")));
             user.setState(StateType.getStateType(resultSet.getString("state")));
             user.setRating(resultSet.getFloat("rating"));
-            user.setAnswerNum(resultSet.getInt("answer_num"));
-            user.setQuestionNum(resultSet.getInt("question_num"));
-            user.setCommentNum(resultSet.getInt("comment_num"));
             user.setArchive(resultSet.getBoolean("archive"));
             return user;
         } catch (SQLException e) {
             throw new DaoException(e);
+        }
+    }
+
+    public class UserListWrapper {
+        private ArrayList<User> userList;
+        private Integer pagesNumber;
+
+        public UserListWrapper() {
+            userList = new ArrayList<>();
+        }
+
+        public ArrayList<User> getUserList() {
+            return userList;
+        }
+
+        public void setUserList(ArrayList<User> userList) {
+            this.userList = userList;
+        }
+
+        public Integer getPagesNumber() {
+            return pagesNumber;
+        }
+
+        public void setPagesNumber(Integer pagesNumber) {
+            this.pagesNumber = pagesNumber;
         }
     }
 }
