@@ -16,15 +16,21 @@ public enum ActionCommandType {
     CREATE_COMMENT(new CreateCommentCommand()),
     EDIT_SECTION(new EditSectionCommand()),
     EDIT_QUESTION(new EditQuestionCommand()),
+    EDIT_COMMENT(new EditCommentCommand()),
     EDIT_PROFILE(new EditProfileCommand()),
     DELETE_SECTION(new DeleteSectionCommand()),
     DELETE_QUESTION(new DeleteQuestionCommand()),
+    DELETE_COMMENT(new DeleteCommentCommand()),
     DELETE_PROFILE(new DeleteProfileCommand()),
     RESTORE_SECTION(new RestoreSectionCommand()),
     RESTORE_QUESTION(new RestoreQuestionCommand()),
+    RESTORE_COMMENT(new RestoreCommentCommand()),
     RESTORE_PROFILE(new RestoreProfileCommand()),
     BAN_PROFILE(new BanProfileCommand()),
-    ACTIVATE_PROFILE(new ActivateProfileCommand());
+    ACTIVATE_PROFILE(new ActivateProfileCommand()),
+    SET_QUESTION_MARK(new SetQuestionMarkCommand()),
+    SET_COMMENT_MARK(new SetCommentMarkCommand()),
+    NOTE_AS_ANSWER(new NoteAsAnswerCommand());
 
     private Command command;
 

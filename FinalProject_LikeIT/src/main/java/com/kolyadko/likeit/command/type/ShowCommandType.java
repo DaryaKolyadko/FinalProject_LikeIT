@@ -11,6 +11,7 @@ public enum ShowCommandType {
     SHOW_CREATE_QUESTION_PAGE(new ShowCreateQuestionPageCommand()),
     SHOW_CREATE_SECTION_PAGE(new ShowCreateSectionPageCommand()),
     SHOW_EDIT_SECTION_PAGE(new ShowEditSectionPageCommand()),
+    SHOW_EDIT_COMMENT_PAGE(new ShowEditCommentPageCommand()),
     SHOW_EDIT_QUESTION_PAGE(new ShowEditQuestionPageCommand()),
     SHOW_EDIT_PROFILE_PAGE(new ShowEditProfilePageCommand()),
     SHOW_USER_LIST_PAGE(new ShowUserListPageCommand()),
