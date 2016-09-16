@@ -56,7 +56,7 @@ public class UserDao extends AbstractDao<String, User> {
     }
 
     public ArrayList<User> findUserList(Integer page, boolean isAdmin) throws DaoException {
-        return findBy(SELECT_ALL + (isAdmin ? WHERE + EXISTING : "") + ORDER_BY_LOGIN + OFFSET_AND_LIMIT,
+        return findBy(SELECT_ALL + (isAdmin ? "" : WHERE + EXISTING) + ORDER_BY_LOGIN + OFFSET_AND_LIMIT,
                 pager.calculateListOffset(page), USERS_PER_PAGE);
     }
 
@@ -94,7 +94,7 @@ public class UserDao extends AbstractDao<String, User> {
             preparedStatement.executeUpdate();
             return preparedStatement.getUpdateCount() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in UserDao, create()", e);
         }
     }
 
@@ -114,7 +114,7 @@ public class UserDao extends AbstractDao<String, User> {
             user.setArchive(resultSet.getBoolean("archive"));
             return user;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in UserDao, readEntity()", e);
         }
     }
 

@@ -9,6 +9,10 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 07.09.2016.
  */
+
+/**
+ * Command lets note a comment as an answer (question's author only)
+ */
 public class NoteAsAnswerCommand extends SimpleActionCommand {
     private static final String PARAM_ANSWER = "answer";
     private static final String PARAM_QUEST_AUTHOR = "questionAuthorId";
@@ -26,7 +30,7 @@ public class NoteAsAnswerCommand extends SimpleActionCommand {
         try {
             commentService.noteAsAnswer(commentId, !isAnswer);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in NoteAsAnswerCommand", e);
         }
     }
 

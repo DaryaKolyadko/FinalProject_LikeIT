@@ -7,6 +7,10 @@ import java.io.IOException;
 /**
  * Created by DaryaKolyadko on 19.07.2016.
  */
+
+/**
+ * Encoding filter (sets encoding which is placed in init parameters)
+ */
 @WebFilter(filterName = "EncodingFilter")
 public class EncodingFilter implements Filter {
     private String encoding;

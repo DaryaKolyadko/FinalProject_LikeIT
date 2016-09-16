@@ -22,7 +22,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.setCommentMark(commentId, userId, mark);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in CommentService, setCommentMark()", e);
         }
     }
 
@@ -31,7 +31,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.noteAsAnswer(commentId, state);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in CommentService, noteAsAnswer()", e);
         }
     }
 
@@ -42,7 +42,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
             comment.setCreationDate(new Timestamp(CALENDAR.getTime().getTime()));
             return commentDao.create(comment);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in CommentService, create()", e);
         }
     }
 
@@ -52,7 +52,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
             return isAdmin ? commentDao.findByQuestionId(questionId, login, isAdmin) :
                     commentDao.findByQuestionId(questionId, login, isAdmin);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in CommentService, findByQuestionId()", e);
         }
     }
 
@@ -61,7 +61,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
             CommentDao commentDao = new CommentDao(connection);
             return isAdmin ? commentDao.findById(commentId) : commentDao.findExistingById(commentId);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in CommentService, findById()", e);
         }
     }
 
@@ -75,7 +75,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.updateComment(comment);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in CommentService, updateComment()", e);
         }
     }
 
@@ -92,7 +92,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.archiveActionById(archive, commentId);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in CommentService, archiveActionsById()", e);
         }
     }
 }

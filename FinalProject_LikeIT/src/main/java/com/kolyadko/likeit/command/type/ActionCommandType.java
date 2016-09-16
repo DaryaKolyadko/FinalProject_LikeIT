@@ -7,6 +7,10 @@ import com.kolyadko.likeit.command.impl.actioncommand.*;
 /**
  * Created by DaryaKolyadko on 16.07.2016.
  */
+
+/**
+ * List of available ActionCommand-s
+ */
 public enum ActionCommandType {
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),

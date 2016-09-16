@@ -21,7 +21,7 @@ public class NewLineFormatTag extends BodyTagSupport {
             JspWriter out = pageContext.getOut();
             out.write(text.replace(System.getProperty("line.separator"), "<br>"));
         } catch (IOException e) {
-            throw new JspException(e);
+            throw new JspException("Exception in NewLineFormatTag", e);
         }
 
         return SKIP_BODY;

@@ -3,6 +3,10 @@ package com.kolyadko.likeit.exception;
 /**
  * Created by DaryaKolyadko on 13.07.2016.
  */
+
+/**
+ * DaoException
+ */
 public class DaoException extends Exception {
     public DaoException(String message) {
         super(message);

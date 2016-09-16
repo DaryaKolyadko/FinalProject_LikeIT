@@ -10,6 +10,10 @@ import java.sql.Date;
 /**
  * Created by DaryaKolyadko on 15.07.2016.
  */
+
+/**
+ * User entity
+ */
 public class User extends Entity<String> {
     private String firstName;
     private String lastName;
@@ -21,9 +25,6 @@ public class User extends Entity<String> {
     private RoleType role = RoleType.USER;
     private StateType state = StateType.ACTIVE;
     private float rating;
-    private int answerNum;
-    private int questionNum;
-    private int commentNum;
     private boolean archive;
 
     public User(String login) {
@@ -116,30 +117,6 @@ public class User extends Entity<String> {
 
     public void setRating(float rating) {
         this.rating = rating;
-    }
-
-    public int getAnswerNum() {
-        return answerNum;
-    }
-
-    public void setAnswerNum(int answerNum) {
-        this.answerNum = answerNum;
-    }
-
-    public int getQuestionNum() {
-        return questionNum;
-    }
-
-    public void setQuestionNum(int questionNum) {
-        this.questionNum = questionNum;
-    }
-
-    public int getCommentNum() {
-        return commentNum;
-    }
-
-    public void setCommentNum(int commentNum) {
-        this.commentNum = commentNum;
     }
 
     public boolean isArchive() {

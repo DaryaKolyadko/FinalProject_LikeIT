@@ -75,7 +75,7 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
                 return updateEntityWithQuery(INSERT_COMMENT_MARK, commentId, userId, mark);
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in CommentDao, setCommentMark()", e);
         }
     }
 
@@ -118,7 +118,7 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
                 dataList.add(data);
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in CommentDao, extractData()", e);
         }
 
         return dataList;
@@ -164,7 +164,7 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
             preparedStatement.executeUpdate();
             return preparedStatement.getUpdateCount() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in CommentDao, create()", e);
         }
     }
 
@@ -182,7 +182,7 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
             comment.setArchive(resultSet.getBoolean("archive"));
             return comment;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in CommentDao, readEntity()", e);
         }
     }
 }

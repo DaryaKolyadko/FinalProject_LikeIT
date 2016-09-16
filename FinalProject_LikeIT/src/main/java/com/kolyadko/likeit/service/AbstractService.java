@@ -19,7 +19,7 @@ public abstract class AbstractService<K, T extends Entity> {
         try {
             connection = ConnectionPool.getInstance().getConnection();
         } catch (ConnectionPoolException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception while trying to get connection in service", e);
         }
 
         return connection;

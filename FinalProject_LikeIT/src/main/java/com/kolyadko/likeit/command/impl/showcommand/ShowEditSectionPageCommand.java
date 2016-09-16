@@ -40,7 +40,7 @@ public class ShowEditSectionPageCommand extends ShowDefaultContentCommand implem
                         content.setRequestAttribute(ATTR_SERVER_ERROR, SECTION_ERROR_NO_SUCH);
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in ShowEditSectionPageCommand", e);
                 }
             } else {
                 content.setRequestAttribute(ATTR_SERVER_ERROR, NOT_ALLOWED);

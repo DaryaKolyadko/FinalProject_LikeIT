@@ -8,6 +8,10 @@ import static org.junit.Assert.*;
 /**
  * Created by DaryaKolyadko on 12.09.2016.
  */
+
+/**
+ * Test for LoginValidator
+ */
 public class LoginValidatorTest {
     @Test
     public void testIsLoginValid() throws Exception {

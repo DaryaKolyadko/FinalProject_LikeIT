@@ -10,13 +10,28 @@ import com.kolyadko.likeit.util.MappingManager;
 /**
  * Created by DaryaKolyadko on 28.07.2016.
  */
-public class ShowCommandFactory {
 
+/**
+ * Creates ShowCommand objects
+ */
+public class ShowCommandFactory {
+    /**
+     * Retrieves requestUri from request and generates ShowCommand
+     *
+     * @param content request content
+     * @return ShowCommand object
+     */
     public static Command getCommand(RequestContent content) {
         String requestURI = content.getRequestURI();
         return getCommand(requestURI);
     }
 
+    /**
+     * Based on URI creates ShowCommand\Command object
+     *
+     * @param requestURI requested URI
+     * @return Command object
+     */
     public static Command getCommand(String requestURI) {
         Command command = new EmptyCommand();
 

@@ -22,6 +22,10 @@ import java.io.IOException;
 /**
  * Created by DaryaKolyadko on 25.07.2016.
  */
+
+/**
+ * Servlet
+ */
 @WebServlet(name = "LikeItServlet")
 public class LikeItServlet extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger(LikeItServlet.class);

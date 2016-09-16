@@ -1,12 +1,8 @@
-==================delete pager util (inside dao)
-exceptions + text
 javadoc
-index.jsp
+equals + hashCode???
+int as id????
 
 SLICK MOMENTS:
-jsp/home.jsp as welcome .... delete index.jsp?
-setCommentMark and setQuestionMark are almost equals =(
-
 tests:
 create pool
 +getConnection time (3)

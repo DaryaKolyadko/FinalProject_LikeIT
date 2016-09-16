@@ -3,6 +3,10 @@ package com.kolyadko.likeit.exception;
 /**
  * Created by DaryaKolyadko on 13.07.2016.
  */
+
+/**
+ * DatabaseConnectorException
+ */
 public class DatabaseConnectorException extends Exception {
     public DatabaseConnectorException(String message) {
         super(message);

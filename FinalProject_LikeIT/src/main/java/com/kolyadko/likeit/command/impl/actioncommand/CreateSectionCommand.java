@@ -10,11 +10,15 @@ import com.kolyadko.likeit.memorycontainer.impl.uncompleteddata.UncompletedSecti
 import com.kolyadko.likeit.service.impl.SectionService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
-import com.kolyadko.likeit.validator.impl.SectionActionValidator;
 import com.kolyadko.likeit.validator.Validator;
+import com.kolyadko.likeit.validator.impl.SectionActionValidator;
 
 /**
  * Created by DaryaKolyadko on 29.08.2016.
+ */
+
+/**
+ * Command lets create a section (admin only)
  */
 public class CreateSectionCommand extends ActionCommand {
     private static final String PARAM_SECTION_NAME = "sectionName";
@@ -50,7 +54,7 @@ public class CreateSectionCommand extends ActionCommand {
                         content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(CREATE_PROBLEM));
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in CreateSectionCommand", e);
                 }
             } else {
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(CREATE_SECTION_ERROR_CHECK));

@@ -5,6 +5,10 @@ import java.sql.Timestamp;
 /**
  * Created by DaryaKolyadko on 22.07.2016.
  */
+
+/**
+ * Question entity
+ */
 public class Question extends Entity<Integer> {
     private String authorId;
     private int sectionId;

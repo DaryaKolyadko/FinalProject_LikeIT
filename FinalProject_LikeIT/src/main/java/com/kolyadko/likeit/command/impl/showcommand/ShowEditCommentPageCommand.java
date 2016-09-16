@@ -39,7 +39,7 @@ public class ShowEditCommentPageCommand extends ShowDefaultContentCommand implem
                         content.setRequestAttribute(ATTR_SERVER_ERROR, COMMENT_ERROR_NO_SUCH);
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in ShowEditCommentPageCommand", e);
                 }
             } else {
                 content.setRequestAttribute(ATTR_SERVER_ERROR, NOT_ALLOWED);

@@ -9,7 +9,6 @@ import com.kolyadko.likeit.pool.ConnectionProxy;
 import com.kolyadko.likeit.service.AbstractService;
 import com.kolyadko.likeit.type.StateType;
 import com.kolyadko.likeit.util.HashUtil;
-import com.kolyadko.likeit.util.PagerUtil;
 
 import java.sql.Date;
 import java.util.Calendar;
@@ -25,7 +24,7 @@ public class UserService extends AbstractService<String, User> {
             UserDao userDao = new UserDao(connection);
             return isAdmin ? userDao.findById(id) : userDao.findExistingById(id);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in UserService, findById()", e);
         }
     }
 
@@ -38,7 +37,7 @@ public class UserService extends AbstractService<String, User> {
             UserDao userDao = new UserDao(connection);
             return userDao.findAllUsers(page, isAdmin);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in UserService, findAllUsers()", e);
         }
     }
 
@@ -47,7 +46,7 @@ public class UserService extends AbstractService<String, User> {
             UserDao userDao = new UserDao(connection);
             return userDao.updateUser(user);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in UserService, updateUser()", e);
         }
     }
 
@@ -64,7 +63,7 @@ public class UserService extends AbstractService<String, User> {
             UserDao userDao = new UserDao(connection);
             return userDao.archiveActionById(archive, login);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in UserService, archiveActionsById()", e);
         }
     }
 
@@ -81,7 +80,7 @@ public class UserService extends AbstractService<String, User> {
             UserDao userDao = new UserDao(connection);
             return userDao.stateActionById(state, login);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in UserService, stateActionsById()", e);
         }
     }
 
@@ -94,7 +93,7 @@ public class UserService extends AbstractService<String, User> {
                 return user;
             }
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in UserService, findUserWithCredentials()", e);
         }
 
         return null;
@@ -108,7 +107,7 @@ public class UserService extends AbstractService<String, User> {
             user.setSignUpDate(new Date(CALENDAR.getTime().getTime()));
             return userDao.create(user);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in UserService, create()", e);
         }
     }
 }

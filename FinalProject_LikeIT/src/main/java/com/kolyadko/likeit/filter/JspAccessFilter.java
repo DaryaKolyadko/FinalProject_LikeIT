@@ -9,6 +9,10 @@ import java.io.IOException;
 /**
  * Created by DaryaKolyadko on 19.07.2016.
  */
+
+/**
+ * Jsp access filter (prevents direct access to jsp files)
+ */
 @WebFilter(filterName = "JspAccessFilter")
 public class JspAccessFilter implements Filter {
     private static final String PARAM_REDIRECT_TO = "redirectTo";

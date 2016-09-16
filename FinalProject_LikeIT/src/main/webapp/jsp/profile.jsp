@@ -159,7 +159,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.rating"/></td>
-                                                    <td><fmt:formatNumber value="${profile.rating}"/></td>
+                                                    <td>  <fmt:formatNumber maxFractionDigits="1">${profile.rating}</fmt:formatNumber></td>
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.email"/></td>

@@ -13,6 +13,10 @@ import com.kolyadko.likeit.util.RequestContentUtil;
 /**
  * Created by DaryaKolyadko on 08.09.2016.
  */
+
+/**
+ * Command lets restore a comment from archive (admin only)
+ */
 public class RestoreCommentCommand extends SimpleActionCommand {
     private static final String RESTORE_SUCCESS = "info.restoreComment.success";
     private static final String RESTORE_PROBLEM = "info.restoreComment.problem";
@@ -38,7 +42,7 @@ public class RestoreCommentCommand extends SimpleActionCommand {
             resultPage = MappingManager.QUESTION_PAGE + RequestContentUtil.getParamAsQueryString(content,
                     PARAM_QUESTION);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in RestoreCommentCommand", e);
         }
     }
 }

@@ -43,7 +43,7 @@ public class ShowProfilePageCommand extends ShowDefaultContentCommand {
                     return super.execute(content);
                 }
             } catch (ServiceException e) {
-                throw new CommandException(e);
+                throw new CommandException("Exception in ShowProfilePageCommand", e);
             }
         }
 

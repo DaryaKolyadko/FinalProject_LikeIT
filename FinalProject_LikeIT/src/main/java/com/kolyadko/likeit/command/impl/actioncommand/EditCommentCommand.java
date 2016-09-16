@@ -11,11 +11,15 @@ import com.kolyadko.likeit.service.impl.CommentService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.impl.CommentActionValidator;
 import com.kolyadko.likeit.validator.Validator;
+import com.kolyadko.likeit.validator.impl.CommentActionValidator;
 
 /**
  * Created by DaryaKolyadko on 08.09.2016.
+ */
+
+/**
+ * Command lets edit a comment (author only)
  */
 public class EditCommentCommand extends ActionCommand {
     private static final String EXIT_PARAM_QUESTION_ID = "question";
@@ -54,7 +58,7 @@ public class EditCommentCommand extends ActionCommand {
                                 RequestContentUtil.generateQueryString(EXIT_PARAM_QUESTION_ID, comment.getQuestionId());
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in EditCommentCommand", e);
                 }
             } else {
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_COMMENT_ERROR_CHECK));

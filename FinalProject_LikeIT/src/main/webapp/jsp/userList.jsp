@@ -60,7 +60,7 @@
                                         <a href="#"
                                            onclick="document.getElementById('profile-${u.id}').submit()">${u.firstName} ${u.lastName}</a>
                                     </td>
-                                    <td>${u.rating}</td>
+                                    <td><fmt:formatNumber maxFractionDigits="1">${u.rating}</fmt:formatNumber></td>
                                     <td>${u.signUpDate}</td>
                                     <td class="state-${fn:toLowerCase(u.state)}"><fmt:message
                                             key="${fn:toLowerCase(u.state)}"/></td>

@@ -10,6 +10,10 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 07.09.2016.
  */
+
+/**
+ * Command lets set a comment mark (authorized only)
+ */
 public class SetCommentMarkCommand extends SimpleActionCommand {
     private static final String PARAM_MARK = "mark";
 
@@ -26,7 +30,7 @@ public class SetCommentMarkCommand extends SimpleActionCommand {
         try {
             commentService.setCommentMark(commentId, RequestContentUtil.getCurrentUserLogin(content), mark);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in SetCommentMarkCommand", e);
         }
     }
 

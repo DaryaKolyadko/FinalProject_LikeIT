@@ -39,7 +39,7 @@ public class ShowEditProfilePageCommand extends ShowDefaultContentCommand implem
                         content.setRequestAttribute(ATTR_SERVER_ERROR, PROFILE_ERROR_NO_SUCH);
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in ShowEditProfilePageCommand", e);
                 }
             } else {
                 content.setRequestAttribute(ATTR_SERVER_ERROR, NOT_ALLOWED);

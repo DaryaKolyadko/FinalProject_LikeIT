@@ -95,7 +95,7 @@ public class SectionDao extends AbstractDao<Integer, Section> {
             preparedStatement.executeUpdate();
             return preparedStatement.getUpdateCount() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in SectionDao, create()", e);
         }
     }
 
@@ -112,7 +112,7 @@ public class SectionDao extends AbstractDao<Integer, Section> {
             section.setArchive(resultSet.getBoolean("archive"));
             return section;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in SectionDao, readEntity()", e);
         }
     }
 }

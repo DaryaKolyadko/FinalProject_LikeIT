@@ -43,7 +43,7 @@ public class ShowEditQuestionPageCommand extends ShowDefaultContentCommand imple
                         content.setRequestAttribute(ATTR_SERVER_ERROR, QUESTION_ERROR_NO_SUCH);
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in ShowEditQuestionPageCommand", e);
                 }
             } else {
                 content.setRequestAttribute(ATTR_SERVER_ERROR, NOT_ALLOWED);

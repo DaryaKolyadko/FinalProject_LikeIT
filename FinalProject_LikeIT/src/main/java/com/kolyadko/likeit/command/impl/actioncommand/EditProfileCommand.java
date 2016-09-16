@@ -23,6 +23,10 @@ import java.text.SimpleDateFormat;
 /**
  * Created by DaryaKolyadko on 29.08.2016.
  */
+
+/**
+ * Command lets edit a user profile (current user only)
+ */
 public class EditProfileCommand extends ActionCommand {
     private static final String PARAM_LOGIN = "login";
     private static final String PARAM_FIRST_NAME = "firstName";
@@ -69,7 +73,7 @@ public class EditProfileCommand extends ActionCommand {
                                 PARAM_LOGIN);
                     }
                 } catch (ServiceException | ParseException | IllegalArgumentException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in EditProfileCommand", e);
                 }
             } else {
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_SECTION_ERROR_CHECK));

@@ -3,7 +3,6 @@ package com.kolyadko.likeit.command.impl.showcommand;
 import com.kolyadko.likeit.content.RequestContent;
 import com.kolyadko.likeit.dao.impl.QuestionDao;
 import com.kolyadko.likeit.exception.CommandException;
-import com.kolyadko.likeit.service.impl.QuestionService;
 
 /**
  * Created by DaryaKolyadko on 13.08.2016.
@@ -42,7 +41,7 @@ public abstract class ShowQuestionListCommand extends ShowDefaultContentCommand 
             content.setRequestAttribute(ATTR_CURR_PAGE, page);
             content.setRequestAttribute(ATTR_NUM_OF_PAGES, wrapper.getPagesNumber());
         } catch (CommandException | NumberFormatException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in ShowQuestionListPageCommand", e);
         }
 
         content.setRequestAttribute(ATTR_QUEST_DATA_LIST, wrapper.getQuestionList());

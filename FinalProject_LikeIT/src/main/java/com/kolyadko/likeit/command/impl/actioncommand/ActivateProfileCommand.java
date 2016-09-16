@@ -15,6 +15,10 @@ import com.kolyadko.likeit.validator.impl.LoginValidator;
 /**
  * Created by DaryaKolyadko on 05.09.2016.
  */
+
+/**
+ * Command lets activate user profile (admin only)
+ */
 public class ActivateProfileCommand extends SimpleActionCommand {
     private static final String ACTIVATE_SUCCESS = "info.activateProfile.success";
     private static final String ACTIVATE_PROBLEM = "info.activateProfile.problem";
@@ -41,7 +45,7 @@ public class ActivateProfileCommand extends SimpleActionCommand {
             resultPage = MappingManager.PROFILE_PAGE + RequestContentUtil.getParamAsQueryString(content,
                     paramId);
         } catch (ServiceException e) {
-            throw new CommandException("",e);
+            throw new CommandException("Exception in ActivateProfileCommand", e);
         }
     }
 

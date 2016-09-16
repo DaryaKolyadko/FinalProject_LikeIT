@@ -37,7 +37,7 @@ public class RestoreQuestionCommand extends SimpleActionCommand {
             resultPage = MappingManager.QUESTION_PAGE + RequestContentUtil.getParamAsQueryString(content,
                     paramId);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in RestoreQuestionCommand", e);
         }
     }
 }

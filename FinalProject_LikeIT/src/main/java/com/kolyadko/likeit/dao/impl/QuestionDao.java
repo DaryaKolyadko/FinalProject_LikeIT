@@ -101,7 +101,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
                 return updateEntityWithQuery(INSERT_QUESTION_MARK, questionId, userId, mark);
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in QuestionDao, setQuestionMark()", e);
         }
     }
 
@@ -142,7 +142,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
 
             return questions;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in QuestionDao, findTopQuestions()", e);
         }
     }
 
@@ -188,7 +188,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
                 dataList.add(data);
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in QuestionDao, extractData()", e);
         }
 
         return dataList;
@@ -205,7 +205,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
             preparedStatement.executeUpdate();
             return preparedStatement.getUpdateCount() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in QuestionDao, create()", e);
         }
     }
 
@@ -223,7 +223,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
             question.setArchive(resultSet.getBoolean("archive"));
             return question;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in QuestionDao, readEntity()", e);
         }
     }
 

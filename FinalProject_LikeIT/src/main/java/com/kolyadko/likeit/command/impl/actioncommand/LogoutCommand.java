@@ -7,6 +7,10 @@ import com.kolyadko.likeit.util.MappingManager;
 /**
  * Created by DaryaKolyadko on 15.07.2016.
  */
+
+/**
+ * Command lets log out from system
+ */
 public class LogoutCommand extends ActionCommand {
     public String execute(RequestContent content) {
         content.invalidateSession();

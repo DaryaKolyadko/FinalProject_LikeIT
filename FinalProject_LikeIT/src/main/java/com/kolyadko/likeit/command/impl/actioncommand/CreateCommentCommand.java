@@ -11,11 +11,15 @@ import com.kolyadko.likeit.service.impl.CommentService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.impl.CommentActionValidator;
 import com.kolyadko.likeit.validator.Validator;
+import com.kolyadko.likeit.validator.impl.CommentActionValidator;
 
 /**
  * Created by DaryaKolyadko on 03.09.2016.
+ */
+
+/**
+ * Command lets create a comment (authorized users only)
  */
 public class CreateCommentCommand extends ActionCommand {
     private static final String PARAM_QUESTION_ID = "question";
@@ -46,7 +50,7 @@ public class CreateCommentCommand extends ActionCommand {
                         content.setSessionAttribute(SESSION_ATTR_UNCOMPLETED, container);
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in CreateCommentCommand", e);
                 }
             } else {
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(CREATE_COMMENT_ERROR_CHECK));

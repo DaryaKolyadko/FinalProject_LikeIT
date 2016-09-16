@@ -13,6 +13,16 @@ import com.kolyadko.likeit.validator.impl.LoginValidator;
 
 /**
  * Created by DaryaKolyadko on 15.07.2016.
+ * <p>
+ * Command lets create a section (admin only)
+ */
+
+/**
+ * Command lets create a section (admin only)
+ */
+
+/**
+ * Command lets log in the system
  */
 public class LoginCommand extends ActionCommand {
     private static final String PARAM_LOGIN = "userLogin";
@@ -41,7 +51,7 @@ public class LoginCommand extends ActionCommand {
 
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(LOGIN_ERROR_INCORRECT));
             } catch (ServiceException e) {
-                throw new CommandException(e);
+                throw new CommandException("Exception in LoginCommand", e);
             }
         } else {
             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(LOGIN_ERROR_INVALID));

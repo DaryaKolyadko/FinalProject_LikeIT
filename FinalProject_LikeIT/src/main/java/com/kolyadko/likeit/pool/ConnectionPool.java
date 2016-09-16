@@ -84,7 +84,7 @@ public class ConnectionPool {
             connectionProxy = connectionsAvailable.take();
             connectionsInUse.put(connectionProxy);
         } catch (InterruptedException e) {
-            throw new ConnectionPoolException(e);
+            throw new ConnectionPoolException("Exception in ConnectionPool while trying to get connection", e);
         }
 
         return connectionProxy;
@@ -102,7 +102,8 @@ public class ConnectionPool {
                 connectionsAvailable.put(newConnection);
             }
         } catch (SQLException | DatabaseConnectorException | InterruptedException e) {
-            throw new ConnectionPoolException(e);
+            throw new ConnectionPoolException("Exception in ConnectionPool while returning " +
+                    "a connection to pool", e);
         }
     }
 

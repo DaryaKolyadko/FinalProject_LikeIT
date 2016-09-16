@@ -5,6 +5,10 @@ import com.kolyadko.likeit.content.RequestContent;
 /**
  * Created by DaryaKolyadko on 12.09.2016.
  */
+
+/**
+ * ShowEditPage interface (show edit smth. page after error so we shouldn't put initial object in request again)
+ */
 public interface ShowEditPage {
     String SESSION_ATTR_ERROR = "actionError";
 

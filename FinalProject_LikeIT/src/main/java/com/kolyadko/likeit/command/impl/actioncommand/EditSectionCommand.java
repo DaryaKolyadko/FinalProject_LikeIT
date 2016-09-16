@@ -11,11 +11,15 @@ import com.kolyadko.likeit.service.impl.SectionService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.impl.SectionActionValidator;
 import com.kolyadko.likeit.validator.Validator;
+import com.kolyadko.likeit.validator.impl.SectionActionValidator;
 
 /**
  * Created by DaryaKolyadko on 29.08.2016.
+ */
+
+/**
+ * Command lets edit a section (admin only)
  */
 public class EditSectionCommand extends ActionCommand {
     private static final String PARAM_SECTION_ID = "section";
@@ -55,7 +59,7 @@ public class EditSectionCommand extends ActionCommand {
                         return MappingManager.HOME_PAGE;
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in EditSectionCommand", e);
                 }
             } else {
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_SECTION_ERROR_CHECK));

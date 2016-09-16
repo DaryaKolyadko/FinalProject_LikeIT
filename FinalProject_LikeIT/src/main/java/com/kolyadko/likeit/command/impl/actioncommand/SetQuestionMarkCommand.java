@@ -10,6 +10,10 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 07.09.2016.
  */
+
+/**
+ * Command lets set a question mark (authorized only)
+ */
 public class SetQuestionMarkCommand extends SimpleActionCommand {
     private static final String PARAM_MARK = "mark";
 
@@ -26,7 +30,7 @@ public class SetQuestionMarkCommand extends SimpleActionCommand {
         try {
             questionService.setQuestionMark(questionId, RequestContentUtil.getCurrentUserLogin(content), mark);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in SetQuestionMarkCommand", e);
         }
     }
 

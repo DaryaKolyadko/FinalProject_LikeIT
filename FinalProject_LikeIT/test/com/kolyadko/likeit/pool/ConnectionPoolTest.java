@@ -11,6 +11,10 @@ import static org.junit.Assert.*;
 /**
  * Created by DaryaKolyadko on 12.09.2016.
  */
+
+/**
+ * Test for ConnectionPool
+ */
 public class ConnectionPoolTest {
     @Test
     public void testGetInstance() throws Exception {

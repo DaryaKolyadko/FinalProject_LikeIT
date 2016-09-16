@@ -11,6 +11,10 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 31.08.2016.
  */
+
+/**
+ * Command lets restore a section from archive (admin only)
+ */
 public class RestoreSectionCommand extends SimpleActionCommand {
     private static final String RESTORE_SUCCESS = "info.restoreSection.success";
     private static final String RESTORE_PROBLEM = "info.restoreSection.problem";
@@ -32,7 +36,7 @@ public class RestoreSectionCommand extends SimpleActionCommand {
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(RESTORE_PROBLEM));
             }
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in RestoreSectionCommand", e);
         }
     }
 }

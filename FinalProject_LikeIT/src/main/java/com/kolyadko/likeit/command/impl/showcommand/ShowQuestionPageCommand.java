@@ -44,7 +44,7 @@ public class ShowQuestionPageCommand extends ShowDefaultContentCommand {
                         return super.execute(content);
                     }
                 } catch (ServiceException | NumberFormatException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in ShowQuestionPageCommand", e);
                 }
             }
 

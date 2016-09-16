@@ -7,6 +7,10 @@ import java.util.*;
 /**
  * Created by DaryaKolyadko on 15.07.2016.
  */
+
+/**
+ * Container for request data (used to prevent HttpRequest journey through the app)
+ */
 public class RequestContent {
     private HashMap<String, Object> requestAttributes;
     private HashMap<String, String[]> requestParameters;

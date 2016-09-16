@@ -6,6 +6,10 @@ import com.kolyadko.likeit.exception.CommandException;
 /**
  * Created by DaryaKolyadko on 15.07.2016.
  */
+
+/**
+ * Command interface ("execution" behaviour)
+ */
 public interface Command {
     String CHECK_INPUT_DATA = "error.checkInput";
 

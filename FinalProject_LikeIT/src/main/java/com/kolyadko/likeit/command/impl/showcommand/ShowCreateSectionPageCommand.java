@@ -25,7 +25,7 @@ public class ShowCreateSectionPageCommand extends ShowDefaultContentCommand {
             try {
                 content.setRequestAttribute(ATTR_MAJOR_SECTIONS, sectionService.findMajorSections());
             } catch (ServiceException e) {
-                throw new CommandException(e);
+                throw new CommandException("Exception in ShowCreateSectionPageCommand", e);
             }
         } else {
             content.setRequestAttribute(ATTR_SERVER_ERROR, NOT_ALLOWED);

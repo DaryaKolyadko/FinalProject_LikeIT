@@ -25,7 +25,7 @@ public class ShowCreateQuestionPageCommand extends ShowDefaultContentCommand {
             try {
                 content.setRequestAttribute(ATTR_SECTIONS, sectionService.findNotMajorSections());
             } catch (ServiceException e) {
-                throw new CommandException(e);
+                throw new CommandException("Exception in ShowCreateQuestionPageCommand", e);
             }
         } else {
             content.setRequestAttribute(ATTR_SERVER_ERROR, NOT_ALLOWED);

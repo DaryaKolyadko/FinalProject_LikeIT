@@ -7,6 +7,10 @@ import static org.junit.Assert.*;
 /**
  * Created by DaryaKolyadko on 13.09.2016.
  */
+
+/**
+ * Test for MappingManager
+ */
 public class MappingManagerTest {
     @Test
     public void testGetInstance() throws Exception {

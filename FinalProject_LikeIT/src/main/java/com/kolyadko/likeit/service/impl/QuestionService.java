@@ -33,7 +33,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             question.setCreationDate(new Timestamp(CALENDAR.getTime().getTime()));
             return questionDao.create(question);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, create()", e);
         }
     }
 
@@ -42,7 +42,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.setQuestionMark(questionId, userId, mark);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, setQuestionMark()", e);
         }
     }
 
@@ -51,7 +51,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return isAdmin ? questionDao.findById(questionId) : questionDao.findExistingById(questionId);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, findById()", e);
         }
     }
 
@@ -64,7 +64,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findRecentQuestions(page);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, findRecentQuestions()", e);
         }
     }
 
@@ -73,7 +73,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findTopQuestions(limit);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, findTopQuestions()", e);
         }
     }
 
@@ -82,7 +82,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findTopQuestionsOnPage(page);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, findTopQuestionsOnPage()", e);
         }
     }
 
@@ -91,7 +91,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findQuestionsFromSection(sectionId, page, isAdmin);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, findQuestionsFromSection()", e);
         }
     }
 
@@ -108,7 +108,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.archiveActionById(archive, questionId);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, archiveActionsById()", e);
         }
     }
 
@@ -117,7 +117,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findQuestionData(questionId, isAdmin, login);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, findQuestionData()", e);
         }
     }
 
@@ -126,7 +126,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.updateQuestion(question);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in QuestionService, updateQuestion()", e);
         }
     }
 }

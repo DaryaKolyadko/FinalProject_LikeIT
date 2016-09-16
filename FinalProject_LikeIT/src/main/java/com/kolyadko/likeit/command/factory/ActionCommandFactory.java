@@ -11,10 +11,20 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 15.07.2016.
  */
+
+/**
+ * Creates ActionCommand objects
+ */
 public class ActionCommandFactory {
     private static final String PARAM_COMMAND = "command";
     private static final String EXCEPTION = "exceptionContainer";
 
+    /**
+     * Retrieve command name from request and creates ActionCommand object
+     *
+     * @param content request content
+     * @return ActionCommand object
+     */
     public static Command getCommand(RequestContent content) {
         Command command = new EmptyCommand();
         String commandName = content.getRequestParameter(PARAM_COMMAND);

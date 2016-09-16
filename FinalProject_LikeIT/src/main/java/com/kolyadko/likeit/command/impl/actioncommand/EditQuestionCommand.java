@@ -11,11 +11,15 @@ import com.kolyadko.likeit.service.impl.QuestionService;
 import com.kolyadko.likeit.type.MemoryContainerType;
 import com.kolyadko.likeit.util.MappingManager;
 import com.kolyadko.likeit.util.RequestContentUtil;
-import com.kolyadko.likeit.validator.impl.QuestionActionValidator;
 import com.kolyadko.likeit.validator.Validator;
+import com.kolyadko.likeit.validator.impl.QuestionActionValidator;
 
 /**
  * Created by DaryaKolyadko on 29.08.2016.
+ */
+
+/**
+ * Command lets edit a question (question's author only)
  */
 public class EditQuestionCommand extends ActionCommand {
     private static final String PARAM_QUESTION_ID = "question";
@@ -56,7 +60,7 @@ public class EditQuestionCommand extends ActionCommand {
                                 PARAM_QUESTION_ID);
                     }
                 } catch (ServiceException e) {
-                    throw new CommandException(e);
+                    throw new CommandException("Exception in EditQuestionCommand", e);
                 }
             } else {
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_QUESTION_ERROR_CHECK));

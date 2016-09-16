@@ -38,7 +38,7 @@ public class ShowUserListPageCommand extends ShowDefaultContentCommand {
             content.setRequestAttribute(ATTR_CURR_PAGE, page);
             content.setRequestAttribute(ATTR_NUM_OF_PAGES, wrapper.getPagesNumber());
         } catch (ServiceException | NumberFormatException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in ShowUserListPageCommand", e);
         }
 
         content.setRequestAttribute(ATTR_USER_LIST, wrapper.getUserList());

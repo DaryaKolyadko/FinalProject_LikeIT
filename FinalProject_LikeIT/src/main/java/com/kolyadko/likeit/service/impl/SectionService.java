@@ -21,7 +21,7 @@ public class SectionService extends AbstractService<Integer, Section> {
             SectionDao sectionDao = new SectionDao(connection);
             return isAdmin ? sectionDao.findById(sectionId) : sectionDao.findExistingById(sectionId);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in SectionService, findById()", e);
         }
     }
 
@@ -32,7 +32,7 @@ public class SectionService extends AbstractService<Integer, Section> {
             prepare(section);
             return sectionDao.create(section);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in SectionService, create()", e);
         }
     }
 
@@ -47,7 +47,7 @@ public class SectionService extends AbstractService<Integer, Section> {
                 return sectionDao.updateNotMajorSection(section);
             }
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in SectionService, updateSection()", e);
         }
     }
 
@@ -56,7 +56,7 @@ public class SectionService extends AbstractService<Integer, Section> {
             SectionDao sectionDao = new SectionDao(connection);
             return sectionDao.findExistingNotMajorSections();
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in SectionService, findNotMajorSections()", e);
         }
     }
 
@@ -65,7 +65,7 @@ public class SectionService extends AbstractService<Integer, Section> {
             SectionDao sectionDao = new SectionDao(connection);
             return sectionDao.findExistingMajorSections();
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in SectionService, findMajorSections()", e);
         }
     }
 
@@ -85,7 +85,7 @@ public class SectionService extends AbstractService<Integer, Section> {
 
             return catalogue;
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in SectionService, selectSectionsCatalogueTree()", e);
         }
     }
 
@@ -102,7 +102,7 @@ public class SectionService extends AbstractService<Integer, Section> {
             SectionDao sectionDao = new SectionDao(connection);
             return sectionDao.archiveActionById(archive, sectionId);
         } catch (DaoException e) {
-            throw new ServiceException(e);
+            throw new ServiceException("Exception in SectionService, archiveActionsById()", e);
         }
     }
 

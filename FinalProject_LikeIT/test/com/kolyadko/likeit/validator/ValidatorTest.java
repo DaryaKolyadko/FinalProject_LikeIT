@@ -9,6 +9,10 @@ import static org.junit.Assert.*;
 /**
  * Created by DaryaKolyadko on 12.09.2016.
  */
+
+/**
+ * Test for Validator
+ */
 public class ValidatorTest {
     @Test
     public void testIsMatching() throws Exception {

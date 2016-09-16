@@ -5,6 +5,10 @@ import java.sql.Timestamp;
 /**
  * Created by DaryaKolyadko on 22.07.2016.
  */
+
+/**
+ * Comment entity
+ */
 public class Comment extends Entity<Integer> {
     private String authorId;
     private int questionId;

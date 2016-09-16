@@ -14,6 +14,10 @@ import com.kolyadko.likeit.util.RequestContentUtil;
 /**
  * Created by DaryaKolyadko on 31.08.2016.
  */
+
+/**
+ * Command lets delete a question (admin and question's author only)
+ */
 public class DeleteQuestionCommand extends SimpleActionCommand {
     private static final String DELETE_SUCCESS = "info.deleteQuestion.success";
     private static final String DELETE_PROBLEM = "info.deleteQuestion.problem";
@@ -42,7 +46,7 @@ public class DeleteQuestionCommand extends SimpleActionCommand {
                         paramId);
             }
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in DeleteQuestionCommand", e);
         }
     }
 

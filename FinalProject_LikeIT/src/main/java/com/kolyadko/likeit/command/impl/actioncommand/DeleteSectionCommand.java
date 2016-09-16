@@ -11,6 +11,10 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 31.08.2016.
  */
+
+/**
+ * Command lets delete a section (admin only)
+ */
 public class DeleteSectionCommand extends SimpleActionCommand {
     private static final String DELETE_SUCCESS = "info.deleteSection.success";
     private static final String DELETE_PROBLEM = "info.deleteSection.problem";
@@ -32,7 +36,7 @@ public class DeleteSectionCommand extends SimpleActionCommand {
                 content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(DELETE_PROBLEM));
             }
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in DeleteSectionCommand", e);
         }
     }
 }

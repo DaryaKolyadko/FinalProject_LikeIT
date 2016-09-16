@@ -14,6 +14,10 @@ import com.kolyadko.likeit.validator.impl.LoginValidator;
 /**
  * Created by DaryaKolyadko on 31.08.2016.
  */
+
+/**
+ * Command lets restore a user profile archive (admin only)
+ */
 public class RestoreProfileCommand extends SimpleActionCommand {
     private static final String RESTORE_SUCCESS = "info.restoreProfile.success";
     private static final String RESTORE_PROBLEM = "info.restoreProfile.problem";
@@ -38,7 +42,7 @@ public class RestoreProfileCommand extends SimpleActionCommand {
             resultPage = MappingManager.PROFILE_PAGE + RequestContentUtil.getParamAsQueryString(content,
                     paramId);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in RestoreProfileCommand", e);
         }
     }
 

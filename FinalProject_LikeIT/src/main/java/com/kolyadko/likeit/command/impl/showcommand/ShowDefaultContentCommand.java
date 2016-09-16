@@ -24,7 +24,7 @@ public class ShowDefaultContentCommand extends ShowCommand {
         try {
             content.setRequestAttribute(ATTR_LIST_TOP5, questionService.findTopQuestions(TOP_LIMIT));
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in ShowDefaultContentPageCommand", e);
         }
 
         LocaleUtil.changeLocaleIfNeeded(content);

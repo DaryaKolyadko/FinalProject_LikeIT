@@ -28,7 +28,7 @@ public class ShowHomePageCommand extends ShowDefaultContentCommand {
                     RequestContentUtil.isCurrentUserAdmin(content));
             content.setRequestAttribute(ATTR_SECTIONS_CATALOGUE, catalogue);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in ShowHomePageCommand", e);
         }
 
         return super.execute(content);

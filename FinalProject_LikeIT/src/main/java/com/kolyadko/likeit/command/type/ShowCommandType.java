@@ -5,6 +5,10 @@ import com.kolyadko.likeit.command.impl.showcommand.*;
 /**
  * Created by DaryaKolyadko on 28.07.2016.
  */
+
+/**
+ * List of available ShowCommand-s
+ */
 public enum ShowCommandType {
     SIMPLE_SHOW(null),
     SHOW_HOME_PAGE(new ShowHomePageCommand()),

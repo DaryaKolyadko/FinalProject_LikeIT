@@ -3,6 +3,10 @@ package com.kolyadko.likeit.entity;
 /**
  * Created by DaryaKolyadko on 22.07.2016.
  */
+
+/**
+ * Section entity
+ */
 public class Section extends Entity<Integer> {
     private Integer majorSectionId;
     private String name;

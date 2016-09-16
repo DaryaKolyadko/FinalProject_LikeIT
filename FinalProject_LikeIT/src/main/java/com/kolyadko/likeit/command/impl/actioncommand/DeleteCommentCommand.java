@@ -14,6 +14,10 @@ import com.kolyadko.likeit.util.RequestContentUtil;
 /**
  * Created by DaryaKolyadko on 08.09.2016.
  */
+
+/**
+ * Command lets delete a comment (admin and comment's author only)
+ */
 public class DeleteCommentCommand extends SimpleActionCommand {
     private static final String DELETE_SUCCESS = "info.deleteComment.success";
     private static final String DELETE_PROBLEM = "info.deleteComment.problem";
@@ -39,7 +43,7 @@ public class DeleteCommentCommand extends SimpleActionCommand {
             resultPage = MappingManager.QUESTION_PAGE + RequestContentUtil.getParamAsQueryString(content,
                     PARAM_QUESTION);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in DeleteCommentCommand", e);
         }
     }
 

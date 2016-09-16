@@ -43,7 +43,7 @@ public class ShowSectionQuestPageCommand extends ShowQuestionListCommand {
                     content.setRequestAttribute(ATTR_SERVER_ERROR, SECTION_ERROR_NO_SUCH);
                 }
             } catch (ServiceException | NumberFormatException e) {
-                throw new CommandException(e);
+                throw new CommandException("Exception in ShowSectionQuestPageCommand", e);
             }
         } else {
             content.setRequestAttribute(ATTR_SERVER_ERROR, CHECK_INPUT_DATA);

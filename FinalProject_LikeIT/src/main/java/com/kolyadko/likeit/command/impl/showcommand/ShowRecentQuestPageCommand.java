@@ -24,7 +24,7 @@ public class ShowRecentQuestPageCommand extends ShowQuestionListCommand {
         try {
             return questionService.findRecentQuestions(page);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in ShowRecentQuestPageCommand", e);
         }
     }
 }

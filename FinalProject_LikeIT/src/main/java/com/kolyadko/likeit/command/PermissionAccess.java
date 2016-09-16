@@ -7,6 +7,10 @@ import com.kolyadko.likeit.util.RequestContentUtil;
 /**
  * Created by DaryaKolyadko on 10.09.2016.
  */
+
+/**
+ * PermissionAccess interface ("confidential access" behaviour)
+ */
 public interface PermissionAccess {
     String NOT_ALLOWED = "error.notAllowed";
 

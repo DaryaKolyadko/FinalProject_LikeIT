@@ -24,7 +24,7 @@ public class ShowTopQuestPageCommand extends ShowQuestionListCommand {
         try {
             return questionService.findTopQuestionsOnPage(page);
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException("Exception in ShowTopQuestPageCommand", e);
         }
     }
 }

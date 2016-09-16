@@ -2,7 +2,6 @@ package com.kolyadko.likeit.dao;
 
 import com.kolyadko.likeit.entity.Entity;
 import com.kolyadko.likeit.exception.DaoException;
-import com.kolyadko.likeit.exception.UtilException;
 import com.kolyadko.likeit.pool.ConnectionProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,7 +38,7 @@ public abstract class AbstractDao<K, T extends Entity> {
                 entities.add(readEntity(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in DAO layer, findWithStatement()", e);
         }
 
         return entities;
@@ -59,7 +58,7 @@ public abstract class AbstractDao<K, T extends Entity> {
 
             return entities;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in DAO layer, findBy()", e);
         }
     }
 
@@ -77,7 +76,7 @@ public abstract class AbstractDao<K, T extends Entity> {
             }
             return extractData(preparedStatement.executeQuery());
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in DAO layer, findDataBy()", e);
         }
     }
 
@@ -101,7 +100,7 @@ public abstract class AbstractDao<K, T extends Entity> {
             preparedStatement.executeUpdate();
             return preparedStatement.getUpdateCount() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in DAO layer, updateEntityWithQuery()", e);
         }
     }
 
@@ -118,7 +117,7 @@ public abstract class AbstractDao<K, T extends Entity> {
                 }
             }
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException("Exception in DAO layer, setParams()", e);
         }
     }
 
@@ -151,7 +150,7 @@ public abstract class AbstractDao<K, T extends Entity> {
 
                 return NO_PAGES;
             } catch (SQLException e) {
-                throw new DaoException(e);
+                throw new DaoException("Exception in DAO layer, calculatePagesNumber()", e);
             }
         }
 

@@ -23,6 +23,10 @@ import java.text.SimpleDateFormat;
 /**
  * Created by DaryaKolyadko on 16.07.2016.
  */
+
+/**
+ * Command lets sign up into system
+ */
 public class SignUpCommand extends ActionCommand {
     private static final String PARAM_FIRST_NAME = "firstName";
     private static final String PARAM_LAST_NAME = "lastName";
@@ -65,7 +69,7 @@ public class SignUpCommand extends ActionCommand {
                     content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(SIGN_UP_ERROR_EXISTS));
                 }
             } catch (ServiceException | ParseException | IllegalArgumentException e) {
-                throw new CommandException(e);
+                throw new CommandException("Exception in SignUpCommand", e);
             }
         } else {
             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(SIGN_UP_ERROR_CHECK));
