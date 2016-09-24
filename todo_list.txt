@@ -1,13 +1,1 @@
-javadoc
-equals + hashCode???
-int as id????
-
-SLICK MOMENTS:
-tests:
-create pool
-+getConnection time (3)
-properties files exist
-+check keys in properties
-+hash
-+validators
-
+int as id???
