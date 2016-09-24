@@ -15,6 +15,10 @@ import java.util.ArrayList;
 /**
  * Created by DaryaKolyadko on 29.07.2016.
  */
+
+/**
+ * This DAO allows perform operations on database with sections
+ */
 public class SectionDao extends AbstractDao<Integer, Section> {
     private static final String ALL_COLUMNS = "S.section_id, S.major_section_id, S.name, S.question_num, S.answer_num, S.label_color, S.archive";
     private static final String INSERT_COLUMNS = "major_section_id, name, label_color";
@@ -39,45 +43,105 @@ public class SectionDao extends AbstractDao<Integer, Section> {
         super(connection);
     }
 
+    /**
+     * Find Section object by id
+     *
+     * @param id section id
+     * @return Section object
+     * @throws DaoException if some problems occurred inside
+     */
     public Section findById(Integer id) throws DaoException {
         return findOnlyOne(SELECT_ALL + BY_ID, id);
     }
 
+    /**
+     * Find Section object which is not in archive by id
+     *
+     * @param id section id
+     * @return Section object
+     * @throws DaoException if some problems occurred inside
+     */
     public Section findExistingById(Integer id) throws DaoException {
         return findOnlyOne(SELECT_ALL + JOIN_ON_SECTION_GENERAL + BY_ID + EXISTING, id);
     }
 
+    /**
+     * Find all subsections of major section by its id
+     *
+     * @param majorSectionId major section id
+     * @return Section list
+     * @throws DaoException if some problems occurred inside
+     */
     public ArrayList<Section> findByMajorId(int majorSectionId) throws DaoException {
         return findBy(SELECT_ALL + BY_MAJOR_SECTION_ID + ORDER_BY_ID, majorSectionId);
     }
 
+    /**
+     * Find all subsections that are not in archive by major section id
+     *
+     * @param majorSectionId major section id
+     * @return Section list
+     * @throws DaoException if some problems occurred inside
+     */
     public ArrayList<Section> findExistingByMajorId(int majorSectionId) throws DaoException {
         return findBy(SELECT_ALL + JOIN_ON_SECTION_GENERAL + BY_MAJOR_SECTION_ID + EXISTING + ORDER_BY_ID, majorSectionId);
     }
 
+    /**
+     * Find major sections
+     *
+     * @return Section list
+     * @throws DaoException if some problems occurred inside
+     */
     public ArrayList<Section> findMajorSections() throws DaoException {
         return findWithStatement(SELECT_ALL + MAJOR_SECTIONS + ORDER_BY_ID);
     }
 
+    /**
+     * Find existing major sections
+     *
+     * @return Section list
+     * @throws DaoException if some problems occurred inside
+     */
     public ArrayList<Section> findExistingMajorSections() throws DaoException {
         return findWithStatement(SELECT_ALL + JOIN_ON_SECTION_GENERAL + MAJOR_SECTIONS + EXISTING + ORDER_BY_ID);
     }
 
+    /**
+     * Find subsections which are not in archive
+     *
+     * @return Section list
+     * @throws DaoException if some problems occurred inside
+     */
     public ArrayList<Section> findExistingNotMajorSections() throws DaoException {
         return findWithStatement(SELECT_ALL + JOIN_ON_SECTION_GENERAL + NOT_MAJOR_SECTIONS + EXISTING);
     }
 
+    /**
+     * Move section to archive\ restore section from archive
+     *
+     * @param archive   true - move to<br>false - restore
+     * @param sectionId section id
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
     public boolean archiveActionById(boolean archive, int sectionId) throws DaoException {
         return updateEntityWithQuery(ARCHIVE_ACTIONS, archive, sectionId);
     }
 
-    public boolean updateNotMajorSection(Section section) throws DaoException {
-        return updateEntityWithQuery(UPDATE_NAME + WHERE_ID, section.getName(), section.getId());
-    }
-
-    public boolean updateMajorSection(Section section) throws DaoException {
-        return updateEntityWithQuery(UPDATE_NAME_LABEL + WHERE_ID, section.getName(), section.getLabelColor(),
-                section.getId());
+    /**
+     * Update Section object
+     *
+     * @param section Section object
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
+    @Override
+    public boolean update(Section section) throws DaoException {
+        return section.isMajor() ?
+                updateEntityWithQuery(UPDATE_NAME_LABEL + WHERE_ID, section.getName(),
+                        section.getLabelColor(), section.getId()) :
+                updateEntityWithQuery(UPDATE_NAME + WHERE_ID, section.getName(), section.getId());
     }
 
     @Override

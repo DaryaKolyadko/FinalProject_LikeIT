@@ -6,6 +6,10 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 29.08.2016.
  */
+
+/**
+ * Uncompleted comment info (is used on comment creation and editing)
+ */
 public class UncompletedCommentMemoryContainer extends MemoryContainer {
     private String questionId;
     private String text;

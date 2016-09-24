@@ -7,11 +7,32 @@ import com.kolyadko.likeit.exception.CommandException;
 /**
  * Created by DaryaKolyadko on 13.08.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show question.jsp with data
+ * This jsp is used to show different data: top questions, recent questions and question from particular
+ * section
+ */
 public abstract class ShowQuestionListCommand extends ShowDefaultContentCommand {
+    /**
+     * Request parameter - page to show
+     */
     protected static final String PARAM_PAGE = "page";
+    /**
+     * Request attribute - page which is displayed
+     */
     protected static final String ATTR_CURR_PAGE = "currentPage";
+    /**
+     * Request attribute - number of all pages
+     */
     protected static final String ATTR_NUM_OF_PAGES = "numOfPages";
+    /**
+     * Request attribute - list type: top questions, recent questions and question from particular section
+     */
     protected static final String ATTR_LIST_TYPE = "listType";
+    /**
+     * Request attribute - question list data
+     */
     protected static final String ATTR_QUEST_DATA_LIST = "questionDataList";
 
     private String ATTR_LIST_TYPE_VAL;

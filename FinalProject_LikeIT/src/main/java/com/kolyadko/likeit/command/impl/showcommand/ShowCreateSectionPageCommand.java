@@ -10,6 +10,10 @@ import com.kolyadko.likeit.util.MappingManager;
 /**
  * Created by DaryaKolyadko on 28.07.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show createSection.jsp with data
+ */
 public class ShowCreateSectionPageCommand extends ShowDefaultContentCommand {
     private static final String ATTR_MAJOR_SECTIONS = "majorSections";
 

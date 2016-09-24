@@ -15,6 +15,12 @@ import com.kolyadko.likeit.validator.impl.LoginValidator;
  * Created by DaryaKolyadko on 15.07.2016.
  * <p>
  * Command lets create a section (admin only)
+ * <p>
+ * Command lets create a section (admin only)
+ * <p>
+ * Command lets create a section (admin only)
+ * <p>
+ * Command lets create a section (admin only)
  */
 
 /**

@@ -15,6 +15,10 @@ import java.util.ArrayList;
 /**
  * Created by DaryaKolyadko on 29.07.2016.
  */
+
+/**
+ * This DAO allows perform operations on database with comments
+ */
 public class CommentDao extends AbstractDao<Integer, Comment> {
     public CommentDao(ConnectionProxy connection) {
         super(connection);
@@ -52,11 +56,27 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
     private static final String INSERT_COMMENT_MARK = "INSERT INTO comment_rating (" + ALL_RELATION_COLUMNS + ") VALUES(" +
             StringUtils.repeat("?", ", ", ALL_RELATION_COLUMNS.split(",").length) + ");";
 
-
+    /**
+     * Move comment to archive\ restore comment from archive
+     *
+     * @param archive   true - move to<br>false - restore
+     * @param commentId comment id
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
     public boolean archiveActionById(boolean archive, int commentId) throws DaoException {
         return updateEntityWithQuery(ARCHIVE_ACTIONS, archive, commentId);
     }
 
+    /**
+     * Set mark for comment
+     *
+     * @param commentId comment id
+     * @param userId    user, who set this mark
+     * @param mark      mark to set
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
     public boolean setCommentMark(int commentId, String userId, int mark) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_NUM_OF_MARKS +
                 WHERE_RELATION_ID)) {
@@ -79,22 +99,61 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
         }
     }
 
+    /**
+     * Note comment as answer or clean this note
+     *
+     * @param commentId comment id
+     * @param state     true - answer<br>false - not an answer
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
     public boolean noteAsAnswer(int commentId, boolean state) throws DaoException {
         return updateEntityWithQuery(UPDATE_COMMENT_ANSWER + WHERE_ID, state, commentId);
     }
 
+    /**
+     * Find Comment object by id
+     *
+     * @param id comment id
+     * @return Comment object
+     * @throws DaoException if some problems occurred inside
+     */
     public Comment findById(Integer id) throws DaoException {
         return findOnlyOne(SELECT_ALL + WHERE_ID, id);
     }
 
+    /**
+     * Find Comment object which is not in archive by id
+     *
+     * @param id comment id
+     * @return Comment object
+     * @throws DaoException if some problems occurred inside
+     */
     public Comment findExistingById(Integer id) throws DaoException {
         return findOnlyOne(SELECT_ALL + WHERE_ID + EXISTING, id);
     }
 
-    public boolean updateComment(Comment comment) throws DaoException {
+    /**
+     * Update Comment object
+     *
+     * @param comment Comment object
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
+    @Override
+    public boolean update(Comment comment) throws DaoException {
         return updateEntityWithQuery(UPDATE_COMMENT + WHERE_ID, comment.getText(), comment.getId());
     }
 
+    /**
+     * Find comments for particular question
+     *
+     * @param questionId question id
+     * @param login      current user login
+     * @param isAdmin    true - admin<br>false - general user
+     * @return data of comment list
+     * @throws DaoException if some problems occurred inside
+     */
     public ArrayList<CommentData> findByQuestionId(Integer questionId, String login, boolean isAdmin) throws DaoException {
         if (login != null) {
             return findDataBy(SELECT_COMM_USER_MARK + WHERE_QUEST_ID + (isAdmin ? "" : EXISTING) + ORDER_BY_CREATE_DATE,
@@ -124,6 +183,10 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
         return dataList;
     }
 
+    /**
+     * Compose necessary comment data: comment itself, it's author, mark which was set for it by
+     * current user
+     */
     public class CommentData {
         private Comment comment;
         private User user;

@@ -13,6 +13,10 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 03.09.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show editComment.jsp with data
+ */
 public class ShowEditCommentPageCommand extends ShowDefaultContentCommand implements ShowEditPage {
     private static final String PARAM_COMMENT_ID = "comment";
     private static final String ATTR_COMMENT = "commentToEdit";

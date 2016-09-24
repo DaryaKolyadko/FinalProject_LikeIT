@@ -12,22 +12,41 @@ import java.util.Locale;
 /**
  * Created by DaryaKolyadko on 04.08.2016.
  */
+
+/**
+ * Util for locale configuration
+ */
 public class LocaleUtil {
     private static final String ATTR_LOCALE = "locale";
-
     private static final Logger LOG = LogManager.getLogger(LocaleUtil.class);
 
-
+    /**
+     * Set locale in session
+     *
+     * @param session session
+     * @param type    locale type
+     */
     public static void setLocale(HttpSession session, LocaleType type) {
         session.setAttribute(ATTR_LOCALE, new TextMemoryContainer(type.getLocale().toString(),
                 MemoryContainerType.LONG_LIVER));
     }
 
+    /**
+     * Set locale in session using RequestContent object
+     *
+     * @param content RequestContent object
+     * @param locale  locale
+     */
     public static void setLocale(RequestContent content, Locale locale) {
         content.setSessionAttribute(ATTR_LOCALE, new TextMemoryContainer(locale.toString(),
                 MemoryContainerType.LONG_LIVER));
     }
 
+    /**
+     * Change locale if needed GET param was recognized
+     *
+     * @param content RequestContent object
+     */
     public static void changeLocaleIfNeeded(RequestContent content) {
         String locale = content.getRequestParameter(ATTR_LOCALE);
 
@@ -43,6 +62,9 @@ public class LocaleUtil {
         }
     }
 
+    /**
+     * Locale type list
+     */
     public enum LocaleType {
         RU_RU(new Locale("ru", "RU")),
         EN_US(new Locale("en", "US"));

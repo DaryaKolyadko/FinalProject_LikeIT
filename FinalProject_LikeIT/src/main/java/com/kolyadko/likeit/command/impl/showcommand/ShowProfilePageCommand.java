@@ -12,6 +12,10 @@ import com.kolyadko.likeit.validator.impl.LoginValidator;
 /**
  * Created by DaryaKolyadko on 30.07.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show profile.jsp with data
+ */
 public class ShowProfilePageCommand extends ShowDefaultContentCommand {
     private static final String PARAM_PROFILE_LOGIN = "login";
     private static final String ATTR_PROFILE = "profile";

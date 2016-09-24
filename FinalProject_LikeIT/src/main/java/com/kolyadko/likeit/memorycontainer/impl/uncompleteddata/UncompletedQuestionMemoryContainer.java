@@ -6,6 +6,10 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 29.08.2016.
  */
+
+/**
+ * Uncompleted question info (is used on question creation and editing)
+ */
 public class UncompletedQuestionMemoryContainer extends MemoryContainer {
     private String sectionId;
     private String title;

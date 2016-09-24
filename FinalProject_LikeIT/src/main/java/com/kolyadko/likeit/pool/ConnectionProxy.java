@@ -13,6 +13,10 @@ import java.util.concurrent.Executor;
 /**
  * Created by DaryaKolyadko on 13.07.2016.
  */
+
+/**
+ * Connection proxy object
+ */
 public class ConnectionProxy implements Connection {
     private static final Logger LOG = LogManager.getLogger(ConnectionProxy.class);
 
@@ -22,6 +26,9 @@ public class ConnectionProxy implements Connection {
         this.connection = connection;
     }
 
+    /**
+     * Return connection into pool on calling this method
+     */
     @Override
     public void close() {
         try {
@@ -31,6 +38,11 @@ public class ConnectionProxy implements Connection {
         }
     }
 
+    /**
+     * Package level access method for real connection lose
+     *
+     * @throws SQLException if some errors occurred inside
+     */
     void finallyClose() throws SQLException {
         connection.close();
     }

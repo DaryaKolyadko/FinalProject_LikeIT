@@ -15,9 +15,14 @@ import java.util.LinkedHashMap;
 /**
  * Created by DaryaKolyadko on 29.07.2016.
  */
+
+/**
+ * This Service allows perform operations on database with sections
+ */
 public class SectionService extends AbstractService<Integer, Section> {
+    @Override
     public Section findById(Integer sectionId, boolean isAdmin) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             return isAdmin ? sectionDao.findById(sectionId) : sectionDao.findExistingById(sectionId);
         } catch (DaoException e) {
@@ -27,7 +32,7 @@ public class SectionService extends AbstractService<Integer, Section> {
 
     @Override
     public boolean create(Section section) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             prepare(section);
             return sectionDao.create(section);
@@ -36,23 +41,25 @@ public class SectionService extends AbstractService<Integer, Section> {
         }
     }
 
-    public boolean updateSection(Section section) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+    @Override
+    public boolean update(Section section) throws ServiceException {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             prepare(section);
-
-            if (section.isMajor()) {
-                return sectionDao.updateMajorSection(section);
-            } else {
-                return sectionDao.updateNotMajorSection(section);
-            }
+            return sectionDao.update(section);
         } catch (DaoException e) {
             throw new ServiceException("Exception in SectionService, updateSection()", e);
         }
     }
 
+    /**
+     * Find all not major sections
+     *
+     * @return Section list
+     * @throws ServiceException if some problems occurred inside
+     */
     public ArrayList<Section> findNotMajorSections() throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             return sectionDao.findExistingNotMajorSections();
         } catch (DaoException e) {
@@ -60,8 +67,14 @@ public class SectionService extends AbstractService<Integer, Section> {
         }
     }
 
+    /**
+     * Fid all major sections
+     *
+     * @return Section list
+     * @throws ServiceException if some problems occurred inside
+     */
     public ArrayList<Section> findMajorSections() throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             return sectionDao.findExistingMajorSections();
         } catch (DaoException e) {
@@ -69,11 +82,18 @@ public class SectionService extends AbstractService<Integer, Section> {
         }
     }
 
+    /**
+     * Select sections catalogue tree
+     *
+     * @param isAdmin true - admin<br>false - general user
+     * @return HashMap: major sections and their subsections
+     * @throws ServiceException if some problems occurred inside
+     */
     public HashMap selectSectionsCatalogueTree(boolean isAdmin) throws ServiceException {
         LinkedHashMap<Section, ArrayList<Section>> catalogue = new LinkedHashMap<>();
         ArrayList<Section> majorSections;
 
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             majorSections = isAdmin ? sectionDao.findMajorSections() : sectionDao.findExistingMajorSections();
 
@@ -89,16 +109,18 @@ public class SectionService extends AbstractService<Integer, Section> {
         }
     }
 
-    public boolean moveSectionToArchive(int sectionId) throws ServiceException {
+    @Override
+    public boolean moveToArchive(Integer sectionId) throws ServiceException {
         return archiveActionsById(true, sectionId);
     }
 
-    public boolean restoreSectionFromArchive(int sectionId) throws ServiceException {
+    @Override
+    public boolean restoreFromArchive(Integer sectionId) throws ServiceException {
         return archiveActionsById(false, sectionId);
     }
 
     private boolean archiveActionsById(boolean archive, int sectionId) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             return sectionDao.archiveActionById(archive, sectionId);
         } catch (DaoException e) {

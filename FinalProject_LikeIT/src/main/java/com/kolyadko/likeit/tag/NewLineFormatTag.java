@@ -8,6 +8,10 @@ import java.io.IOException;
 /**
  * Created by DaryaKolyadko on 08.08.2016.
  */
+
+/**
+ * User tag for displaying a new line symbol in comments and questions textAreas
+ */
 public class NewLineFormatTag extends BodyTagSupport {
     private String text;
 

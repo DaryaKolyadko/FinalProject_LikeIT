@@ -32,7 +32,7 @@ public class RestoreProfileCommand extends SimpleActionCommand {
         String login = content.getRequestParameter(paramId);
 
         try {
-            if (userService.restoreProfileFromArchive(login)) {
+            if (userService.restoreFromArchive(login)) {
                 content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(RESTORE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
             } else {

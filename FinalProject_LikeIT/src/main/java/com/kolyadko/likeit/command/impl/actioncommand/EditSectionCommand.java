@@ -46,11 +46,11 @@ public class EditSectionCommand extends ActionCommand {
                     if (section != null) {
                         section.setName(container.getName());
 
-                        if (section.isMajor()) { // is major
+                        if (section.isMajor()) {
                             section.setLabelColor(container.getLabelColor());
                         }
 
-                        if (sectionService.updateSection(section)) {
+                        if (sectionService.update(section)) {
                             content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(EDIT_SUCCESS, MemoryContainerType.ONE_OFF));
                         } else {
                             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_PROBLEM));

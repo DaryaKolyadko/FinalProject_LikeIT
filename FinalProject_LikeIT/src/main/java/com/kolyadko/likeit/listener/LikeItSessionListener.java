@@ -8,6 +8,10 @@ import javax.servlet.http.HttpSessionListener;
 /**
  * Created by DaryaKolyadko on 04.08.2016.
  */
+
+/**
+ * Session object listener
+ */
 public class LikeItSessionListener implements HttpSessionListener {
 
     @Override

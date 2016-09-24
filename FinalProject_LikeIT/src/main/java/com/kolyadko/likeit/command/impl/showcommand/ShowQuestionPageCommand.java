@@ -13,6 +13,10 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 27.08.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show question.jsp with data
+ */
 public class ShowQuestionPageCommand extends ShowDefaultContentCommand {
     private static final String PARAM_QUESTION = "question";
     private static final String ATTR_QUESTION = "questionData";

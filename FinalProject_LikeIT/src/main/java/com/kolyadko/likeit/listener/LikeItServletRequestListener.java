@@ -11,6 +11,10 @@ import java.util.Map;
 /**
  * Created by DaryaKolyadko on 04.08.2016.
  */
+
+/**
+ * Servlet request listener
+ */
 public class LikeItServletRequestListener implements ServletRequestListener {
     private static final String METHOD_GET = "GET";
     private static final String ATTR_URL = "originUrl";

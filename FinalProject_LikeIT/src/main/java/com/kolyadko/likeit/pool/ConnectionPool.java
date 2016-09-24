@@ -16,6 +16,10 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by DaryaKolyadko on 13.07.2016.
  */
+
+/**
+ * Threadsafe connection pool
+ */
 public class ConnectionPool {
     private static final int POOL_SIZE = 2;
     private static final int TIMEOUT_NOT_APPLIED = 0;
@@ -56,10 +60,20 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Check if pool was initialized
+     *
+     * @return true - pool was initialized<br>false - pool wasn't initialized
+     */
     public static boolean isInitialized() {
         return initialized.get();
     }
 
+    /**
+     * Singleton method to get ConnectionPool instance
+     *
+     * @return ConnectionPool object
+     */
     public static ConnectionPool getInstance() {
         if (!initialized.get()) {
             poolSingleLock.lock();
@@ -77,6 +91,12 @@ public class ConnectionPool {
         return pool;
     }
 
+    /**
+     * Get connection from pool
+     *
+     * @return ConnectionProxy object
+     * @throws ConnectionPoolException if some exception occurred inside
+     */
     public ConnectionProxy getConnection() throws ConnectionPoolException {
         ConnectionProxy connectionProxy;
 
@@ -90,6 +110,12 @@ public class ConnectionPool {
         return connectionProxy;
     }
 
+    /**
+     * Return connection into pool (or recreate it if there are soe problems with it)
+     *
+     * @param connectionProxy ConnectionProxy object
+     * @throws ConnectionPoolException if some exception occurred inside
+     */
     public void closeConnection(ConnectionProxy connectionProxy) throws ConnectionPoolException {
         boolean success = connectionsInUse.remove(connectionProxy);
 
@@ -107,6 +133,9 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Close all free connections and wait for occupied connections to close them
+     */
     public void closeAll() {
         if (initialized.get()) {
             initialized.getAndSet(false);

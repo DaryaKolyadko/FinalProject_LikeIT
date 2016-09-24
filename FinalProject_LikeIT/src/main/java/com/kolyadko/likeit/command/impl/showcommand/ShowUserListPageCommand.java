@@ -11,11 +11,15 @@ import com.kolyadko.likeit.util.RequestContentUtil;
 /**
  * Created by DaryaKolyadko on 28.07.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show userList.jsp with data
+ */
 public class ShowUserListPageCommand extends ShowDefaultContentCommand {
-    protected static final String PARAM_PAGE = "page";
+    private static final String PARAM_PAGE = "page";
     private static final String ATTR_USER_LIST = "userList";
-    protected static final String ATTR_CURR_PAGE = "currentPage";
-    protected static final String ATTR_NUM_OF_PAGES = "numOfPages";
+    private static final String ATTR_CURR_PAGE = "currentPage";
+    private static final String ATTR_NUM_OF_PAGES = "numOfPages";
 
     public ShowUserListPageCommand() {
         super(MappingManager.USER_LIST_PAGE);

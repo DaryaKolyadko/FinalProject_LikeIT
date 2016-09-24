@@ -9,7 +9,7 @@ import com.kolyadko.likeit.command.impl.actioncommand.*;
  */
 
 /**
- * List of available ActionCommand-s
+ * List of available action commands
  */
 public enum ActionCommandType {
     LOGIN(new LoginCommand()),

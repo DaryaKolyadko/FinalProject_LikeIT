@@ -9,6 +9,10 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 /**
  * Created by DaryaKolyadko on 08.08.2016.
  */
+
+/**
+ * User tag for display data only for admins
+ */
 public class AdminOnlyTag extends BodyTagSupport {
     private static final String SESSION_ATTR_USER = "userContainer";
 

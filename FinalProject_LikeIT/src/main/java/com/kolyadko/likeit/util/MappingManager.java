@@ -14,6 +14,10 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Created by DaryaKolyadko on 26.07.2016.
  */
+
+/**
+ * Beautiful URI --- real jsp path mapping manager
+ */
 public class MappingManager {
     private static final Logger LOG = LogManager.getLogger(MappingManager.class);
     private static final String ERROR = "Application cannot run without config file: ";
@@ -59,6 +63,11 @@ public class MappingManager {
         }
     }
 
+    /**
+     * Singleton method
+     *
+     * @return class instance
+     */
     public static MappingManager getInstance() {
         if (!initialized.get()) {
             managerSingleLock.lock();
@@ -78,10 +87,20 @@ public class MappingManager {
         return configuration.getProperty(key);
     }
 
+    /**
+     * Get config file name
+     *
+     * @return config file name
+     */
     public static String getConfigFileName() {
         return configFileName;
     }
 
+    /**
+     * Set new config file name
+     *
+     * @param configFile config file name
+     */
     public static void setConfigFileName(String configFile) {
         MappingManager.configFileName = configFile;
     }

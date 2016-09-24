@@ -33,7 +33,7 @@ public class DeleteCommentCommand extends SimpleActionCommand {
         int commentId = Integer.parseInt(content.getRequestParameter(paramId));
 
         try {
-            if (commentService.moveCommentToArchive(commentId)) {
+            if (commentService.moveToArchive(commentId)) {
                 content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(DELETE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
             } else {

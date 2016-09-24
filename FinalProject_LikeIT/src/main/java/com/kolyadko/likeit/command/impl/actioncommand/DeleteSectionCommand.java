@@ -29,7 +29,7 @@ public class DeleteSectionCommand extends SimpleActionCommand {
         int sectionId = Integer.parseInt(content.getRequestParameter(paramId));
 
         try {
-            if (sectionService.moveSectionToArchive(sectionId)) {
+            if (sectionService.moveToArchive(sectionId)) {
                 content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(DELETE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
             } else {

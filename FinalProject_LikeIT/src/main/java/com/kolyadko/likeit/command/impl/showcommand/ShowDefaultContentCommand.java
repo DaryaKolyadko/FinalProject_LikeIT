@@ -9,6 +9,11 @@ import com.kolyadko.likeit.util.LocaleUtil;
 /**
  * Created by DaryaKolyadko on 20.08.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show any jsp page (fills it with default data such as
+ * top5 questions)
+ */
 public class ShowDefaultContentCommand extends ShowCommand {
     private static final String ATTR_LIST_TOP5 = "top5";
     private static final int TOP_LIMIT = 5;

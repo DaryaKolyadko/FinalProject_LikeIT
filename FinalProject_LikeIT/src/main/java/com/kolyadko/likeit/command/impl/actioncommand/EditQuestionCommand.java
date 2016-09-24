@@ -49,7 +49,7 @@ public class EditQuestionCommand extends ActionCommand {
                         question.setTitle(container.getTitle());
                         question.setText(container.getText());
 
-                        if (questionService.updateQuestion(question)) {
+                        if (questionService.update(question)) {
                             content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(EDIT_SUCCESS,
                                     MemoryContainerType.ONE_OFF));
                         } else {

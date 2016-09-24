@@ -32,7 +32,7 @@ public class DeleteQuestionCommand extends SimpleActionCommand {
         int sectionId = Integer.parseInt(content.getRequestParameter(paramId));
 
         try {
-            if (questionService.moveQuestionToArchive(sectionId)) {
+            if (questionService.moveToArchive(sectionId)) {
                 content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(DELETE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
 

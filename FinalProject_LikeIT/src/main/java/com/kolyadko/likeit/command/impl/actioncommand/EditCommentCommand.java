@@ -47,7 +47,7 @@ public class EditCommentCommand extends ActionCommand {
                     if (comment != null) {
                         comment.setText(container.getText());
 
-                        if (commentService.updateComment(comment)) {
+                        if (commentService.update(comment)) {
                             content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(EDIT_SUCCESS,
                                     MemoryContainerType.ONE_OFF));
                         } else {

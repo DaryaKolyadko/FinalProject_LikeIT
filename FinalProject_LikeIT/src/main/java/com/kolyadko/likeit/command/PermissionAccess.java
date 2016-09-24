@@ -12,8 +12,18 @@ import com.kolyadko.likeit.util.RequestContentUtil;
  * PermissionAccess interface ("confidential access" behaviour)
  */
 public interface PermissionAccess {
+    /**
+     * Localized error message's key
+     */
     String NOT_ALLOWED = "error.notAllowed";
 
+    /**
+     * Check by role if user is allowed to perform this action
+     *
+     * @param content request content
+     * @param roles   roles of users who are allowed to perform this action
+     * @return true - allowed<br>false - otherwise
+     */
     default boolean allowedAction(RequestContent content, RoleType... roles) {
         boolean result = false;
 
@@ -24,6 +34,13 @@ public interface PermissionAccess {
         return result;
     }
 
+    /**
+     * Check by login if user is allowed to perform this action
+     *
+     * @param content request content
+     * @param users   logins of users who are allowed to perform this action
+     * @return true - allowed<br>false - otherwise
+     */
     default boolean allowedAction(RequestContent content, String... users) {
         boolean result = false;
 
@@ -35,5 +52,11 @@ public interface PermissionAccess {
         return result;
     }
 
+    /**
+     * Abstract method which check if this action is allowed
+     *
+     * @param content request content
+     * @return true - allowed<br>false - otherwise
+     */
     boolean isAllowedAction(RequestContent content);
 }

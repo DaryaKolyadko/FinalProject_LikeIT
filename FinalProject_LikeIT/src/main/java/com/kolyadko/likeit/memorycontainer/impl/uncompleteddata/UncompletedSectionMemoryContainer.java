@@ -6,6 +6,10 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 29.08.2016.
  */
+
+/**
+ * Uncompleted section info (is used on section creation and editing)
+ */
 public class UncompletedSectionMemoryContainer extends MemoryContainer {
     private String name;
     private String labelColor;

@@ -15,7 +15,18 @@ import java.util.ArrayList;
 /**
  * Created by DaryaKolyadko on 13.07.2016.
  */
+
+/**
+ * AbstractDao class
+ *
+ * @param <K> entity's id type
+ * @param <T> entity type
+ */
 public abstract class AbstractDao<K, T extends Entity> {
+    /**
+     * Database connection (used with ConnectionProxy wrapper)
+     * Logic layer
+     */
     protected ConnectionProxy connection;
     protected static final Logger LOG = LogManager.getLogger(AbstractDao.class);
 
@@ -23,10 +34,40 @@ public abstract class AbstractDao<K, T extends Entity> {
         this.connection = connection;
     }
 
+    /**
+     * Insert new entity into database
+     *
+     * @param entity entity to insert
+     * @return true - inserted successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
     public abstract boolean create(T entity) throws DaoException;
 
+    /**
+     * Update entity in database
+     *
+     * @param entity entity to update
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
+    public abstract boolean update(T entity) throws DaoException;
+
+    /**
+     * Retrieve data from ResultSrt object and init entity object
+     *
+     * @param resultSet result set object
+     * @return initialized entity
+     * @throws DaoException if some problems occurred inside
+     */
     public abstract T readEntity(ResultSet resultSet) throws DaoException;
 
+    /**
+     * Execute SELECT SQL request (with no params, Statement) and return ArrayList of found entities
+     *
+     * @param query SQL-query
+     * @return ArrayLst of found entities
+     * @throws DaoException if some problems occurred inside
+     */
     protected ArrayList<T> findWithStatement(String query) throws DaoException {
         ArrayList<T> entities = new ArrayList<>();
         ResultSet resultSet;
@@ -44,6 +85,14 @@ public abstract class AbstractDao<K, T extends Entity> {
         return entities;
     }
 
+    /**
+     * Execute SELECT SQL request (with params, PreparedStatement) and return ArrayList of found entities
+     *
+     * @param query  SQL-query
+     * @param params query param values
+     * @return ArrayLst of found entities
+     * @throws DaoException if some problems occurred inside
+     */
     protected ArrayList<T> findBy(String query, Object... params) throws DaoException {
         ArrayList<T> entities = new ArrayList<>();
         ResultSet resultSet;
@@ -62,6 +111,15 @@ public abstract class AbstractDao<K, T extends Entity> {
         }
     }
 
+    /**
+     * Execute SELECT SQL request (with params, PreparedStatement) and return found data as object
+     *
+     * @param query  SQL-query
+     * @param params query param values
+     * @param <T>    some data type (usually inner class in particular DAO)
+     * @return some data (usually inner class in particular DAO)
+     * @throws DaoException if some problems occurred inside
+     */
     protected <T> T findDataBy(String query, Object... params) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             int counter = 1;
@@ -80,10 +138,26 @@ public abstract class AbstractDao<K, T extends Entity> {
         }
     }
 
+    /**
+     * Extract data from ResultSet object inside some other object (usually inner class in particular DAO)
+     *
+     * @param resultSet ResultSet object
+     * @param <T>       some data type (usually inner class in particular DAO)
+     * @return some data (usually inner class in particular DAO)
+     * @throws DaoException if some problems occurred inside
+     */
     protected <T> T extractData(ResultSet resultSet) throws DaoException {
         return null;
     }
 
+    /**
+     * Execute SELECT SQL request (with params, PreparedStatement) and return one found entity
+     *
+     * @param query SQL-query
+     * @param param query param values
+     * @return found entity
+     * @throws DaoException if some problems occurred inside
+     */
     protected T findOnlyOne(String query, Object param) throws DaoException {
         ArrayList<T> entities = findBy(query, param);
 
@@ -94,6 +168,14 @@ public abstract class AbstractDao<K, T extends Entity> {
         return null;
     }
 
+    /**
+     * Execute UPDATE SQL query (with params, PreparedStatement)
+     *
+     * @param query  SQL-query
+     * @param params query params
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
     protected boolean updateEntityWithQuery(String query, Object... params) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             setParams(preparedStatement, params);
@@ -121,10 +203,19 @@ public abstract class AbstractDao<K, T extends Entity> {
         }
     }
 
+    /**
+     * Check if object which was passed as param is null
+     *
+     * @param object object to check
+     * @return true - is null<br>false - otherwise
+     */
     protected boolean checkNull(Object object) {
         return object == null;
     }
 
+    /**
+     * PagerUtil for optimal data extracting
+     */
     protected static class PagerUtil {
         private static final int NO_PAGES = -1;
         private static final String ROW_COUNT = "SELECT FOUND_ROWS()";
@@ -135,10 +226,23 @@ public abstract class AbstractDao<K, T extends Entity> {
             this.itemsPerPage = itemsPerPage;
         }
 
+        /**
+         * Calculate object number which need to pass
+         *
+         * @param page page number
+         * @return number of objects to pass
+         */
         public int calculateListOffset(int page) {
             return (page - 1) * itemsPerPage;
         }
 
+        /**
+         * Calculate actual number of pages with data
+         *
+         * @param connection ConnectionProxy object
+         * @return number of actual pages
+         * @throws DaoException if some problems occurred inside
+         */
         public int calculatePagesNumber(ConnectionProxy connection) throws DaoException {
             try (Statement statement = connection.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(ROW_COUNT);
@@ -154,7 +258,7 @@ public abstract class AbstractDao<K, T extends Entity> {
             }
         }
 
-        public int calculatePageNumber(double rowsNumber) {
+        private int calculatePageNumber(double rowsNumber) {
             return (int) Math.ceil(rowsNumber / itemsPerPage);
         }
     }

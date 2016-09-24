@@ -6,6 +6,10 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 03.08.2016.
  */
+
+/**
+ * Text container (is used when transfer data from action command)
+ */
 public class TextMemoryContainer extends MemoryContainer {
     private final String text;
 

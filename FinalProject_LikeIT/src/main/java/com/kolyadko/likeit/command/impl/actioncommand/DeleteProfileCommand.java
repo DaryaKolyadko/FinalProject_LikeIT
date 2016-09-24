@@ -32,10 +32,10 @@ public class DeleteProfileCommand extends SimpleActionCommand {
         String login = content.getRequestParameter(paramId);
 
         try {
-            if (userService.moveProfileToArchive(login)) {
+            if (userService.moveToArchive(login)) {
                 content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(DELETE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
-                content.invalidateSession();
+                content.setSessionInvalidateFlag(true);
                 resultPage = MappingManager.HOME_PAGE;
                 return;
             } else {

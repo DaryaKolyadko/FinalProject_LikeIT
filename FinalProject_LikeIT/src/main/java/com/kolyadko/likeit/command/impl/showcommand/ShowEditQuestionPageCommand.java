@@ -14,6 +14,10 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 03.09.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show editQuestion.jsp with data
+ */
 public class ShowEditQuestionPageCommand extends ShowDefaultContentCommand implements ShowEditPage {
     private static final String PARAM_QUESTION = "question";
     private static final String ATTR_QUESTION = "questionToEdit";

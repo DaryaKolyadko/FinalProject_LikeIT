@@ -13,6 +13,10 @@ import com.kolyadko.likeit.util.RequestContentUtil;
 /**
  * Created by DaryaKolyadko on 31.08.2016.
  */
+
+/**
+ * Command lets restore a question from archive (admin only)
+ */
 public class RestoreQuestionCommand extends SimpleActionCommand {
     private static final String RESTORE_SUCCESS = "info.restoreQuestion.success";
     private static final String RESTORE_PROBLEM = "info.restoreQuestion.problem";
@@ -27,7 +31,7 @@ public class RestoreQuestionCommand extends SimpleActionCommand {
         int questionId = Integer.parseInt(content.getRequestParameter(paramId));
 
         try {
-            if (questionService.restoreQuestionFromArchive(questionId)) {
+            if (questionService.restoreFromArchive(questionId)) {
                 content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(RESTORE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
             } else {

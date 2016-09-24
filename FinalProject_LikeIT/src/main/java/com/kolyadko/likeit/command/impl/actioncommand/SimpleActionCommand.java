@@ -9,6 +9,14 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 02.09.2016.
  */
+
+/**
+ * Abstract class for simple action commands (action commands which don't need some intermediate
+ * data as Uncompleted...MemoryContainer between execution steps:
+ * 1. isAllowedAction()
+ * 2. isInputDataValid()
+ * 3. serviceCall()
+ */
 public abstract class SimpleActionCommand extends ActionCommand {
     protected String paramId;
     protected String resultPage;

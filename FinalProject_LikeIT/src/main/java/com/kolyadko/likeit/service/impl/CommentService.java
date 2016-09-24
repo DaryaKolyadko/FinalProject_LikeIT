@@ -14,11 +14,24 @@ import java.util.Calendar;
 /**
  * Created by DaryaKolyadko on 29.07.2016.
  */
+
+/**
+ * This Service allows perform operations on database with comments
+ */
 public class CommentService extends AbstractService<Integer, Comment> {
     private static final Calendar CALENDAR = Calendar.getInstance();
 
+    /**
+     * Set comment mark
+     *
+     * @param commentId comment id
+     * @param userId    user login
+     * @param mark      mark that user has set
+     * @return true - updated successfully<br>false - otherwise
+     * @throws ServiceException if some problems occurred inside
+     */
     public boolean setCommentMark(int commentId, String userId, int mark) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.setCommentMark(commentId, userId, mark);
         } catch (DaoException e) {
@@ -26,8 +39,16 @@ public class CommentService extends AbstractService<Integer, Comment> {
         }
     }
 
+    /**
+     * Note comment as answer
+     *
+     * @param commentId comment id
+     * @param state     true - comment is a right answer<br>false - otherwise
+     * @return true - updated successfully<br>false - otherwise
+     * @throws ServiceException if some problems occurred inside
+     */
     public boolean noteAsAnswer(int commentId, boolean state) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.noteAsAnswer(commentId, state);
         } catch (DaoException e) {
@@ -37,7 +58,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
 
     @Override
     public boolean create(Comment comment) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             comment.setCreationDate(new Timestamp(CALENDAR.getTime().getTime()));
             return commentDao.create(comment);
@@ -46,8 +67,17 @@ public class CommentService extends AbstractService<Integer, Comment> {
         }
     }
 
+    /**
+     * Find CommentDao.CommentData list by question id
+     *
+     * @param questionId question id
+     * @param login      user login
+     * @param isAdmin    true - admin<br>false - general user
+     * @return CommentDao.CommentData list
+     * @throws ServiceException if some problems occurred inside
+     */
     public ArrayList<CommentDao.CommentData> findByQuestionId(Integer questionId, String login, boolean isAdmin) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return isAdmin ? commentDao.findByQuestionId(questionId, login, isAdmin) :
                     commentDao.findByQuestionId(questionId, login, isAdmin);
@@ -56,8 +86,9 @@ public class CommentService extends AbstractService<Integer, Comment> {
         }
     }
 
+    @Override
     public Comment findById(Integer commentId, boolean isAdmin) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return isAdmin ? commentDao.findById(commentId) : commentDao.findExistingById(commentId);
         } catch (DaoException e) {
@@ -65,30 +96,39 @@ public class CommentService extends AbstractService<Integer, Comment> {
         }
     }
 
+    /**
+     * Find comment by id (as general user)
+     *
+     * @param commentId comment id
+     * @return Comment object
+     * @throws ServiceException if some problems occurred inside
+     */
     public Comment findById(Integer commentId) throws ServiceException {
         return findById(commentId, false);
     }
 
-
-    public boolean updateComment(Comment comment) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+    @Override
+    public boolean update(Comment comment) throws ServiceException {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
-            return commentDao.updateComment(comment);
+            return commentDao.update(comment);
         } catch (DaoException e) {
             throw new ServiceException("Exception in CommentService, updateComment()", e);
         }
     }
 
-    public boolean moveCommentToArchive(int commentId) throws ServiceException {
+    @Override
+    public boolean moveToArchive(Integer commentId) throws ServiceException {
         return archiveActionsById(true, commentId);
     }
 
-    public boolean restoreCommentFromArchive(int commentId) throws ServiceException {
+    @Override
+    public boolean restoreFromArchive(Integer commentId) throws ServiceException {
         return archiveActionsById(false, commentId);
     }
 
     private boolean archiveActionsById(boolean archive, int commentId) throws ServiceException {
-        try (ConnectionProxy connection = getConnectionWrapper()) {
+        try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.archiveActionById(archive, commentId);
         } catch (DaoException e) {

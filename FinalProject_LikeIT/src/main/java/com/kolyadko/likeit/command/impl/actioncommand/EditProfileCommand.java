@@ -61,7 +61,7 @@ public class EditProfileCommand extends ActionCommand {
                         user.setBirthDate(new Date(DATE_FORMAT.parse(container.getBirthDate()).getTime()));
                         user.setGender(GenderType.getGenderType(container.getGender()));
 
-                        if (userService.updateUser(user)) {
+                        if (userService.update(user)) {
                             content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(EDIT_SUCCESS, MemoryContainerType.ONE_OFF));
                         } else {
                             content.setSessionAttribute(SESSION_ATTR_ERROR, new ErrorMemoryContainer(EDIT_PROBLEM));

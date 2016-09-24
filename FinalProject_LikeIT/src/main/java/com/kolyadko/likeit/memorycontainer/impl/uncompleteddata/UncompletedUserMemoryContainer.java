@@ -6,6 +6,10 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 04.08.2016.
  */
+
+/**
+ * Uncompleted user info (is used on user creation and editing)
+ */
 public class UncompletedUserMemoryContainer extends MemoryContainer {
     private String login;
     private String firstName;

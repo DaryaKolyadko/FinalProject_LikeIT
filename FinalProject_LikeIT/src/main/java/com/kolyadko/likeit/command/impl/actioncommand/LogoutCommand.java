@@ -13,7 +13,7 @@ import com.kolyadko.likeit.util.MappingManager;
  */
 public class LogoutCommand extends ActionCommand {
     public String execute(RequestContent content) {
-        content.invalidateSession();
+        content.setSessionInvalidateFlag(true);
         return MappingManager.HOME_PAGE;
     }
 }

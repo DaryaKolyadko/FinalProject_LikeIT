@@ -16,11 +16,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by DaryaKolyadko on 13.07.2016.
  */
+
+/**
+ * Package level access database util
+ */
 class DatabaseConnector {
     private static String configFileName = "database.properties";
     private static Properties config;
     private static AtomicBoolean initialized = new AtomicBoolean(false);
 
+    /**
+     * Get connection to particular database
+     *
+     * @return Connection object
+     * @throws DatabaseConnectorException if some errors occurred inside
+     */
     public static Connection getConnection() throws DatabaseConnectorException {
         if (!initialized.get()) {
             init();
@@ -50,13 +60,5 @@ class DatabaseConnector {
         } catch (SQLException e) {
             throw new DatabaseConnectorException("Database connection error: " + e.getMessage());
         }
-    }
-
-    public static String getConfigFileName() {
-        return configFileName;
-    }
-
-    public static void setConfigFileName(String configFile) {
-        DatabaseConnector.configFileName = configFile;
     }
 }

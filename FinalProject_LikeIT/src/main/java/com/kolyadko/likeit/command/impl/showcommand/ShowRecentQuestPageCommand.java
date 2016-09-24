@@ -10,6 +10,10 @@ import com.kolyadko.likeit.util.MappingManager;
 /**
  * Created by DaryaKolyadko on 13.08.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show question.jsp with recent questions data
+ */
 public class ShowRecentQuestPageCommand extends ShowQuestionListCommand {
     private static final String ATTR_LIST_TYPE_VAL = "recent";
 

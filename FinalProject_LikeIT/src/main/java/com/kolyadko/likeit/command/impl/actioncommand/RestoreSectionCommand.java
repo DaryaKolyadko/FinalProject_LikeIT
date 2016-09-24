@@ -29,7 +29,7 @@ public class RestoreSectionCommand extends SimpleActionCommand {
         int sectionId = Integer.parseInt(content.getRequestParameter(paramId));
 
         try {
-            if (sectionService.restoreSectionFromArchive(sectionId)) {
+            if (sectionService.restoreFromArchive(sectionId)) {
                 content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(RESTORE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
             } else {

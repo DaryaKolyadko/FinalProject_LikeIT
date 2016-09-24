@@ -7,7 +7,7 @@ import com.kolyadko.likeit.command.impl.showcommand.*;
  */
 
 /**
- * List of available ShowCommand-s
+ * List of available show commands
  */
 public enum ShowCommandType {
     SIMPLE_SHOW(null),

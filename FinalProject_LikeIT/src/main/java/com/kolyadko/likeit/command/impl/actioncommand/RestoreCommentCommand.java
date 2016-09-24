@@ -32,7 +32,7 @@ public class RestoreCommentCommand extends SimpleActionCommand {
         int commentId = Integer.parseInt(content.getRequestParameter(paramId));
 
         try {
-            if (commentService.restoreCommentFromArchive(commentId)) {
+            if (commentService.restoreFromArchive(commentId)) {
                 content.setSessionAttribute(SESSION_ATTR_INFO, new TextMemoryContainer(RESTORE_SUCCESS,
                         MemoryContainerType.ONE_OFF));
             } else {

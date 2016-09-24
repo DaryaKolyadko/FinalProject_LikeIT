@@ -17,6 +17,10 @@ import java.util.ArrayList;
 /**
  * Created by DaryaKolyadko on 13.07.2016.
  */
+
+/**
+ * This DAO allows perform operations on database with users
+ */
 public class UserDao extends AbstractDao<String, User> {
     private static final String ALL_COLUMNS = "login, first_name, last_name, gender, password, birth_date, " +
             "sign_up_date, email, role, state, rating, archive";
@@ -40,6 +44,9 @@ public class UserDao extends AbstractDao<String, User> {
     private static final String STATE_ACTIONS = "UPDATE user SET state=?" + WHERE_LOGIN;
     private static final String UPDATE_USER = "UPDATE user SET " + String.join("=?, ", UPDATE_COLUMNS.split(",")) + "=?";
 
+    /**
+     * Info for pager (users number per page)
+     */
     public static final int USERS_PER_PAGE = 8;
     private static final PagerUtil pager = new PagerUtil(USERS_PER_PAGE);
 
@@ -47,19 +54,49 @@ public class UserDao extends AbstractDao<String, User> {
         super(connection);
     }
 
+    /**
+     * Find user by login
+     *
+     * @param login user login
+     * @return User object
+     * @throws DaoException if some problems occurred inside
+     */
     public User findById(String login) throws DaoException {
         return findOnlyOne(FIND_BY_ID, login);
     }
 
+    /**
+     * Find user which is not in archive by login
+     *
+     * @param login user login
+     * @return User object
+     * @throws DaoException if some problems occurred inside
+     */
     public User findExistingById(String login) throws DaoException {
         return findOnlyOne(FIND_BY_ID + AND + EXISTING, login);
     }
 
+    /**
+     * Find user list
+     *
+     * @param page    page number
+     * @param isAdmin true - admin<br>false - general user
+     * @return User list
+     * @throws DaoException if some problems occurred inside
+     */
     public ArrayList<User> findUserList(Integer page, boolean isAdmin) throws DaoException {
         return findBy(SELECT_ALL + (isAdmin ? "" : WHERE + EXISTING) + ORDER_BY_LOGIN + OFFSET_AND_LIMIT,
                 pager.calculateListOffset(page), USERS_PER_PAGE);
     }
 
+    /**
+     * Find users (all info, Wrapper is used)
+     *
+     * @param page    page number
+     * @param isAdmin true - admin<br>false - general user
+     * @return UserListWrapper object
+     * @throws DaoException if some problems occurred inside
+     */
     public UserListWrapper findAllUsers(Integer page, boolean isAdmin) throws DaoException {
         UserListWrapper wrapper = new UserListWrapper();
         wrapper.setUserList(findUserList(page, isAdmin));
@@ -67,15 +104,32 @@ public class UserDao extends AbstractDao<String, User> {
         return wrapper;
     }
 
+    /**
+     * Move user to archive\ restore user from archive
+     *
+     * @param archive true - move to<br>false - restore
+     * @param login   user login
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
     public boolean archiveActionById(boolean archive, String login) throws DaoException {
         return updateEntityWithQuery(ARCHIVE_ACTIONS, archive, login);
     }
 
-    public boolean updateUser(User user) throws DaoException {
+    @Override
+    public boolean update(User user) throws DaoException {
         return updateEntityWithQuery(UPDATE_USER + WHERE_LOGIN, user.getFirstName(), user.getLastName(),
                 user.getGender().name(), user.getBirthDate(), user.getEmail(), user.getId());
     }
 
+    /**
+     * Update user state
+     *
+     * @param state user state (active\banned)
+     * @param login user login
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
     public boolean stateActionById(StateType state, String login) throws DaoException {
         return updateEntityWithQuery(STATE_ACTIONS, state.name(), login);
     }
@@ -118,6 +172,9 @@ public class UserDao extends AbstractDao<String, User> {
         }
     }
 
+    /**
+     * Compose necessary user list data: user list (User) and page number
+     */
     public class UserListWrapper {
         private ArrayList<User> userList;
         private Integer pagesNumber;

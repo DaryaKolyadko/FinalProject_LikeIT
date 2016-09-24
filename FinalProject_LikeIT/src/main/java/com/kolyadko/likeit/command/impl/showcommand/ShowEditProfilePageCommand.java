@@ -13,6 +13,10 @@ import com.kolyadko.likeit.validator.impl.LoginValidator;
 /**
  * Created by DaryaKolyadko on 03.09.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show editProfile.jsp with data
+ */
 public class ShowEditProfilePageCommand extends ShowDefaultContentCommand implements ShowEditPage {
     private static final String PARAM_PROFILE = "login";
     private static final String ATTR_PROFILE = "profileToEdit";

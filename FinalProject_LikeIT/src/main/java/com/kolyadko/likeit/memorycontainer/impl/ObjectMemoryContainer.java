@@ -6,6 +6,10 @@ import com.kolyadko.likeit.type.MemoryContainerType;
 /**
  * Created by DaryaKolyadko on 03.08.2016.
  */
+
+/**
+ * Object container (is used when transfer data from action command)
+ */
 public class ObjectMemoryContainer extends MemoryContainer {
     private final Object object;
 

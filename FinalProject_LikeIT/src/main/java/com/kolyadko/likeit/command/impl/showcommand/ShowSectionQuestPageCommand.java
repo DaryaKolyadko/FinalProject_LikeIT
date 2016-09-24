@@ -14,6 +14,10 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 24.08.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show question.jsp with questions from particular section data
+ */
 public class ShowSectionQuestPageCommand extends ShowQuestionListCommand {
     private static final String ATTR_LIST_TYPE_VAL = "fromSection";
     private static final String PARAM_SECTION = "section";

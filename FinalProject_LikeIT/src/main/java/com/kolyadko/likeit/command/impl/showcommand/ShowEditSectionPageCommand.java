@@ -14,6 +14,10 @@ import com.kolyadko.likeit.validator.Validator;
 /**
  * Created by DaryaKolyadko on 28.07.2016.
  */
+
+/**
+ * Command prepares RequestContent object to show editSection.jsp with data
+ */
 public class ShowEditSectionPageCommand extends ShowDefaultContentCommand implements ShowEditPage {
     private static final String PARAM_SECTION = "section";
     private static final String ATTR_SECTION = "sectionToEdit";
