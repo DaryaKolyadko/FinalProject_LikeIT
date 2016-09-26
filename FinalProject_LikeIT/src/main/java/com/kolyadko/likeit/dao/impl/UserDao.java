@@ -54,24 +54,12 @@ public class UserDao extends AbstractDao<String, User> {
         super(connection);
     }
 
-    /**
-     * Find user by login
-     *
-     * @param login user login
-     * @return User object
-     * @throws DaoException if some problems occurred inside
-     */
+    @Override
     public User findById(String login) throws DaoException {
         return findOnlyOne(FIND_BY_ID, login);
     }
 
-    /**
-     * Find user which is not in archive by login
-     *
-     * @param login user login
-     * @return User object
-     * @throws DaoException if some problems occurred inside
-     */
+    @Override
     public User findExistingById(String login) throws DaoException {
         return findOnlyOne(FIND_BY_ID + AND + EXISTING, login);
     }
@@ -84,7 +72,7 @@ public class UserDao extends AbstractDao<String, User> {
      * @return User list
      * @throws DaoException if some problems occurred inside
      */
-    public ArrayList<User> findUserList(Integer page, boolean isAdmin) throws DaoException {
+    public ArrayList<User> findUserList(Integer page, Boolean isAdmin) throws DaoException {
         return findBy(SELECT_ALL + (isAdmin ? "" : WHERE + EXISTING) + ORDER_BY_LOGIN + OFFSET_AND_LIMIT,
                 pager.calculateListOffset(page), USERS_PER_PAGE);
     }
@@ -97,22 +85,15 @@ public class UserDao extends AbstractDao<String, User> {
      * @return UserListWrapper object
      * @throws DaoException if some problems occurred inside
      */
-    public UserListWrapper findAllUsers(Integer page, boolean isAdmin) throws DaoException {
+    public UserListWrapper findAllUsers(Integer page, Boolean isAdmin) throws DaoException {
         UserListWrapper wrapper = new UserListWrapper();
         wrapper.setUserList(findUserList(page, isAdmin));
         wrapper.setPagesNumber(pager.calculatePagesNumber(connection));
         return wrapper;
     }
 
-    /**
-     * Move user to archive\ restore user from archive
-     *
-     * @param archive true - move to<br>false - restore
-     * @param login   user login
-     * @return true - updated successfully<br>false - otherwise
-     * @throws DaoException if some problems occurred inside
-     */
-    public boolean archiveActionById(boolean archive, String login) throws DaoException {
+   @Override
+    public boolean archiveActionById(Boolean archive, String login) throws DaoException {
         return updateEntityWithQuery(ARCHIVE_ACTIONS, archive, login);
     }
 
@@ -152,6 +133,7 @@ public class UserDao extends AbstractDao<String, User> {
         }
     }
 
+    @Override
     public User readEntity(ResultSet resultSet) throws DaoException {
         try {
             User user = new User(resultSet.getString("login"));

@@ -40,12 +40,12 @@ public class EditQuestionCommand extends ActionCommand {
             if (isInputDataValid(content)) {
                 try {
                     QuestionService questionService = new QuestionService();
-                    int questionId = Integer.parseInt(content.getRequestParameter(PARAM_QUESTION_ID));
+                    long questionId = Long.parseLong(content.getRequestParameter(PARAM_QUESTION_ID));
                     Question question = questionService.findById(questionId,
                             RequestContentUtil.isCurrentUserAdmin(content));
 
                     if (question != null) {
-                        question.setSectionId(Integer.parseInt(container.getSectionId()));
+                        question.setSectionId(Long.parseLong(container.getSectionId()));
                         question.setTitle(container.getTitle());
                         question.setText(container.getText());
 
@@ -88,7 +88,7 @@ public class EditQuestionCommand extends ActionCommand {
         try {
             QuestionService questionService = new QuestionService();
             String questionId = content.getRequestParameter(PARAM_QUESTION_ID);
-            Question question = questionService.findById(Integer.valueOf(questionId));
+            Question question = questionService.findById(Long.valueOf(questionId));
             return question != null && allowedAction(content, question.getAuthorId());
         } catch (ServiceException e) {
             return false;

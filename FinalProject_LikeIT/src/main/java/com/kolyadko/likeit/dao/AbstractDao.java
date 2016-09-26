@@ -53,6 +53,34 @@ public abstract class AbstractDao<K, T extends Entity> {
     public abstract boolean update(T entity) throws DaoException;
 
     /**
+     * Find entity by id
+     *
+     * @param id entity id
+     * @return entity object
+     * @throws DaoException if some problems occurred inside
+     */
+    public abstract T findById(K id) throws DaoException;
+
+    /**
+     * Find entity which is not in archive by id
+     *
+     * @param id entity id
+     * @return entity object
+     * @throws DaoException if some problems occurred inside
+     */
+    public abstract T findExistingById(K id) throws DaoException;
+
+    /**
+     * Move entity to archive\ restore entity from archive
+     *
+     * @param archive true - move to<br>false - restore
+     * @param id   entity id
+     * @return true - updated successfully<br>false - otherwise
+     * @throws DaoException if some problems occurred inside
+     */
+    public abstract boolean archiveActionById(Boolean archive, K id) throws DaoException;
+
+    /**
      * Retrieve data from ResultSrt object and init entity object
      *
      * @param resultSet result set object

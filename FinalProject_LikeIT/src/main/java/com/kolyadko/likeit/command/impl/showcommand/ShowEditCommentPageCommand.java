@@ -35,7 +35,7 @@ public class ShowEditCommentPageCommand extends ShowDefaultContentCommand implem
                 try {
                     String commentId = content.getRequestParameter(PARAM_COMMENT_ID);
                     boolean isAdmin = RequestContentUtil.isCurrentUserAdmin(content);
-                    Comment comment = commentService.findById(Integer.parseInt(commentId), isAdmin);
+                    Comment comment = commentService.findById(Long.parseLong(commentId), isAdmin);
 
                     if (comment != null) {
                         setAsAttrIfNotAfterError(content, comment, ATTR_COMMENT);
@@ -65,7 +65,7 @@ public class ShowEditCommentPageCommand extends ShowDefaultContentCommand implem
         try {
             CommentService commentService = new CommentService();
             String commentId = content.getRequestParameter(PARAM_COMMENT_ID);
-            Comment comment = commentService.findById(Integer.parseInt(commentId));
+            Comment comment = commentService.findById(Long.parseLong(commentId));
             return comment != null && allowedAction(content, comment.getAuthorId());
         } catch (ServiceException e) {
             return false;

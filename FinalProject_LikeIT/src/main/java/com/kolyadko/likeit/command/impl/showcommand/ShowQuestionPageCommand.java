@@ -38,7 +38,7 @@ public class ShowQuestionPageCommand extends ShowDefaultContentCommand {
                 try {
                     String currentUserLogin = RequestContentUtil.getCurrentUserLogin(content);
                     boolean isAdmin = RequestContentUtil.isCurrentUserAdmin(content);
-                    QuestionDao.QuestionData data = questionService.findQuestionData(Integer.parseInt(questionId),
+                    QuestionDao.QuestionData data = questionService.findQuestionData(Long.parseLong(questionId),
                             isAdmin, currentUserLogin);
 
                     if (data != null) {

@@ -40,7 +40,7 @@ public class EditCommentCommand extends ActionCommand {
             if (isInputDataValid(content)) {
                 try {
                     CommentService commentService = new CommentService();
-                    int commentId = Integer.parseInt(content.getRequestParameter(PARAM_COMMENT_ID));
+                    long commentId = Long.parseLong(content.getRequestParameter(PARAM_COMMENT_ID));
                     boolean isAdmin = RequestContentUtil.isCurrentUserAdmin(content);
                     Comment comment = commentService.findById(commentId, isAdmin);
 
@@ -85,7 +85,7 @@ public class EditCommentCommand extends ActionCommand {
         try {
             CommentService commentService = new CommentService();
             String commentId = content.getRequestParameter(PARAM_COMMENT_ID);
-            Comment comment = commentService.findById(Integer.valueOf(commentId));
+            Comment comment = commentService.findById(Long.valueOf(commentId));
             return comment != null && allowedAction(content, comment.getAuthorId());
         } catch (ServiceException e) {
             return false;

@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * This DAO allows perform operations on database with questions
  */
-public class QuestionDao extends AbstractDao<Integer, Question> {
+public class QuestionDao extends AbstractDao<Long, Question> {
     private static final String INSERT_COLUMNS = "author_id, section_id, title, text, creation_date";
     private static final String CREATE = "INSERT INTO question (" + INSERT_COLUMNS + ") VALUES(" +
             StringUtils.repeat("?", ", ", INSERT_COLUMNS.split(",").length) + ");";
@@ -70,37 +70,18 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
         super(connection);
     }
 
-    /**
-     * Find Question object by id
-     *
-     * @param id question id
-     * @return Question object
-     * @throws DaoException if some problems occurred inside
-     */
-    public Question findById(Integer id) throws DaoException {
+    @Override
+    public Question findById(Long id) throws DaoException {
         return findOnlyOne(SELECT_ALL + WHERE_ID, id);
     }
 
-    /**
-     * Find Question object which is not in archive by id
-     *
-     * @param id question id
-     * @return Question object
-     * @throws DaoException if some problems occurred inside
-     */
-    public Question findExistingById(Integer id) throws DaoException {
+    @Override
+    public Question findExistingById(Long id) throws DaoException {
         return findOnlyOne(SELECT_ALL + JOIN_ON_SECTION_GENERAL + WHERE_ID + AND + EXISTING, id);
     }
 
-    /**
-     * Move question to archive\ restore question from archive
-     *
-     * @param archive    true - move to<br>false - restore
-     * @param questionId question id
-     * @return true - updated successfully<br>false - otherwise
-     * @throws DaoException if some problems occurred inside
-     */
-    public boolean archiveActionById(boolean archive, int questionId) throws DaoException {
+    @Override
+    public boolean archiveActionById(Boolean archive, Long questionId) throws DaoException {
         return updateEntityWithQuery(ARCHIVE_ACTIONS, archive, questionId);
     }
 
@@ -119,7 +100,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
      * @return true - updated successfully<br>false - otherwise
      * @throws DaoException if some problems occurred inside
      */
-    public boolean setQuestionMark(int questionId, String userId, int mark) throws DaoException {
+    public boolean setQuestionMark(Long questionId, String userId, Integer mark) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_NUM_OF_MARKS +
                 WHERE_RELATION_ID)) {
             preparedStatement.setObject(1, questionId);
@@ -149,7 +130,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
      * @return QuestionData object
      * @throws DaoException if some problems occurred inside
      */
-    public QuestionData findQuestionData(int questionId, boolean isAdmin) throws DaoException {
+    public QuestionData findQuestionData(Long questionId, boolean isAdmin) throws DaoException {
         return findDataOnlyOne(SELECT_QUEST_USER_SECT + (isAdmin ? WHERE : WHERE + EXISTING + AND) + QUEST_ID, questionId);
     }
 
@@ -162,7 +143,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
      * @return QuestionData object
      * @throws DaoException if some problems occurred inside
      */
-    public QuestionData findQuestionData(int questionId, boolean isAdmin, String login) throws DaoException {
+    public QuestionData findQuestionData(Long questionId, boolean isAdmin, String login) throws DaoException {
         if (login != null) {
             return findDataOnlyOne(SELECT_QUEST_USER_SECT_MARK + (isAdmin ? WHERE : WHERE + EXISTING + AND) + QUEST_ID, login, questionId);
         }
@@ -179,7 +160,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
      * @return QuestionListWrapper object
      * @throws DaoException if some problems occurred inside
      */
-    public QuestionListWrapper findQuestionsFromSection(Integer sectionId, Integer page, boolean isAdmin)
+    public QuestionListWrapper findQuestionsFromSection(Long sectionId, Integer page, boolean isAdmin)
             throws DaoException {
         return findWrapperDataBy(SELECT_QUEST_USER_SECT +
                 (isAdmin ? WHERE : (WHERE + EXISTING + AND)) + FROM_PARTICULAR_SECTION + DESC_ORDER_BY_CREATE_DATE +
@@ -205,7 +186,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
      * @return question list
      * @throws DaoException if some problems occurred inside
      */
-    public ArrayList<Question> findTopQuestions(int limit) throws DaoException {
+    public ArrayList<Question> findTopQuestions(Integer limit) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL +
                 JOIN_ON_SECTION_GENERAL + WHERE + EXISTING + DESC_ORDER_BY_RATING + LIMIT)) {
             ArrayList<Question> questions = new ArrayList<>();
@@ -229,7 +210,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
      * @return QuestionListWrapper object
      * @throws DaoException if some problems occurred inside
      */
-    public QuestionListWrapper findTopQuestionsOnPage(int page) throws DaoException {
+    public QuestionListWrapper findTopQuestionsOnPage(Integer page) throws DaoException {
         return findWrapperDataBy(SELECT_QUEST_USER_SECT + WHERE + EXISTING + DESC_ORDER_BY_RATING + OFFSET_AND_LIMIT,
                 pager.calculateListOffset(page), RECORDS_PER_PAGE);
     }
@@ -277,7 +258,7 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
     public boolean create(Question question) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE)) {
             preparedStatement.setString(1, question.getAuthorId());
-            preparedStatement.setInt(2, question.getSectionId());
+            preparedStatement.setLong(2, question.getSectionId());
             preparedStatement.setString(3, question.getTitle());
             preparedStatement.setString(4, question.getText());
             preparedStatement.setTimestamp(5, question.getCreationDate());
@@ -292,9 +273,9 @@ public class QuestionDao extends AbstractDao<Integer, Question> {
     public Question readEntity(ResultSet resultSet) throws DaoException {
         try {
             Question question = new Question();
-            question.setId(resultSet.getInt("question_id"));
+            question.setId(resultSet.getLong("question_id"));
             question.setAuthorId(resultSet.getString("author_id"));
-            question.setSectionId(resultSet.getInt("section_id"));
+            question.setSectionId(resultSet.getLong("section_id"));
             question.setTitle(resultSet.getString("title"));
             question.setText(resultSet.getString("text"));
             question.setCreationDate(resultSet.getTimestamp("creation_date"));

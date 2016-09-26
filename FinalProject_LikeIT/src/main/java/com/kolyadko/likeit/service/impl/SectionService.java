@@ -19,9 +19,9 @@ import java.util.LinkedHashMap;
 /**
  * This Service allows perform operations on database with sections
  */
-public class SectionService extends AbstractService<Integer, Section> {
+public class SectionService extends AbstractService<Long, Section> {
     @Override
-    public Section findById(Integer sectionId, boolean isAdmin) throws ServiceException {
+    public Section findById(Long sectionId, Boolean isAdmin) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             return isAdmin ? sectionDao.findById(sectionId) : sectionDao.findExistingById(sectionId);
@@ -89,7 +89,7 @@ public class SectionService extends AbstractService<Integer, Section> {
      * @return HashMap: major sections and their subsections
      * @throws ServiceException if some problems occurred inside
      */
-    public HashMap selectSectionsCatalogueTree(boolean isAdmin) throws ServiceException {
+    public HashMap selectSectionsCatalogueTree(Boolean isAdmin) throws ServiceException {
         LinkedHashMap<Section, ArrayList<Section>> catalogue = new LinkedHashMap<>();
         ArrayList<Section> majorSections;
 
@@ -110,16 +110,16 @@ public class SectionService extends AbstractService<Integer, Section> {
     }
 
     @Override
-    public boolean moveToArchive(Integer sectionId) throws ServiceException {
+    public boolean moveToArchive(Long sectionId) throws ServiceException {
         return archiveActionsById(true, sectionId);
     }
 
     @Override
-    public boolean restoreFromArchive(Integer sectionId) throws ServiceException {
+    public boolean restoreFromArchive(Long sectionId) throws ServiceException {
         return archiveActionsById(false, sectionId);
     }
 
-    private boolean archiveActionsById(boolean archive, int sectionId) throws ServiceException {
+    private boolean archiveActionsById(Boolean archive, Long sectionId) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             SectionDao sectionDao = new SectionDao(connection);
             return sectionDao.archiveActionById(archive, sectionId);

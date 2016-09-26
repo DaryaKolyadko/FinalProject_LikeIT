@@ -18,7 +18,7 @@ import java.util.Calendar;
 /**
  * This Service allows perform operations on database with questions
  */
-public class QuestionService extends AbstractService<Integer, Question> {
+public class QuestionService extends AbstractService<Long, Question> {
     private static final Calendar CALENDAR = Calendar.getInstance();
 
     @Override
@@ -41,7 +41,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
      * @return true - updated successfully<br>false - otherwise
      * @throws ServiceException if some problems occurred inside
      */
-    public boolean setQuestionMark(int questionId, String userId, int mark) throws ServiceException {
+    public boolean setQuestionMark(Long questionId, String userId, Integer mark) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.setQuestionMark(questionId, userId, mark);
@@ -51,7 +51,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
     }
 
     @Override
-    public Question findById(Integer questionId, boolean isAdmin) throws ServiceException {
+    public Question findById(Long questionId, Boolean isAdmin) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             QuestionDao questionDao = new QuestionDao(connection);
             return isAdmin ? questionDao.findById(questionId) : questionDao.findExistingById(questionId);
@@ -67,7 +67,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
      * @return Question object
      * @throws ServiceException if some problems occurred inside
      */
-    public Question findById(int questionId) throws ServiceException {
+    public Question findById(Long questionId) throws ServiceException {
         return findById(questionId, false);
     }
 
@@ -78,7 +78,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
      * @return QuestionDao.QuestionListWrapper object
      * @throws ServiceException if some problems occurred inside
      */
-    public QuestionDao.QuestionListWrapper findRecentQuestions(int page) throws ServiceException {
+    public QuestionDao.QuestionListWrapper findRecentQuestions(Integer page) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findRecentQuestions(page);
@@ -94,7 +94,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
      * @return question list
      * @throws ServiceException if some problems occurred inside
      */
-    public ArrayList<Question> findTopQuestions(int limit) throws ServiceException {
+    public ArrayList<Question> findTopQuestions(Integer limit) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findTopQuestions(limit);
@@ -110,7 +110,7 @@ public class QuestionService extends AbstractService<Integer, Question> {
      * @return QuestionDao.QuestionListWrapper object
      * @throws ServiceException if some problems occurred inside
      */
-    public QuestionDao.QuestionListWrapper findTopQuestionsOnPage(int page) throws ServiceException {
+    public QuestionDao.QuestionListWrapper findTopQuestionsOnPage(Integer page) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findTopQuestionsOnPage(page);
@@ -128,7 +128,8 @@ public class QuestionService extends AbstractService<Integer, Question> {
      * @return QuestionDao.QuestionListWrapper object
      * @throws ServiceException if some problems occurred inside
      */
-    public QuestionDao.QuestionListWrapper findQuestionsFromSection(int sectionId, int page, boolean isAdmin) throws ServiceException {
+    public QuestionDao.QuestionListWrapper findQuestionsFromSection(Long sectionId, Integer page,
+                                                                    Boolean isAdmin) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findQuestionsFromSection(sectionId, page, isAdmin);
@@ -138,16 +139,16 @@ public class QuestionService extends AbstractService<Integer, Question> {
     }
 
     @Override
-    public boolean moveToArchive(Integer questionId) throws ServiceException {
+    public boolean moveToArchive(Long questionId) throws ServiceException {
         return archiveActionsById(true, questionId);
     }
 
     @Override
-    public boolean restoreFromArchive(Integer questionId) throws ServiceException {
+    public boolean restoreFromArchive(Long questionId) throws ServiceException {
         return archiveActionsById(false, questionId);
     }
 
-    private boolean archiveActionsById(boolean archive, int questionId) throws ServiceException {
+    private boolean archiveActionsById(boolean archive, long questionId) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.archiveActionById(archive, questionId);
@@ -165,7 +166,8 @@ public class QuestionService extends AbstractService<Integer, Question> {
      * @return QuestionDao.QuestionData object
      * @throws ServiceException if some problems occurred inside
      */
-    public QuestionDao.QuestionData findQuestionData(int questionId, boolean isAdmin, String login) throws ServiceException {
+    public QuestionDao.QuestionData findQuestionData(Long questionId, Boolean isAdmin,
+                                                     String login) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             QuestionDao questionDao = new QuestionDao(connection);
             return questionDao.findQuestionData(questionId, isAdmin, login);

@@ -24,7 +24,7 @@ public class SetQuestionMarkCommand extends SimpleActionCommand {
     @Override
     protected void serviceCall(RequestContent content) throws CommandException {
         QuestionService questionService = new QuestionService();
-        int questionId = Integer.parseInt(content.getRequestParameter(paramId));
+        long questionId = Long.parseLong(content.getRequestParameter(paramId));
         int mark = Integer.parseInt(content.getRequestParameter(PARAM_MARK));
 
         try {

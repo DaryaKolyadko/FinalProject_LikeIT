@@ -24,7 +24,7 @@ public class UserService extends AbstractService<String, User> {
     private static final Calendar CALENDAR = Calendar.getInstance();
 
     @Override
-    public User findById(String id, boolean isAdmin) throws ServiceException {
+    public User findById(String id, Boolean isAdmin) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             UserDao userDao = new UserDao(connection);
             return isAdmin ? userDao.findById(id) : userDao.findExistingById(id);
@@ -52,7 +52,7 @@ public class UserService extends AbstractService<String, User> {
      * @return UserListWrapper object
      * @throws ServiceException if some problems occurred inside
      */
-    public UserDao.UserListWrapper findAllUsers(Integer page, boolean isAdmin) throws ServiceException {
+    public UserDao.UserListWrapper findAllUsers(Integer page, Boolean isAdmin) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             UserDao userDao = new UserDao(connection);
             return userDao.findAllUsers(page, isAdmin);
@@ -81,7 +81,7 @@ public class UserService extends AbstractService<String, User> {
         return archiveActionsById(false, login);
     }
 
-    private boolean archiveActionsById(boolean archive, String login) throws ServiceException {
+    private boolean archiveActionsById(Boolean archive, String login) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             UserDao userDao = new UserDao(connection);
             return userDao.archiveActionById(archive, login);

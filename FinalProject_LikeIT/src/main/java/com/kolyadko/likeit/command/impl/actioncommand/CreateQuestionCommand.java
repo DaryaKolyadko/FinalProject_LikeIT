@@ -41,7 +41,7 @@ public class CreateQuestionCommand extends ActionCommand {
                     QuestionService questionService = new QuestionService();
                     Question question = new Question();
                     question.setAuthorId(RequestContentUtil.getCurrentUserLogin(content));
-                    question.setSectionId(Integer.parseInt(container.getSectionId()));
+                    question.setSectionId(Long.parseLong(container.getSectionId()));
                     question.setTitle(container.getTitle());
                     question.setText(container.getText());
 

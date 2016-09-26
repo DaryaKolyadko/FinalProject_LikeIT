@@ -36,7 +36,7 @@ public class ShowEditSectionPageCommand extends ShowDefaultContentCommand implem
                 try {
                     String sectionId = content.getRequestParameter(PARAM_SECTION);
                     boolean isAdmin = RequestContentUtil.isCurrentUserAdmin(content);
-                    Section section = sectionService.findById(Integer.parseInt(sectionId), isAdmin);
+                    Section section = sectionService.findById(Long.parseLong(sectionId), isAdmin);
 
                     if (section != null) {
                         setAsAttrIfNotAfterError(content, section, ATTR_SECTION);

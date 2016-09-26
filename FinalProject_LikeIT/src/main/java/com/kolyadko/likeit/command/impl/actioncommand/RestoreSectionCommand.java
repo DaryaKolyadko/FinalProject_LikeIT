@@ -26,7 +26,7 @@ public class RestoreSectionCommand extends SimpleActionCommand {
     @Override
     protected void serviceCall(RequestContent content) throws CommandException {
         SectionService sectionService = new SectionService();
-        int sectionId = Integer.parseInt(content.getRequestParameter(paramId));
+        long sectionId = Long.parseLong(content.getRequestParameter(paramId));
 
         try {
             if (sectionService.restoreFromArchive(sectionId)) {

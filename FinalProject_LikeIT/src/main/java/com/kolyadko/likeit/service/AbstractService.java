@@ -44,7 +44,7 @@ public abstract class AbstractService<K, T extends Entity> {
      * @return Entity object
      * @throws ServiceException if some problems occurred inside
      */
-    public abstract T findById(K id, boolean isAdmin) throws ServiceException;
+    public abstract T findById(K id, Boolean isAdmin) throws ServiceException;
 
     /**
      * Move entity to archive

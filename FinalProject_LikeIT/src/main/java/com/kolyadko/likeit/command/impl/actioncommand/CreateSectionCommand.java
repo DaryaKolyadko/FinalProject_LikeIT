@@ -44,7 +44,7 @@ public class CreateSectionCommand extends ActionCommand {
                     if (container.getMajorSectionId().isEmpty()) { // => create major section
                         section.setLabelColor(container.getLabelColor());
                     } else {
-                        section.setMajorSectionId(Integer.parseInt(container.getMajorSectionId()));
+                        section.setMajorSectionId(Long.parseLong(container.getMajorSectionId()));
                     }
 
                     if (sectionService.create(section)) {

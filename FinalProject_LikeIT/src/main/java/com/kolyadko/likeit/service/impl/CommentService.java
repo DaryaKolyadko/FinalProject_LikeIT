@@ -18,7 +18,7 @@ import java.util.Calendar;
 /**
  * This Service allows perform operations on database with comments
  */
-public class CommentService extends AbstractService<Integer, Comment> {
+public class CommentService extends AbstractService<Long, Comment> {
     private static final Calendar CALENDAR = Calendar.getInstance();
 
     /**
@@ -30,7 +30,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
      * @return true - updated successfully<br>false - otherwise
      * @throws ServiceException if some problems occurred inside
      */
-    public boolean setCommentMark(int commentId, String userId, int mark) throws ServiceException {
+    public boolean setCommentMark(Long commentId, String userId, Integer mark) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.setCommentMark(commentId, userId, mark);
@@ -47,7 +47,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
      * @return true - updated successfully<br>false - otherwise
      * @throws ServiceException if some problems occurred inside
      */
-    public boolean noteAsAnswer(int commentId, boolean state) throws ServiceException {
+    public boolean noteAsAnswer(Long commentId, Boolean state) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.noteAsAnswer(commentId, state);
@@ -76,7 +76,8 @@ public class CommentService extends AbstractService<Integer, Comment> {
      * @return CommentDao.CommentData list
      * @throws ServiceException if some problems occurred inside
      */
-    public ArrayList<CommentDao.CommentData> findByQuestionId(Integer questionId, String login, boolean isAdmin) throws ServiceException {
+    public ArrayList<CommentDao.CommentData> findByQuestionId(Long questionId, String login,
+                                                              Boolean isAdmin) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return isAdmin ? commentDao.findByQuestionId(questionId, login, isAdmin) :
@@ -87,7 +88,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
     }
 
     @Override
-    public Comment findById(Integer commentId, boolean isAdmin) throws ServiceException {
+    public Comment findById(Long commentId, Boolean isAdmin) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return isAdmin ? commentDao.findById(commentId) : commentDao.findExistingById(commentId);
@@ -103,7 +104,7 @@ public class CommentService extends AbstractService<Integer, Comment> {
      * @return Comment object
      * @throws ServiceException if some problems occurred inside
      */
-    public Comment findById(Integer commentId) throws ServiceException {
+    public Comment findById(Long commentId) throws ServiceException {
         return findById(commentId, false);
     }
 
@@ -118,16 +119,16 @@ public class CommentService extends AbstractService<Integer, Comment> {
     }
 
     @Override
-    public boolean moveToArchive(Integer commentId) throws ServiceException {
+    public boolean moveToArchive(Long commentId) throws ServiceException {
         return archiveActionsById(true, commentId);
     }
 
     @Override
-    public boolean restoreFromArchive(Integer commentId) throws ServiceException {
+    public boolean restoreFromArchive(Long commentId) throws ServiceException {
         return archiveActionsById(false, commentId);
     }
 
-    private boolean archiveActionsById(boolean archive, int commentId) throws ServiceException {
+    private boolean archiveActionsById(Boolean archive, Long commentId) throws ServiceException {
         try (ConnectionProxy connection = getConnectionProxy()) {
             CommentDao commentDao = new CommentDao(connection);
             return commentDao.archiveActionById(archive, commentId);

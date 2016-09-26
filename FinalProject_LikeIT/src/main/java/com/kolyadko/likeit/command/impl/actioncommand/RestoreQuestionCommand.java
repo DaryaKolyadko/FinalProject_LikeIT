@@ -28,7 +28,7 @@ public class RestoreQuestionCommand extends SimpleActionCommand {
     @Override
     protected void serviceCall(RequestContent content) throws CommandException {
         QuestionService questionService = new QuestionService();
-        int questionId = Integer.parseInt(content.getRequestParameter(paramId));
+        long questionId = Long.parseLong(content.getRequestParameter(paramId));
 
         try {
             if (questionService.restoreFromArchive(questionId)) {

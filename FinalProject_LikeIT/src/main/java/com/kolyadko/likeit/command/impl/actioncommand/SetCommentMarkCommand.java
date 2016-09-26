@@ -24,7 +24,7 @@ public class SetCommentMarkCommand extends SimpleActionCommand {
     @Override
     protected void serviceCall(RequestContent content) throws CommandException {
         CommentService commentService = new CommentService();
-        int commentId = Integer.parseInt(content.getRequestParameter(paramId));
+        long commentId = Long.parseLong(content.getRequestParameter(paramId));
         int mark = Integer.parseInt(content.getRequestParameter(PARAM_MARK));
 
         try {

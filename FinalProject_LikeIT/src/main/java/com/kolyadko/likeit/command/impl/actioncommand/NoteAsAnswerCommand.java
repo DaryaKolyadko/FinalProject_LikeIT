@@ -24,7 +24,7 @@ public class NoteAsAnswerCommand extends SimpleActionCommand {
     @Override
     protected void serviceCall(RequestContent content) throws CommandException {
         CommentService commentService = new CommentService();
-        int commentId = Integer.parseInt(content.getRequestParameter(paramId));
+        long commentId = Long.parseLong(content.getRequestParameter(paramId));
         boolean isAnswer = Boolean.parseBoolean(content.getRequestParameter(PARAM_ANSWER));
 
         try {

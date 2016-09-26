@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * This DAO allows perform operations on database with comments
  */
-public class CommentDao extends AbstractDao<Integer, Comment> {
+public class CommentDao extends AbstractDao<Long, Comment> {
     public CommentDao(ConnectionProxy connection) {
         super(connection);
     }
@@ -56,15 +56,8 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
     private static final String INSERT_COMMENT_MARK = "INSERT INTO comment_rating (" + ALL_RELATION_COLUMNS + ") VALUES(" +
             StringUtils.repeat("?", ", ", ALL_RELATION_COLUMNS.split(",").length) + ");";
 
-    /**
-     * Move comment to archive\ restore comment from archive
-     *
-     * @param archive   true - move to<br>false - restore
-     * @param commentId comment id
-     * @return true - updated successfully<br>false - otherwise
-     * @throws DaoException if some problems occurred inside
-     */
-    public boolean archiveActionById(boolean archive, int commentId) throws DaoException {
+    @Override
+    public boolean archiveActionById(Boolean archive, Long commentId) throws DaoException {
         return updateEntityWithQuery(ARCHIVE_ACTIONS, archive, commentId);
     }
 
@@ -77,10 +70,10 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
      * @return true - updated successfully<br>false - otherwise
      * @throws DaoException if some problems occurred inside
      */
-    public boolean setCommentMark(int commentId, String userId, int mark) throws DaoException {
+    public boolean setCommentMark(Long commentId, String userId, Integer mark) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_NUM_OF_MARKS +
                 WHERE_RELATION_ID)) {
-            preparedStatement.setInt(1, commentId);
+            preparedStatement.setLong(1, commentId);
             preparedStatement.setString(2, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             boolean markExists = false;
@@ -107,29 +100,17 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
      * @return true - updated successfully<br>false - otherwise
      * @throws DaoException if some problems occurred inside
      */
-    public boolean noteAsAnswer(int commentId, boolean state) throws DaoException {
+    public boolean noteAsAnswer(Long commentId, Boolean state) throws DaoException {
         return updateEntityWithQuery(UPDATE_COMMENT_ANSWER + WHERE_ID, state, commentId);
     }
 
-    /**
-     * Find Comment object by id
-     *
-     * @param id comment id
-     * @return Comment object
-     * @throws DaoException if some problems occurred inside
-     */
-    public Comment findById(Integer id) throws DaoException {
+    @Override
+    public Comment findById(Long id) throws DaoException {
         return findOnlyOne(SELECT_ALL + WHERE_ID, id);
     }
 
-    /**
-     * Find Comment object which is not in archive by id
-     *
-     * @param id comment id
-     * @return Comment object
-     * @throws DaoException if some problems occurred inside
-     */
-    public Comment findExistingById(Integer id) throws DaoException {
+   @Override
+    public Comment findExistingById(Long id) throws DaoException {
         return findOnlyOne(SELECT_ALL + WHERE_ID + EXISTING, id);
     }
 
@@ -154,7 +135,7 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
      * @return data of comment list
      * @throws DaoException if some problems occurred inside
      */
-    public ArrayList<CommentData> findByQuestionId(Integer questionId, String login, boolean isAdmin) throws DaoException {
+    public ArrayList<CommentData> findByQuestionId(Long questionId, String login, boolean isAdmin) throws DaoException {
         if (login != null) {
             return findDataBy(SELECT_COMM_USER_MARK + WHERE_QUEST_ID + (isAdmin ? "" : EXISTING) + ORDER_BY_CREATE_DATE,
                     login, questionId);
@@ -221,7 +202,7 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
     public boolean create(Comment comment) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE)) {
             preparedStatement.setString(1, comment.getAuthorId());
-            preparedStatement.setInt(2, comment.getQuestionId());
+            preparedStatement.setLong(2, comment.getQuestionId());
             preparedStatement.setString(3, comment.getText());
             preparedStatement.setTimestamp(4, comment.getCreationDate());
             preparedStatement.executeUpdate();
@@ -235,9 +216,9 @@ public class CommentDao extends AbstractDao<Integer, Comment> {
     public Comment readEntity(ResultSet resultSet) throws DaoException {
         try {
             Comment comment = new Comment();
-            comment.setId(resultSet.getInt("comment_id"));
+            comment.setId(resultSet.getLong("comment_id"));
             comment.setAuthorId(resultSet.getString("author_id"));
-            comment.setQuestionId(resultSet.getInt("question_id"));
+            comment.setQuestionId(resultSet.getLong("question_id"));
             comment.setText(resultSet.getString("text"));
             comment.setCreationDate(resultSet.getTimestamp("creation_date"));
             comment.setAnswer(resultSet.getBoolean("answer"));

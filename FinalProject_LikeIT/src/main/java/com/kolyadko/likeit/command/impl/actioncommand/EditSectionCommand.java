@@ -40,7 +40,7 @@ public class EditSectionCommand extends ActionCommand {
             if (isInputDataValid(content)) {
                 try {
                     SectionService sectionService = new SectionService();
-                    int sectionId = Integer.parseInt(content.getRequestParameter(PARAM_SECTION_ID));
+                    long sectionId = Long.parseLong(content.getRequestParameter(PARAM_SECTION_ID));
                     Section section = sectionService.findById(sectionId, RequestContentUtil.isCurrentUserAdmin(content));
 
                     if (section != null) {

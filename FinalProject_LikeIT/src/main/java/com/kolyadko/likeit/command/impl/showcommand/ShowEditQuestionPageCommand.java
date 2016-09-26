@@ -39,7 +39,7 @@ public class ShowEditQuestionPageCommand extends ShowDefaultContentCommand imple
                     content.setRequestAttribute(ATTR_SECTIONS, sectionService.findNotMajorSections());
                     String questionId = content.getRequestParameter(PARAM_QUESTION);
                     boolean isAdmin = RequestContentUtil.isCurrentUserAdmin(content);
-                    Question question = questionService.findById(Integer.parseInt(questionId), isAdmin);
+                    Question question = questionService.findById(Long.parseLong(questionId), isAdmin);
 
                     if (question != null) {
                         setAsAttrIfNotAfterError(content, question, ATTR_QUESTION);
@@ -69,7 +69,7 @@ public class ShowEditQuestionPageCommand extends ShowDefaultContentCommand imple
         try {
             QuestionService questionService = new QuestionService();
             String questionId = content.getRequestParameter(PARAM_QUESTION);
-            Question question = questionService.findById(Integer.parseInt(questionId));
+            Question question = questionService.findById(Long.parseLong(questionId));
             return question != null && allowedAction(content, question.getAuthorId());
         } catch (ServiceException e) {
             return false;

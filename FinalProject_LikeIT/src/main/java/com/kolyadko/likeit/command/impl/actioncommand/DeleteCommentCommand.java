@@ -30,7 +30,7 @@ public class DeleteCommentCommand extends SimpleActionCommand {
     @Override
     protected void serviceCall(RequestContent content) throws CommandException {
         CommentService commentService = new CommentService();
-        int commentId = Integer.parseInt(content.getRequestParameter(paramId));
+        long commentId = Long.parseLong(content.getRequestParameter(paramId));
 
         try {
             if (commentService.moveToArchive(commentId)) {
@@ -52,7 +52,7 @@ public class DeleteCommentCommand extends SimpleActionCommand {
         try {
             CommentService commentService = new CommentService();
             String commentId = content.getRequestParameter(paramId);
-            Comment comment = commentService.findById(Integer.valueOf(commentId));
+            Comment comment = commentService.findById(Long.valueOf(commentId));
             return comment != null && allowedAction(content, comment.getAuthorId()) ||
                     super.isAllowedAction(content);
         } catch (ServiceException e) {

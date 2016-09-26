@@ -38,7 +38,7 @@ public class ShowSectionQuestPageCommand extends ShowQuestionListCommand {
             try {
                 String sectionId = content.getRequestParameter(PARAM_SECTION);
                 boolean isAdmin = RequestContentUtil.isCurrentUserAdmin(content);
-                Section section = sectionService.findById(Integer.parseInt(sectionId), isAdmin);
+                Section section = sectionService.findById(Long.parseLong(sectionId), isAdmin);
 
                 if (section != null) {
                     dataList = questionService.findQuestionsFromSection(section.getId(), page, isAdmin);

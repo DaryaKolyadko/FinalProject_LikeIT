@@ -24,18 +24,18 @@ public class User extends Entity<String> {
     private String email;
     private RoleType role = RoleType.USER;
     private StateType state = StateType.ACTIVE;
-    private float rating;
-    private boolean archive;
+    private Float rating;
+    private Boolean archive;
 
     public User(String login) {
         setId(login);
     }
 
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return role == RoleType.ADMIN;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return state == StateType.ACTIVE;
     }
 
@@ -111,19 +111,58 @@ public class User extends Entity<String> {
         this.state = state;
     }
 
-    public float getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 
-    public boolean isArchive() {
+    public Boolean getArchive() {
         return archive;
     }
 
-    public void setArchive(boolean archive) {
+    public void setArchive(Boolean archive) {
         this.archive = archive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        if (!super.equals(o)) return false;
+
+        User user = (User) o;
+
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (gender != user.gender) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (birthDate != null ? !birthDate.equals(user.birthDate) : user.birthDate != null) return false;
+        if (signUpDate != null ? !signUpDate.equals(user.signUpDate) : user.signUpDate != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (role != user.role) return false;
+        if (state != user.state) return false;
+        if (rating != null ? !rating.equals(user.rating) : user.rating != null) return false;
+        return archive != null ? archive.equals(user.archive) : user.archive == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
+        result = 31 * result + (signUpDate != null ? signUpDate.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (rating != null ? rating.hashCode() : 0);
+        result = 31 * result + (archive != null ? archive.hashCode() : 0);
+        return result;
     }
 }

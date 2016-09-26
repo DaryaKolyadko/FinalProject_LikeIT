@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * This DAO allows perform operations on database with sections
  */
-public class SectionDao extends AbstractDao<Integer, Section> {
+public class SectionDao extends AbstractDao<Long, Section> {
     private static final String ALL_COLUMNS = "S.section_id, S.major_section_id, S.name, S.question_num, S.answer_num, S.label_color, S.archive";
     private static final String INSERT_COLUMNS = "major_section_id, name, label_color";
 
@@ -43,25 +43,13 @@ public class SectionDao extends AbstractDao<Integer, Section> {
         super(connection);
     }
 
-    /**
-     * Find Section object by id
-     *
-     * @param id section id
-     * @return Section object
-     * @throws DaoException if some problems occurred inside
-     */
-    public Section findById(Integer id) throws DaoException {
+    @Override
+    public Section findById(Long id) throws DaoException {
         return findOnlyOne(SELECT_ALL + BY_ID, id);
     }
 
-    /**
-     * Find Section object which is not in archive by id
-     *
-     * @param id section id
-     * @return Section object
-     * @throws DaoException if some problems occurred inside
-     */
-    public Section findExistingById(Integer id) throws DaoException {
+    @Override
+    public Section findExistingById(Long id) throws DaoException {
         return findOnlyOne(SELECT_ALL + JOIN_ON_SECTION_GENERAL + BY_ID + EXISTING, id);
     }
 
@@ -72,7 +60,7 @@ public class SectionDao extends AbstractDao<Integer, Section> {
      * @return Section list
      * @throws DaoException if some problems occurred inside
      */
-    public ArrayList<Section> findByMajorId(int majorSectionId) throws DaoException {
+    public ArrayList<Section> findByMajorId(Long majorSectionId) throws DaoException {
         return findBy(SELECT_ALL + BY_MAJOR_SECTION_ID + ORDER_BY_ID, majorSectionId);
     }
 
@@ -83,8 +71,9 @@ public class SectionDao extends AbstractDao<Integer, Section> {
      * @return Section list
      * @throws DaoException if some problems occurred inside
      */
-    public ArrayList<Section> findExistingByMajorId(int majorSectionId) throws DaoException {
-        return findBy(SELECT_ALL + JOIN_ON_SECTION_GENERAL + BY_MAJOR_SECTION_ID + EXISTING + ORDER_BY_ID, majorSectionId);
+    public ArrayList<Section> findExistingByMajorId(Long majorSectionId) throws DaoException {
+        return findBy(SELECT_ALL + JOIN_ON_SECTION_GENERAL + BY_MAJOR_SECTION_ID + EXISTING +
+                ORDER_BY_ID, majorSectionId);
     }
 
     /**
@@ -104,7 +93,8 @@ public class SectionDao extends AbstractDao<Integer, Section> {
      * @throws DaoException if some problems occurred inside
      */
     public ArrayList<Section> findExistingMajorSections() throws DaoException {
-        return findWithStatement(SELECT_ALL + JOIN_ON_SECTION_GENERAL + MAJOR_SECTIONS + EXISTING + ORDER_BY_ID);
+        return findWithStatement(SELECT_ALL + JOIN_ON_SECTION_GENERAL + MAJOR_SECTIONS + EXISTING +
+                ORDER_BY_ID);
     }
 
     /**
@@ -117,15 +107,8 @@ public class SectionDao extends AbstractDao<Integer, Section> {
         return findWithStatement(SELECT_ALL + JOIN_ON_SECTION_GENERAL + NOT_MAJOR_SECTIONS + EXISTING);
     }
 
-    /**
-     * Move section to archive\ restore section from archive
-     *
-     * @param archive   true - move to<br>false - restore
-     * @param sectionId section id
-     * @return true - updated successfully<br>false - otherwise
-     * @throws DaoException if some problems occurred inside
-     */
-    public boolean archiveActionById(boolean archive, int sectionId) throws DaoException {
+    @Override
+    public boolean archiveActionById(Boolean archive, Long sectionId) throws DaoException {
         return updateEntityWithQuery(ARCHIVE_ACTIONS, archive, sectionId);
     }
 
@@ -149,7 +132,7 @@ public class SectionDao extends AbstractDao<Integer, Section> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE)) {
 
             if (section.getMajorSectionId() != null) {
-                preparedStatement.setInt(1, section.getMajorSectionId());
+                preparedStatement.setLong(1, section.getMajorSectionId());
             } else {
                 preparedStatement.setNull(1, Types.INTEGER);
             }
@@ -167,8 +150,8 @@ public class SectionDao extends AbstractDao<Integer, Section> {
     public Section readEntity(ResultSet resultSet) throws DaoException {
         try {
             Section section = new Section();
-            section.setId(resultSet.getInt("section_id"));
-            section.setMajorSectionId(resultSet.getInt("major_section_id"));
+            section.setId(resultSet.getLong("section_id"));
+            section.setMajorSectionId(resultSet.getLong("major_section_id"));
             section.setName(resultSet.getString("name"));
             section.setQuestionNum(resultSet.getInt("question_num"));
             section.setAnswerNum(resultSet.getInt("answer_num"));

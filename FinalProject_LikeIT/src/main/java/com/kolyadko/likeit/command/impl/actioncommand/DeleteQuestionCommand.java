@@ -29,7 +29,7 @@ public class DeleteQuestionCommand extends SimpleActionCommand {
     @Override
     protected void serviceCall(RequestContent content) throws CommandException {
         QuestionService questionService = new QuestionService();
-        int sectionId = Integer.parseInt(content.getRequestParameter(paramId));
+        long sectionId = Long.parseLong(content.getRequestParameter(paramId));
 
         try {
             if (questionService.moveToArchive(sectionId)) {
@@ -55,7 +55,7 @@ public class DeleteQuestionCommand extends SimpleActionCommand {
         try {
             QuestionService questionService = new QuestionService();
             String questionId = content.getRequestParameter(paramId);
-            Question question = questionService.findById(Integer.valueOf(questionId));
+            Question question = questionService.findById(Long.valueOf(questionId));
             return question != null && allowedAction(content, question.getAuthorId()) ||
                     super.isAllowedAction(content);
         } catch (ServiceException e) {

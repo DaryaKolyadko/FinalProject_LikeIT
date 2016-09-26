@@ -40,7 +40,7 @@ public class CreateCommentCommand extends ActionCommand {
                     CommentService commentService = new CommentService();
                     Comment comment = new Comment();
                     comment.setAuthorId(RequestContentUtil.getCurrentUserLogin(content));
-                    comment.setQuestionId(Integer.parseInt(container.getQuestionId()));
+                    comment.setQuestionId(Long.parseLong(container.getQuestionId()));
                     comment.setText(container.getText());
 
                     if (commentService.create(comment)) {
