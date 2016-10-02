@@ -1,6 +1,11 @@
 package com.kolyadko.likeit.util;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +17,14 @@ import static org.junit.Assert.*;
  * Test for MappingManager
  */
 public class MappingManagerTest {
+    @Before
+    public void beforeEachTest() throws Exception{
+        Field field = MappingManager.class.getDeclaredField("initialized");
+        field.setAccessible(true);
+        field.set(null, new AtomicBoolean(false));
+        field.setAccessible(false);
+    }
+
     @Test
     public void testGetInstance() throws Exception {
         int tryNumber = 10;
