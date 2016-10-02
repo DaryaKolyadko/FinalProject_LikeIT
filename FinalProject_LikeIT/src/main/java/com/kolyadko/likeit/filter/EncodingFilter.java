@@ -13,6 +13,8 @@ import java.io.IOException;
  */
 @WebFilter(filterName = "EncodingFilter")
 public class EncodingFilter implements Filter {
+    private static final String PARAM_ENCODING = "encoding";
+
     private String encoding;
 
     public void destroy() {
@@ -25,7 +27,7 @@ public class EncodingFilter implements Filter {
     }
 
     public void init(FilterConfig config) throws ServletException {
-        encoding = config.getInitParameter("encoding");
+        encoding = config.getInitParameter(PARAM_ENCODING);
     }
 
 }

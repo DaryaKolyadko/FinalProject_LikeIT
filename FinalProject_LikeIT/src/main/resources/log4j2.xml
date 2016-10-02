@@ -6,7 +6,8 @@
     </Properties>
     <Appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
-            <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level - %msg%n}{INFO=bright green, ERROR=bright red}" />
+            <PatternLayout
+                    pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level - %msg%n}{INFO=bright green, ERROR=bright red}"/>
         </Console>
         <RollingFile name="FILE" fileName="${log-path}/logging.log"
                      filePattern="${log-path}/logging-%d{yyyy-MM-dd}-%i.log">
@@ -18,7 +19,7 @@
     </Appenders>
     <Loggers>
         <Root level="INFO">
-            <AppenderRef ref="CONSOLE" level="INFO" />
+            <AppenderRef ref="CONSOLE" level="INFO"/>
             <AppenderRef ref="FILE" level="INFO"/>
         </Root>
     </Loggers>

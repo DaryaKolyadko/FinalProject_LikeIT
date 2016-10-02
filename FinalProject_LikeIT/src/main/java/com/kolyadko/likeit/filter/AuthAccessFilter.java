@@ -1,5 +1,8 @@
 package com.kolyadko.likeit.filter;
 
+import com.kolyadko.likeit.content.RequestContent;
+import com.kolyadko.likeit.util.RequestContentUtil;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +14,10 @@ import java.io.IOException;
  */
 
 /**
- * Jsp access filter (prevents direct access to jsp files)
+ * Auth access filter (prevents access to Login and SignUp pages for not authenticated users)
  */
-@WebFilter(filterName = "JspAccessFilter")
-public class JspAccessFilter implements Filter {
+@WebFilter(filterName = "AuthAccessFilter")
+public class AuthAccessFilter implements Filter {
     private static final String PARAM_REDIRECT_TO = "redirectTo";
 
     private String redirectTo;
@@ -25,7 +28,12 @@ public class JspAccessFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-        response.sendRedirect(request.getContextPath() + redirectTo);
+
+        if (RequestContentUtil.isAuthenticated(new RequestContent(request))) {
+            response.sendRedirect(request.getContextPath() + redirectTo);
+        } else {
+            chain.doFilter(request, response);
+        }
     }
 
     public void init(FilterConfig config) throws ServletException {

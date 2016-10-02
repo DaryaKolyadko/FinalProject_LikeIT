@@ -31,7 +31,6 @@
     </servlet-mapping>
 
     <listener>
-        <!--<listener-class>com.kolyadko.likeit.listener.LikeItServletContextListener</listener-class>-->
         <listener-class>com.kolyadko.likeit.listener.LikeItSessionListener</listener-class>
         <listener-class>com.kolyadko.likeit.listener.LikeItServletRequestListener</listener-class>
     </listener>
@@ -54,6 +53,15 @@
         </init-param>
     </filter>
 
+    <filter>
+        <filter-name>AuthAccessFilter</filter-name>
+        <filter-class>com.kolyadko.likeit.filter.AuthAccessFilter</filter-class>
+        <init-param>
+            <param-name>redirectTo</param-name>
+            <param-value>/Home</param-value>
+        </init-param>
+    </filter>
+
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -62,6 +70,12 @@
     <filter-mapping>
         <filter-name>JspAccessFilter</filter-name>
         <url-pattern>/jsp/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>AuthAccessFilter</filter-name>
+        <url-pattern>/Login</url-pattern>
+        <url-pattern>/SignUp</url-pattern>
     </filter-mapping>
 
     <session-config>
