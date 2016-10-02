@@ -58,7 +58,7 @@ public class MappingManager {
         try (FileInputStream inputStream = new FileInputStream(configFile.getFile())) {
             configuration.load(inputStream);
         } catch (IOException e) {
-            LOG.error(ERROR);
+            LOG.error(ERROR, e);
             throw new RuntimeException(ERROR + configFileName);
         }
     }
@@ -83,6 +83,11 @@ public class MappingManager {
         return manager;
     }
 
+    /**
+     * Return property value
+     * @param key key
+     * @return property value
+     */
     public String getProperty(String key) {
         return configuration.getProperty(key);
     }

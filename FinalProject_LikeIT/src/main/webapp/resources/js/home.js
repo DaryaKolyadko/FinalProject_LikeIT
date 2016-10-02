@@ -4,7 +4,7 @@ $(document).ready(function () {
         $(this).find('.modal-footer #delete-section').attr('data-section', $section);
     });
 
-    $('#delete').find('.modal-footer #delete-section').on('click', function(){
+    $('#delete').find('.modal-footer #delete-section').on('click', function () {
         document.forms['form-delete-' + $(this).attr('data-section')].submit();
     });
 
@@ -13,7 +13,7 @@ $(document).ready(function () {
         $(this).find('.modal-footer #restore-section').attr('data-section', $sectionId);
     });
 
-    $('#restore').find('.modal-footer #restore-section').on('click', function(){
+    $('#restore').find('.modal-footer #restore-section').on('click', function () {
         document.forms['form-restore-' + $(this).attr('data-section')].submit();
     });
 

@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Package level access database util
  */
 class DatabaseConnector {
-    private static String configFileName = "database.properties";
+    private static final String CONFIG_FILE_NAME = "database.properties";
     private static Properties config;
     private static AtomicBoolean initialized = new AtomicBoolean(false);
 
@@ -45,10 +45,10 @@ class DatabaseConnector {
 
     private static void init() throws DatabaseConnectorException {
         initialized.set(true);
-        URL configFile = DatabaseConnector.class.getClassLoader().getResource(configFileName);
+        URL configFile = DatabaseConnector.class.getClassLoader().getResource(CONFIG_FILE_NAME);
 
         if (configFile == null) {
-            throw new DatabaseConnectorException("Config file (" + configFileName + ") not found");
+            throw new DatabaseConnectorException("Config file (" + CONFIG_FILE_NAME + ") not found");
         }
 
         try (FileInputStream inputStream = new FileInputStream(configFile.getFile())) {

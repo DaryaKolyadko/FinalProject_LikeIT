@@ -21,6 +21,8 @@ import com.kolyadko.likeit.validator.impl.LoginValidator;
  * Command lets create a section (admin only)
  * <p>
  * Command lets create a section (admin only)
+ * <p>
+ * Command lets create a section (admin only)
  */
 
 /**

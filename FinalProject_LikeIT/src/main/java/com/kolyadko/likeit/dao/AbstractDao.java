@@ -3,8 +3,6 @@ package com.kolyadko.likeit.dao;
 import com.kolyadko.likeit.entity.Entity;
 import com.kolyadko.likeit.exception.DaoException;
 import com.kolyadko.likeit.pool.ConnectionProxy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +26,6 @@ public abstract class AbstractDao<K, T extends Entity> {
      * Logic layer
      */
     protected ConnectionProxy connection;
-    protected static final Logger LOG = LogManager.getLogger(AbstractDao.class);
 
     public AbstractDao(ConnectionProxy connection) {
         this.connection = connection;
@@ -74,7 +71,7 @@ public abstract class AbstractDao<K, T extends Entity> {
      * Move entity to archive\ restore entity from archive
      *
      * @param archive true - move to<br>false - restore
-     * @param id   entity id
+     * @param id      entity id
      * @return true - updated successfully<br>false - otherwise
      * @throws DaoException if some problems occurred inside
      */
@@ -150,16 +147,7 @@ public abstract class AbstractDao<K, T extends Entity> {
      */
     protected <T> T findDataBy(String query, Object... params) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            int counter = 1;
-
-            for (Object param : params) {
-                if (!checkNull(param)) {
-                    preparedStatement.setObject(counter, param);
-                    counter++;
-                } else {
-                    throw new DaoException("Null param was passed into query.");
-                }
-            }
+            setParams(preparedStatement, params);
             return extractData(preparedStatement.executeQuery());
         } catch (SQLException e) {
             throw new DaoException("Exception in DAO layer, findDataBy()", e);
@@ -223,7 +211,7 @@ public abstract class AbstractDao<K, T extends Entity> {
                     preparedStatement.setObject(counter, param);
                     counter++;
                 } else {
-                    LOG.warn("Null param was passed into query. It wasn't placed inside it.");
+                    throw new DaoException("Null param was passed into query.");
                 }
             }
         } catch (SQLException e) {

@@ -182,9 +182,12 @@
                                             </c:if>
                                             <span class="right-panel font-icon">
                                                  <c:if test="${commentData.user.id eq userContainer.object.id}">
-                                                     <form id="form-edit-comment" action="<c:url value="/EditComment"/>" hidden>
-                                                         <input type="text" name="question" value="${questionData.question.id}">
-                                                         <input type="text" name="comment" value="${commentData.comment.id}">
+                                                     <form id="form-edit-comment" action="<c:url value="/EditComment"/>"
+                                                           hidden>
+                                                         <input type="text" name="question"
+                                                                value="${questionData.question.id}">
+                                                         <input type="text" name="comment"
+                                                                value="${commentData.comment.id}">
                                                      </form>
                                                      <a href="#" onclick="$('#form-edit-comment').submit()"><i
                                                              class="glyphicon glyphicon-edit edit-color"></i></a>

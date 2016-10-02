@@ -92,7 +92,7 @@ public class UserDao extends AbstractDao<String, User> {
         return wrapper;
     }
 
-   @Override
+    @Override
     public boolean archiveActionById(Boolean archive, String login) throws DaoException {
         return updateEntityWithQuery(ARCHIVE_ACTIONS, archive, login);
     }

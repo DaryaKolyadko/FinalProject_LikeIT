@@ -137,7 +137,9 @@
                                                 <ctm:adminOnly>
                                                     <tr>
                                                         <td><fmt:message key="label.role"/></td>
-                                                        <td><span class="${fn:toLowerCase(profile.role)}-label">${profile.role}</span></td>
+                                                        <td><span
+                                                                class="${fn:toLowerCase(profile.role)}-label">${profile.role}</span>
+                                                        </td>
                                                     </tr>
                                                 </ctm:adminOnly>
                                                 <tr>
@@ -150,7 +152,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.gender"/></td>
-                                                    <td><fmt:message key="gender.${fn:toLowerCase(profile.gender)}"/></td>
+                                                    <td><fmt:message
+                                                            key="gender.${fn:toLowerCase(profile.gender)}"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.state"/></td>
@@ -159,7 +162,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.rating"/></td>
-                                                    <td>  <fmt:formatNumber maxFractionDigits="1">${profile.rating}</fmt:formatNumber></td>
+                                                    <td><fmt:formatNumber
+                                                            maxFractionDigits="1">${profile.rating}</fmt:formatNumber></td>
                                                 </tr>
                                                 <tr>
                                                     <td><fmt:message key="label.email"/></td>

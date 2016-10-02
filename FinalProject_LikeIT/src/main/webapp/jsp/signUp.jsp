@@ -88,7 +88,7 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group date" id="birthday-picker" data-provide="datepicker"
-                            data-locale="${fn:substring(locale.text, 0, 2)}">
+                                 data-locale="${fn:substring(locale.text, 0, 2)}">
                                 <label for="picker" class="sr-only"><fmt:message key="label.birthDate"/></label>
                                 <input type="text" id="picker" class="form-control"
                                        placeholder="<fmt:message key="label.birthDate"/>"

@@ -109,7 +109,7 @@ public class CommentDao extends AbstractDao<Long, Comment> {
         return findOnlyOne(SELECT_ALL + WHERE_ID, id);
     }
 
-   @Override
+    @Override
     public Comment findExistingById(Long id) throws DaoException {
         return findOnlyOne(SELECT_ALL + WHERE_ID + EXISTING, id);
     }

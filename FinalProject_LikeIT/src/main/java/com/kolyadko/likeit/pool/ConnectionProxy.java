@@ -34,7 +34,7 @@ public class ConnectionProxy implements Connection {
         try {
             ConnectionPool.getInstance().closeConnection(this);
         } catch (ConnectionPoolException e) {
-            LOG.error(e.getMessage());
+            LOG.error(e);
         }
     }
 
