@@ -92,11 +92,11 @@
                                         <p>
                                             <c:choose>
                                                 <c:when test="${fn:length(data.question.text) > 200}">
-                                                    <ctm:newLineFormat
+                                                    <ctm:htmlTextFormat
                                                             text="${fn:substring(data.question.text, 0, 200)}"/>...
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <ctm:newLineFormat text="${data.question.text}"/>
+                                                    <ctm:htmlTextFormat text="${data.question.text}"/>
                                                 </c:otherwise>
                                             </c:choose>
                                             <a href="#"

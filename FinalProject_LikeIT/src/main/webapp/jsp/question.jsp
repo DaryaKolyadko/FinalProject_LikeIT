@@ -103,7 +103,7 @@
                             </span>
                             </h5>
                             <br>
-                            <p><ctm:newLineFormat text="${questionData.question.text}"/></p>
+                            <p><ctm:htmlTextFormat text="${questionData.question.text}"/></p>
                             <ul class="list-inline list-unstyled clearfix">
                                 <ctm:authenticatedOnly>
                                     <li>
@@ -230,7 +230,7 @@
                                             </span>
                                         </h4>
                                         <div class="clearfix visible-xs-block"></div>
-                                        <p style="display: inline"><ctm:newLineFormat
+                                        <p style="display: inline"><ctm:htmlTextFormat
                                                 text="${commentData.comment.text}"/></p>
                                         <ul class="list-inline list-unstyled clearfix">
                                             <li>

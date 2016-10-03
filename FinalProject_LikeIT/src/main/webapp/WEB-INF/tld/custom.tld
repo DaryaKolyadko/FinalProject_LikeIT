@@ -22,8 +22,8 @@
     </tag>
 
     <tag>
-        <name>newLineFormat</name>
-        <tag-class>com.kolyadko.likeit.tag.NewLineFormatTag</tag-class>
+        <name>htmlTextFormat</name>
+        <tag-class>com.kolyadko.likeit.tag.HtmlTextFormatTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>text</name>

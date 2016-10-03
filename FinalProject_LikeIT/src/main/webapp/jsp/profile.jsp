@@ -63,7 +63,7 @@
                                             </button>
                                         </c:if>
                                         <ctm:adminOnly>
-                                            <c:if test="${not profile.isAdmin() and not profile.isArchive()}">
+                                            <c:if test="${not profile.isAdmin() and not profile.getArchive()}">
                                                 <c:choose>
                                                     <c:when test="${profile.isActive() eq true}">
                                                         <form id="form-ban-profile" method="post"

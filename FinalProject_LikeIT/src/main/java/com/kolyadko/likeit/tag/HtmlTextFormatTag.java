@@ -1,5 +1,7 @@
 package com.kolyadko.likeit.tag;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
@@ -12,7 +14,7 @@ import java.io.IOException;
 /**
  * User tag for displaying a new line symbol in comments and questions textAreas
  */
-public class NewLineFormatTag extends BodyTagSupport {
+public class HtmlTextFormatTag extends BodyTagSupport {
     private String text;
 
     public void setText(String text) {
@@ -23,9 +25,10 @@ public class NewLineFormatTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         try {
             JspWriter out = pageContext.getOut();
+            text = StringEscapeUtils.escapeHtml4(text);
             out.write(text.replace(System.getProperty("line.separator"), "<br>"));
         } catch (IOException e) {
-            throw new JspException("Exception in NewLineFormatTag", e);
+            throw new JspException("Exception in HtmlTextFormatTag", e);
         }
 
         return SKIP_BODY;
