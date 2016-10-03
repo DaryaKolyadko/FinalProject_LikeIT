@@ -99,6 +99,7 @@ public class SignUpCommand extends ActionCommand {
         memoryContainer.setEmail(content.getRequestParameter(PARAM_EMAIL));
         memoryContainer.setGender(content.getRequestParameter(PARAM_GENDER));
         memoryContainer.setPassword(content.getRequestParameter(PARAM_PASSWORD));
+        memoryContainer.setPasswordConfirmation(content.getRequestParameter(PARAM_CONFIRM_PASSWORD));
         memoryContainer.setBirthDate(content.getRequestParameter(PARAM_BIRTHDAY));
         return memoryContainer;
     }

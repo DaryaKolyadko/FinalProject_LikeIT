@@ -15,6 +15,7 @@ public class UncompletedUserMemoryContainer extends MemoryContainer {
     private String firstName;
     private String lastName;
     private String password;
+    private String passwordConfirmation;
     private String birthDate;
     private String email;
     private String gender;
@@ -53,6 +54,14 @@ public class UncompletedUserMemoryContainer extends MemoryContainer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
+    }
+
+    public void setPasswordConfirmation(String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
     }
 
     public String getBirthDate() {
